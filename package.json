@@ -11,6 +11,11 @@
     "lint": "gulp lint"
   },
 
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mjeanroy/rollup-plugin-bower-resolve.git"
+  },
+
   "keywords": [
     "rollup",
     "rollup-plugin",
