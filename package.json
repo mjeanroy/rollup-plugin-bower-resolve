@@ -1,0 +1,30 @@
+{
+  "name": "rollup-plugin-bower-resolve",
+  "version": "0.0.0",
+  "description": "Use the bower resolution algorithm with Rollup",
+  "main": "dist/rollup-plugin-bower-resolve.js",
+  "author": "mjeanroy <mickael.jeanroy@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "gulp build",
+    "test": "gulp test"
+  },
+
+  "dependencies": {
+    "q": "1.4.1"
+  },
+
+  "devDependencies": {
+    "babel": "6.5.2",
+    "babel-preset-es2015": "6.9.0",
+    "gulp": "3.9.1",
+    "gulp-jasmine": "2.3.0",
+    "gulp-babel": "6.1.2",
+    "jasmine-core": "2.4.1",
+    "mock-promises": "0.6.0"
+  },
+
+  "peerDependencies": {
+    "bower": ">=1.7.0"
+  }
+}
