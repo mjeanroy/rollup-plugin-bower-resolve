@@ -42,11 +42,9 @@ gulp.task('test', () => {
     .pipe(jasmine());
 });
 
-gulp.task('build', () => {
+gulp.task('build', ['lint', 'test'], () => {
   return gulp.src(path.join(__dirname, 'src', '**/*.js'))
-    .pipe(babel({
-      presets: ["es2015"]
-    }))
+    .pipe(babel())
     .pipe(gulp.dest(path.join(__dirname, 'dist')));
 });
 
