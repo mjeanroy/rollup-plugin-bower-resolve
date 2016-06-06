@@ -55,6 +55,26 @@ module.exports = (options) => {
 
         const meta = dependency.pkgMeta;
         const main = meta.main;
+        if (!main) {
+          throw new Error(`Dependency ${importee} does not specify any main entry, please use 'override' options to specify main file`);
+        }
+
+        // If it is an array, find main file.
+        if (_.isArray(main)) {
+          const jsFiles = _.filter(main, f => {
+            const extension = path.extname(f);
+            return extension.toLowerCase() === '.js';
+          });
+
+          if (jsFiles.length === 0) {
+            throw new Error(`Dependency ${importee} does not specify any js main, please use 'override' options to specify main file`);
+          } else if (jsFiles.length > 1) {
+            throw new Error(`Dependency ${importee} specify multiple js main entries, please use 'override' options to specify main file`);
+          }
+
+          return path.join(dir, jsFiles[0]);
+        }
+
         return path.join(dir, main);
       });
     }
