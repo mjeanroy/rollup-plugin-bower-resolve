@@ -10,6 +10,12 @@
     "test": "gulp test"
   },
 
+  "keywords": [
+    "rollup",
+    "rollup-plugin",
+    "bower"
+  ],
+
   "dependencies": {
     "q": "1.4.1"
   },
