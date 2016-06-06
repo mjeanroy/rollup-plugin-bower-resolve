@@ -28,11 +28,18 @@ const bowerUtil = require('./bower-util');
 
 module.exports = (options) => {
   const opts = options || {};
+  const override = opts.override || {};
+  const skip = opts.skip ? (_.isArray(opts.skip) ? opts.skip : [opts.skip]) : [];
 
   return {
     resolveId: (importee, importer) => {
       // Entry module
       if (!importer) {
+        return null;
+      }
+
+      if (_.contains(skip, importee)) {
+        // Skip dependency
         return null;
       }
 
@@ -49,8 +56,8 @@ module.exports = (options) => {
         const dir = dependency.canonicalDir;
 
         // Allow path to be overridden
-        if (_.has(opts.override, importee)) {
-          return path.join(dir, opts.override[importee]);
+        if (_.has(override, importee)) {
+          return path.join(dir, override[importee]);
         }
 
         const meta = dependency.pkgMeta;

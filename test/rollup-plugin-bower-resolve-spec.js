@@ -180,7 +180,7 @@ describe('bowerResolve', () => {
       jquery: {
         canonicalDir: '/tmp/jquery',
         pkgMeta: {
-          main: './dist/jquery.js'
+          main: ['./dist/jquery.js']
         }
       }
     });
@@ -194,6 +194,16 @@ describe('bowerResolve', () => {
 
     expect(error).not.toHaveBeenCalled();
     expect(done).toHaveBeenCalledWith(null);
+  });
+
+  it('should return null with skipped dependency', () => {
+    const plugin = bowerResolve({
+      skip: ['underscore']
+    });
+
+    const result = plugin.resolveId('underscore', './app.js');
+
+    expect(result).toBeNull();
   });
 
   it('should return fail promise if dependency is not on dist', () => {
