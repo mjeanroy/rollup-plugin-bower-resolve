@@ -22,10 +22,13 @@
  * SOFTWARE.
  */
 
+const _ = require('underscore');
 const path = require('path');
 const bowerUtil = require('./bower-util');
 
-module.exports = () => {
+module.exports = (options) => {
+  const opts = options || {};
+
   return {
     resolveId: (importee, importer) => {
       // Entry module
@@ -34,18 +37,25 @@ module.exports = () => {
       }
 
       return bowerUtil.list().then(dependencies => {
-        const dependency = dependencies[importee];
-        if (!dependency) {
+        if (!_.has(dependencies, importee)) {
           return null;
         }
 
+        const dependency = dependencies[importee];
         if (dependency.missing) {
           throw new Error(`Dependency '${importee}' is missing, did you run 'bower install'?`);
         }
 
         const dir = dependency.canonicalDir;
+
+        // Allow path to be overridden
+        if (_.has(opts.override, importee)) {
+          return path.join(dir, opts.override[importee]);
+        }
+
         const meta = dependency.pkgMeta;
-        return path.join(dir, meta.main);
+        const main = meta.main;
+        return path.join(dir, main);
       });
     }
   };
