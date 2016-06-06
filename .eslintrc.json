@@ -1,0 +1,9 @@
+{
+  "extends": "google",
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "max-len": [2, 120, 2]
+  }
+}

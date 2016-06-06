@@ -73,7 +73,7 @@ describe('bower-util', () => {
           name: 'underscore',
           version: '1.8.3',
           main: 'underscore.js',
-          keywords: [ 'util', 'functional', 'server', 'client', 'browser' ],
+          keywords: ['util', 'functional', 'server', 'client', 'browser'],
           ignore: [
             'docs',
             'test',

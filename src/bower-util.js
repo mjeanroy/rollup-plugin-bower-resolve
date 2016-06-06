@@ -29,7 +29,7 @@ module.exports = {
   list: () => {
     const deferred = Q.defer();
 
-    bower.commands.list({ json: true })
+    bower.commands.list({json: true})
       .on('end', conf => {
         deferred.resolve(conf.dependencies);
       })
