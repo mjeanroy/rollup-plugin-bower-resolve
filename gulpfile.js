@@ -27,6 +27,10 @@ const gulp = require('gulp');
 const babel = require('gulp-babel');
 const jasmine = require('gulp-jasmine');
 const eslint = require('gulp-eslint');
+const gutil = require('gulp-util');
+const git = require('gulp-git');
+const bump = require('gulp-bump');
+const runSequence = require('run-sequence');
 
 gulp.task('lint', () => {
   const srcFiles = path.join(__dirname, 'src/**/*.js');
@@ -46,6 +50,31 @@ gulp.task('build', ['lint', 'test'], () => {
   return gulp.src(path.join(__dirname, 'src', '**/*.js'))
     .pipe(babel())
     .pipe(gulp.dest(path.join(__dirname, 'dist')));
+});
+
+gulp.task('commit', () => {
+  return gulp.src(__dirname)
+    .pipe(git.add())
+    .pipe(git.commit('release: bumped version number'));
+});
+
+gulp.task('tag', (done) => {
+  const pkg = fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8');
+  const version = JSON.parse(pkg).version;
+  git.tag(`v${version}`, `release: tag version ${version}`, done);
+});
+
+['major', 'minor', 'patch'].forEach(function(level) {
+  gulp.task(`bump:${level}`, () => {
+    return gulp.src(path.join(__dirname, 'package.json'))
+      .pipe(bump({type: level})
+      .on('error', gutil.log))
+      .pipe(gulp.dest(__dirname));
+  });
+
+  gulp.task('release:' + level, function() {
+    runSequence(`bump:${level}`, 'commit', 'tag');
+  });
 });
 
 gulp.task('default', ['build']);
