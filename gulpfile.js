@@ -22,6 +22,7 @@
  * SOFTWARE.
  */
 
+const fs = require('fs');
 const path = require('path');
 const gulp = require('gulp');
 const babel = require('gulp-babel');
