@@ -53,10 +53,19 @@ gulp.task('build', ['lint', 'test'], () => {
     .pipe(gulp.dest(path.join(__dirname, 'dist')));
 });
 
-gulp.task('commit', () => {
-  return gulp.src(__dirname)
-    .pipe(git.add())
-    .pipe(git.commit('release: bumped version number'));
+gulp.task('commit:pre', () => {
+  const dist = path.join(__dirname, 'dist');
+  const packageJson = path.join(__dirname, 'package.json');
+  return gulp.src([packageJson, dist])
+    .pipe(git.add({args: '-f'}))
+    .pipe(git.commit('release: release version'));
+});
+
+gulp.task('commit:post', () => {
+  const dist = path.join(__dirname, 'dist');
+  return gulp.src(dist)
+    .pipe(git.rm({args: '-r'}))
+    .pipe(git.commit('release: prepare next release'));
 });
 
 gulp.task('tag', (done) => {
@@ -65,7 +74,7 @@ gulp.task('tag', (done) => {
   git.tag(`v${version}`, `release: tag version ${version}`, done);
 });
 
-['major', 'minor', 'patch'].forEach(function(level) {
+['major', 'minor', 'patch'].forEach(level => {
   gulp.task(`bump:${level}`, () => {
     return gulp.src(path.join(__dirname, 'package.json'))
       .pipe(bump({type: level})
@@ -73,8 +82,8 @@ gulp.task('tag', (done) => {
       .pipe(gulp.dest(__dirname));
   });
 
-  gulp.task('release:' + level, function() {
-    runSequence(`bump:${level}`, 'commit', 'tag');
+  gulp.task('release:' + level, ['build'], () => {
+    runSequence(`bump:${level}`, 'commit:pre', 'tag', 'commit:post');
   });
 });
 
