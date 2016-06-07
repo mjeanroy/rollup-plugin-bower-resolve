@@ -272,7 +272,10 @@ describe('bowerResolve', () => {
     mockPromises.tick();
     mockPromises.tick();
 
-    expect(error).toHaveBeenCalledWith(new Error(`Dependency underscore does not specify any main entry, please use 'override' options to specify main file`));
+    expect(error).toHaveBeenCalledWith(new Error(
+      `Dependency underscore does not specify any main entry, please use 'override' options to specify main file`
+    ));
+
     expect(done).not.toHaveBeenCalled();
   });
 
@@ -309,7 +312,10 @@ describe('bowerResolve', () => {
     mockPromises.tick();
     mockPromises.tick();
 
-    expect(error).toHaveBeenCalledWith(new Error(`Dependency bootstrap does not specify any js main, please use 'override' options to specify main file`));
+    expect(error).toHaveBeenCalledWith(new Error(
+      `Dependency bootstrap does not specify any js main, please use 'override' options to specify main file`
+    ));
+
     expect(done).not.toHaveBeenCalled();
   });
 
@@ -346,7 +352,10 @@ describe('bowerResolve', () => {
     mockPromises.tick();
     mockPromises.tick();
 
-    expect(error).toHaveBeenCalledWith(new Error(`Dependency underscore specify multiple js main entries, please use 'override' options to specify main file`));
+    expect(error).toHaveBeenCalledWith(new Error(
+      `Dependency underscore specify multiple js main entries, please use 'override' options to specify main file`
+    ));
+
     expect(done).not.toHaveBeenCalled();
   });
 });

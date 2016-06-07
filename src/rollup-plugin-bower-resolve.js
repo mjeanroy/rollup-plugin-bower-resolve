@@ -25,11 +25,12 @@
 const _ = require('underscore');
 const path = require('path');
 const bowerUtil = require('./bower-util');
+const ensureArray = val => _.isArray(val) ? val : [val];
 
-module.exports = (options) => {
+module.exports = options => {
   const opts = options || {};
   const override = opts.override || {};
-  const skip = opts.skip ? (_.isArray(opts.skip) ? opts.skip : [opts.skip]) : [];
+  const skip = opts.skip ? ensureArray(opts.skip) : [];
 
   return {
     resolveId: (importee, importer) => {
@@ -63,7 +64,9 @@ module.exports = (options) => {
         const meta = dependency.pkgMeta;
         const main = meta.main;
         if (!main) {
-          throw new Error(`Dependency ${importee} does not specify any main entry, please use 'override' options to specify main file`);
+          throw new Error(
+            `Dependency ${importee} does not specify any main entry, please use 'override' options to specify main file`
+          );
         }
 
         // If it is an array, find main file.
@@ -74,9 +77,13 @@ module.exports = (options) => {
           });
 
           if (jsFiles.length === 0) {
-            throw new Error(`Dependency ${importee} does not specify any js main, please use 'override' options to specify main file`);
+            throw new Error(
+              `Dependency ${importee} does not specify any js main, please use 'override' options to specify main file`
+            );
           } else if (jsFiles.length > 1) {
-            throw new Error(`Dependency ${importee} specify multiple js main entries, please use 'override' options to specify main file`);
+            throw new Error(
+              `Dependency ${importee} specify multiple js main entries, please use 'override' options to specify main file`
+            );
           }
 
           return path.join(dir, jsFiles[0]);
