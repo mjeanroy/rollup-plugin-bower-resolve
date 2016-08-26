@@ -31,6 +31,7 @@ module.exports = options => {
   const opts = options || {};
   const override = opts.override || {};
   const skip = opts.skip ? ensureArray(opts.skip) : [];
+  const list = bowerUtil.list();
 
   return {
     resolveId: (importee, importer) => {
@@ -44,7 +45,7 @@ module.exports = options => {
         return null;
       }
 
-      return bowerUtil.list().then(dependencies => {
+      return list.then(dependencies => {
         if (!_.has(dependencies, importee)) {
           return null;
         }
