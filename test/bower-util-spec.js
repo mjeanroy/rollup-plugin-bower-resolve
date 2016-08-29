@@ -46,7 +46,8 @@ describe('bower-util', () => {
 
     expect(promise).toBeDefined();
     expect(bower.commands.list).toHaveBeenCalledWith({
-      json: true
+      json: true,
+      offline: true
     });
 
     expect(response.on).toHaveBeenCalledWith('end', jasmine.any(Function));
@@ -148,7 +149,8 @@ describe('bower-util', () => {
 
     expect(promise).toBeDefined();
     expect(bower.commands.list).toHaveBeenCalledWith({
-      json: true
+      json: true,
+      offline: true
     });
 
     expect(response.on).toHaveBeenCalledWith('end', jasmine.any(Function));
