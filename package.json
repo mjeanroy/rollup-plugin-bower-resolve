@@ -42,7 +42,7 @@
     "gulp-babel": "6.1.2",
     "gulp-eslint": "3.0.1",
     "jasmine-core": "2.4.1",
-    "mock-promises": "0.6.0",
+    "mock-promises": "0.6.1",
     "gulp-bump": "2.1.0",
     "gulp-git": "1.7.2",
     "run-sequence": "1.2.2",
