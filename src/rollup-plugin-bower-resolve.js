@@ -25,16 +25,16 @@
 const _ = require('underscore');
 const path = require('path');
 const bowerUtil = require('./bower-util');
-const ensureArray = val => _.isArray(val) ? val : [val];
+const ensureArray = (val) => _.isArray(val) ? val : [val];
 
-module.exports = options => {
+module.exports = (options) => {
   const opts = options || {};
   const override = opts.override || {};
   const skip = opts.skip ? ensureArray(opts.skip) : [];
   const list = bowerUtil.list();
 
   return {
-    resolveId: (importee, importer) => {
+    resolveId(importee, importer) {
       // Entry module
       if (!importer) {
         return null;
@@ -45,7 +45,7 @@ module.exports = options => {
         return null;
       }
 
-      return list.then(dependencies => {
+      return list.then((dependencies) => {
         if (!_.has(dependencies, importee)) {
           return null;
         }
@@ -72,7 +72,7 @@ module.exports = options => {
 
         // If it is an array, find main file.
         if (_.isArray(main)) {
-          const jsFiles = _.filter(main, f => {
+          const jsFiles = _.filter(main, (f) => {
             const extension = path.extname(f);
             return extension.toLowerCase() === '.js';
           });
@@ -92,6 +92,6 @@ module.exports = options => {
 
         return path.join(dir, main);
       });
-    }
+    },
   };
 };

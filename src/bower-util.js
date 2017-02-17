@@ -26,17 +26,17 @@ const bower = require('bower');
 const Q = require('q');
 
 module.exports = {
-  list: () => {
+  list() {
     const deferred = Q.defer();
 
     bower.commands.list({json: true, offline: true})
-      .on('end', conf => {
+      .on('end', (conf) => {
         deferred.resolve(conf.dependencies);
       })
-      .on('error', error => {
+      .on('error', (error) => {
         deferred.reject(error);
       });
 
     return deferred.promise;
-  }
+  },
 };

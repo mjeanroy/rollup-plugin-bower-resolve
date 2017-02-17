@@ -47,7 +47,7 @@ describe('bower-util', () => {
     expect(promise).toBeDefined();
     expect(bower.commands.list).toHaveBeenCalledWith({
       json: true,
-      offline: true
+      offline: true,
     });
 
     expect(response.on).toHaveBeenCalledWith('end', jasmine.any(Function));
@@ -67,7 +67,7 @@ describe('bower-util', () => {
         endpoint: {
           name: 'underscore',
           source: 'underscore',
-          target: '1.8.3'
+          target: '1.8.3',
         },
         canonicalDir: '/Users/mickael/dev/test-rollup-plugin-bower-resolve/vendors/underscore',
         pkgMeta: {
@@ -86,34 +86,34 @@ describe('bower-util', () => {
             '.*',
             'component.json',
             'package.json',
-            'karma.*'
+            'karma.*',
           ],
           homepage: 'https://github.com/jashkenas/underscore',
           _release: '1.8.3',
           _resolution: {
             type: 'version',
             tag: '1.8.3',
-            commit: 'e4743ab712b8ab42ad4ccb48b155034d02394e4d'
+            commit: 'e4743ab712b8ab42ad4ccb48b155034d02394e4d',
           },
           _source: 'https://github.com/jashkenas/underscore.git',
           _target: '1.8.3',
-          _originalSource: 'underscore'
+          _originalSource: 'underscore',
         },
         missing: true,
         nrDependants: 1,
         versions: [],
         update: {
           target: '1.8.3',
-          latest: '1.8.3'
-        }
-      }
+          latest: '1.8.3',
+        },
+      },
     };
 
     response.on.calls.first().args[1]({
       endpoint: {
         name: 'rollup-plugin-bower-resolve',
         source: '/Users/mickael/dev/rollup-plugin-bower-resolve',
-        target: '*'
+        target: '*',
       },
 
       canonicalDir: '/Users/mickael/dev/rollup-plugin-bower-resolve',
@@ -124,12 +124,12 @@ describe('bower-util', () => {
         authors: 'mjeanroy <mickael.jeanroy@gmail.com>',
         license: 'MIT',
         dependencies: {},
-        devDependencies: {}
+        devDependencies: {},
       },
 
       dependencies: dependencies,
       nrDependants: 0,
-      versions: []
+      versions: [],
     });
 
     expect(onEnd).not.toHaveBeenCalled();
@@ -150,7 +150,7 @@ describe('bower-util', () => {
     expect(promise).toBeDefined();
     expect(bower.commands.list).toHaveBeenCalledWith({
       json: true,
-      offline: true
+      offline: true,
     });
 
     expect(response.on).toHaveBeenCalledWith('end', jasmine.any(Function));

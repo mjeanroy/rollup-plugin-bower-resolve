@@ -63,9 +63,9 @@ describe('bowerResolve', () => {
       underscore: {
         canonicalDir: '/tmp/underscore',
         pkgMeta: {
-          main: './underscore.js'
-        }
-      }
+          main: './underscore.js',
+        },
+      },
     });
 
     expect(done).not.toHaveBeenCalled();
@@ -87,8 +87,8 @@ describe('bowerResolve', () => {
 
     const plugin = bowerResolve({
       override: {
-        underscore: './dist/underscore.js'
-      }
+        underscore: './dist/underscore.js',
+      },
     });
 
     const result = plugin.resolveId('underscore', './app.js');
@@ -105,9 +105,9 @@ describe('bowerResolve', () => {
       underscore: {
         canonicalDir: '/tmp/underscore',
         pkgMeta: {
-          main: './underscore.js'
-        }
-      }
+          main: './underscore.js',
+        },
+      },
     });
 
     expect(done).not.toHaveBeenCalled();
@@ -143,9 +143,9 @@ describe('bowerResolve', () => {
       underscore: {
         canonicalDir: '/tmp/underscore',
         pkgMeta: {
-          main: ['./underscore.js']
-        }
-      }
+          main: ['./underscore.js'],
+        },
+      },
     });
 
     expect(done).not.toHaveBeenCalled();
@@ -180,9 +180,9 @@ describe('bowerResolve', () => {
       jquery: {
         canonicalDir: '/tmp/jquery',
         pkgMeta: {
-          main: ['./dist/jquery.js']
-        }
-      }
+          main: ['./dist/jquery.js'],
+        },
+      },
     });
 
     expect(done).not.toHaveBeenCalled();
@@ -198,7 +198,7 @@ describe('bowerResolve', () => {
 
   it('should return null with skipped dependency', () => {
     const plugin = bowerResolve({
-      skip: ['underscore']
+      skip: ['underscore'],
     });
 
     const result = plugin.resolveId('underscore', './app.js');
@@ -224,8 +224,8 @@ describe('bowerResolve', () => {
 
     deferred.resolve({
       underscore: {
-        missing: true
-      }
+        missing: true,
+      },
     });
 
     expect(done).not.toHaveBeenCalled();
@@ -260,8 +260,8 @@ describe('bowerResolve', () => {
       underscore: {
         canonicalDir: '/tmp/underscore',
         pkgMeta: {
-        }
-      }
+        },
+      },
     });
 
     expect(done).not.toHaveBeenCalled();
@@ -299,9 +299,9 @@ describe('bowerResolve', () => {
       bootstrap: {
         canonicalDir: '/tmp/bootstrap',
         pkgMeta: {
-          main: ['bootstrap.css']
-        }
-      }
+          main: ['bootstrap.css'],
+        },
+      },
     });
 
     expect(done).not.toHaveBeenCalled();
@@ -339,9 +339,9 @@ describe('bowerResolve', () => {
       underscore: {
         canonicalDir: '/tmp/underscore',
         pkgMeta: {
-          main: ['underscore.js', 'dist/underscore.js']
-        }
-      }
+          main: ['underscore.js', 'dist/underscore.js'],
+        },
+      },
     });
 
     expect(done).not.toHaveBeenCalled();
