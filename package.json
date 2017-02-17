@@ -44,7 +44,7 @@
     "jasmine-core": "2.5.2",
     "mock-promises": "0.8.2",
     "gulp-bump": "2.4.0",
-    "gulp-git": "1.11.2",
+    "gulp-git": "2.0.0",
     "run-sequence": "1.2.2",
     "gulp-util": "3.0.8",
 
