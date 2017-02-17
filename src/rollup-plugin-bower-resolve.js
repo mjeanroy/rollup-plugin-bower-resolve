@@ -30,6 +30,7 @@ const ensureArray = (val) => _.isArray(val) ? val : [val];
 module.exports = (options) => {
   const opts = options || {};
   const useModule = opts.module !== false;
+  const useJsNext = opts.jsnext !== false;
   const override = opts.override || {};
   const skip = opts.skip ? ensureArray(opts.skip) : [];
   const list = bowerUtil.list();
@@ -68,6 +69,8 @@ module.exports = (options) => {
         let main;
         if (useModule && meta.module) {
           main = meta.module;
+        } else if (useJsNext && meta['jsnext:main']) {
+          main = meta['jsnext:main'];
         } else {
           main = meta.main;
         }

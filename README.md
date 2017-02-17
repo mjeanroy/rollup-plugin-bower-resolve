@@ -24,6 +24,12 @@ rollup({
       // See: https://github.com/rollup/rollup/wiki/pkg.module
       module: true,
 
+      // Use "jsnext:main" field for ES6 module if possible, default is `true`.
+      // This field should not be used, use `module` entry instead, but it is `true`
+      // by default because of legacy packages.
+      // See: https://github.com/rollup/rollup/wiki/jsnext:main
+      jsnext: true,
+
       // if there's something your bundle requires that you DON'T
       // want to include, add it to 'skip'
       skip: [ 'some-big-dependency' ],  // Default: []
@@ -61,6 +67,7 @@ rollup({
 
 - 0.2.0
   - Add `module` option
+  - Add `jsnext` option
 
 ## License
 

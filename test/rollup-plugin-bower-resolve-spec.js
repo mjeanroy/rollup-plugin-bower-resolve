@@ -242,6 +242,170 @@ describe('bowerResolve', () => {
     expect(done).toHaveBeenCalledWith('/tmp/underscore/underscore.js');
   });
 
+  it('should return a promise of bower dependency path with jsnext entry if enabled', () => {
+    const deferred = Q.defer();
+    const promise = deferred.promise;
+
+    spyOn(bowerUtil, 'list').and.returnValue(promise);
+
+    const plugin = bowerResolve({
+      jsnext: true,
+    });
+
+    const result = plugin.resolveId('underscore', './app.js');
+
+    expect(bowerUtil.list).toHaveBeenCalled();
+    expect(result).toBeDefined();
+
+    const done = jasmine.createSpy('done');
+    const error = jasmine.createSpy('error');
+    result.then(done);
+    result.catch(error);
+
+    deferred.resolve({
+      underscore: {
+        canonicalDir: '/tmp/underscore',
+        pkgMeta: {
+          'jsnext:main': './underscore.m.js',
+          'main': './underscore.js',
+        },
+      },
+    });
+
+    expect(done).not.toHaveBeenCalled();
+    expect(error).not.toHaveBeenCalled();
+
+    // Resolve previous two promises.
+    mockPromises.tick();
+    mockPromises.tick();
+
+    expect(error).not.toHaveBeenCalled();
+    expect(done).toHaveBeenCalledWith('/tmp/underscore/underscore.m.js');
+  });
+
+  it('should return a promise of bower dependency path without jsnext entry if disabled', () => {
+    const deferred = Q.defer();
+    const promise = deferred.promise;
+
+    spyOn(bowerUtil, 'list').and.returnValue(promise);
+
+    const plugin = bowerResolve({
+      jsnext: false,
+    });
+
+    const result = plugin.resolveId('underscore', './app.js');
+
+    expect(bowerUtil.list).toHaveBeenCalled();
+    expect(result).toBeDefined();
+
+    const done = jasmine.createSpy('done');
+    const error = jasmine.createSpy('error');
+    result.then(done);
+    result.catch(error);
+
+    deferred.resolve({
+      underscore: {
+        canonicalDir: '/tmp/underscore',
+        pkgMeta: {
+          'jsnext:main': './underscore.m.js',
+          'main': './underscore.js',
+        },
+      },
+    });
+
+    expect(done).not.toHaveBeenCalled();
+    expect(error).not.toHaveBeenCalled();
+
+    // Resolve previous two promises.
+    mockPromises.tick();
+    mockPromises.tick();
+
+    expect(error).not.toHaveBeenCalled();
+    expect(done).toHaveBeenCalledWith('/tmp/underscore/underscore.js');
+  });
+
+  it('should return a promise of bower dependency path with jsnext entry by default', () => {
+    const deferred = Q.defer();
+    const promise = deferred.promise;
+
+    spyOn(bowerUtil, 'list').and.returnValue(promise);
+
+    const plugin = bowerResolve();
+
+    const result = plugin.resolveId('underscore', './app.js');
+
+    expect(bowerUtil.list).toHaveBeenCalled();
+    expect(result).toBeDefined();
+
+    const done = jasmine.createSpy('done');
+    const error = jasmine.createSpy('error');
+    result.then(done);
+    result.catch(error);
+
+    deferred.resolve({
+      underscore: {
+        canonicalDir: '/tmp/underscore',
+        pkgMeta: {
+          'jsnext:main': './underscore.m.js',
+          'main': './underscore.js',
+        },
+      },
+    });
+
+    expect(done).not.toHaveBeenCalled();
+    expect(error).not.toHaveBeenCalled();
+
+    // Resolve previous two promises.
+    mockPromises.tick();
+    mockPromises.tick();
+
+    expect(error).not.toHaveBeenCalled();
+    expect(done).toHaveBeenCalledWith('/tmp/underscore/underscore.m.js');
+  });
+
+  it('should return a promise of bower dependency path with module entry by default instead of jsnext', () => {
+    const deferred = Q.defer();
+    const promise = deferred.promise;
+
+    spyOn(bowerUtil, 'list').and.returnValue(promise);
+
+    const plugin = bowerResolve({
+      module: true,
+      jsnext: true,
+    });
+
+    const result = plugin.resolveId('underscore', './app.js');
+
+    expect(bowerUtil.list).toHaveBeenCalled();
+    expect(result).toBeDefined();
+
+    const done = jasmine.createSpy('done');
+    const error = jasmine.createSpy('error');
+    result.then(done);
+    result.catch(error);
+
+    deferred.resolve({
+      underscore: {
+        canonicalDir: '/tmp/underscore',
+        pkgMeta: {
+          'module': './underscore.module.js',
+          'jsnext:main': './underscore.jsnext.js',
+          'main': './underscore.js',
+        },
+      },
+    });
+
+    expect(done).not.toHaveBeenCalled();
+    expect(error).not.toHaveBeenCalled();
+
+    // Resolve previous two promises.
+    mockPromises.tick();
+    mockPromises.tick();
+
+    expect(error).not.toHaveBeenCalled();
+    expect(done).toHaveBeenCalledWith('/tmp/underscore/underscore.module.js');
+  });
+
   it('should return a promise of bower dependency path with overridden main', () => {
     const deferred = Q.defer();
     const promise = deferred.promise;
