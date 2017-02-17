@@ -65,9 +65,11 @@ rollup({
 
 ## Changelog
 
-- 0.2.0
+- 0.3.0
   - Add `module` option
   - Add `jsnext` option
+- 0.2.0
+  - List dependencies once
 
 ## License
 
