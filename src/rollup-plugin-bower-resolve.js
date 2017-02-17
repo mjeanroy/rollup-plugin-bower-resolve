@@ -29,6 +29,7 @@ const ensureArray = (val) => _.isArray(val) ? val : [val];
 
 module.exports = (options) => {
   const opts = options || {};
+  const useModule = opts.module !== false;
   const override = opts.override || {};
   const skip = opts.skip ? ensureArray(opts.skip) : [];
   const list = bowerUtil.list();
@@ -63,7 +64,14 @@ module.exports = (options) => {
         }
 
         const meta = dependency.pkgMeta;
-        const main = meta.main;
+
+        let main;
+        if (useModule && meta.module) {
+          main = meta.module;
+        } else {
+          main = meta.main;
+        }
+
         if (!main) {
           throw new Error(
             `Dependency ${importee} does not specify any main entry, please use 'override' options to specify main file`

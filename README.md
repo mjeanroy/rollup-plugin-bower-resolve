@@ -20,6 +20,10 @@ rollup({
   entry: 'main.js',
   plugins: [
     bowerResolve({
+      // Use "module" field for ES6 module if possible, default is `true`.
+      // See: https://github.com/rollup/rollup/wiki/pkg.module
+      module: true,
+
       // if there's something your bundle requires that you DON'T
       // want to include, add it to 'skip'
       skip: [ 'some-big-dependency' ],  // Default: []
@@ -52,6 +56,11 @@ rollup({
   format: 'iife'
 })).catch(err => console.log(err.stack));
 ```
+
+## Changelog
+
+- 0.2.0
+  - Add `module` option
 
 ## License
 
