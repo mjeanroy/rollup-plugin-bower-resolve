@@ -74,7 +74,7 @@ gulp.task('tag', (done) => {
   git.tag(`v${version}`, `release: tag version ${version}`, done);
 });
 
-['major', 'minor', 'patch'].forEach(level => {
+['major', 'minor', 'patch'].forEach((level) => {
   gulp.task(`bump:${level}`, () => {
     return gulp.src(path.join(__dirname, 'package.json'))
       .pipe(bump({type: level})
