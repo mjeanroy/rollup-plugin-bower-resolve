@@ -1,8 +1,14 @@
 # NPM modules
 node_modules/
 
-# Do not send test directory
-test/
+# Do not send dev resources
+/test/
+/src/
+/gulpfile.js
+/.nvmrc
+/.eslintrc
+/.babelrc
+/.travis.yml
 
 # Logs
 *.log
