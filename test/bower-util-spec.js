@@ -24,7 +24,7 @@
 
 const Q = require('q');
 const bower = require('bower');
-const bowerUtil = require('../src/bower-util');
+const bowerUtil = require('../dist/bower-util');
 const mockPromises = require('mock-promises');
 
 describe('bower-util', () => {

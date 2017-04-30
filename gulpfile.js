@@ -32,25 +32,39 @@ const gutil = require('gulp-util');
 const git = require('gulp-git');
 const bump = require('gulp-bump');
 const runSequence = require('run-sequence');
+const del = require('del');
+
+const ROOT = __dirname;
+const SRC = path.join(ROOT, 'src');
+const TEST = path.join(ROOT, 'test');
+const DIST = path.join(ROOT, 'dist');
+
+gulp.task('clean', () => {
+  return del(DIST);
+});
 
 gulp.task('lint', () => {
-  const srcFiles = path.join(__dirname, 'src/**/*.js');
-  const testFiles = path.join(__dirname, 'test/**/*.js');
-  return gulp.src([srcFiles, testFiles])
+  const src = [
+    path.join(SRC, '**', '*.js'),
+    path.join(TEST, '**', '*.js'),
+    path.join(ROOT, '*.js'),
+  ];
+
+  return gulp.src(src)
         .pipe(eslint())
         .pipe(eslint.format())
         .pipe(eslint.failAfterError());
 });
 
-gulp.task('test', () => {
-  return gulp.src(path.join(__dirname, 'test', '**/*-spec.js'))
-    .pipe(jasmine());
+gulp.task('test', ['build'], () => {
+  const specs = path.join(TEST, '**', '*-spec.js');
+  return gulp.src(specs).pipe(jasmine());
 });
 
-gulp.task('build', ['lint', 'test'], () => {
+gulp.task('build', ['lint', 'clean'], () => {
   return gulp.src(path.join(__dirname, 'src', '**/*.js'))
     .pipe(babel())
-    .pipe(gulp.dest(path.join(__dirname, 'dist')));
+    .pipe(gulp.dest(DIST));
 });
 
 gulp.task('commit:pre', () => {

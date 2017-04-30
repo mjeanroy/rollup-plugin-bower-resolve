@@ -24,8 +24,8 @@
 
 const Q = require('q');
 const mockPromises = require('mock-promises');
-const bowerUtil = require('../src/bower-util');
-const bowerResolve = require('../src/rollup-plugin-bower-resolve');
+const bowerUtil = require('../dist/bower-util');
+const bowerResolve = require('../dist/rollup-plugin-bower-resolve');
 
 describe('bowerResolve', () => {
   beforeEach(() => {
