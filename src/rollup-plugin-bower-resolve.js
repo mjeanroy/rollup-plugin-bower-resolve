@@ -26,7 +26,7 @@
 
 const _ = require('underscore');
 const path = require('path');
-const bowerUtil = require('./bower-util');
+const bower = require('./bower-util');
 const ensureArray = (val) => _.isArray(val) ? val : [val];
 
 module.exports = (options) => {
@@ -35,7 +35,8 @@ module.exports = (options) => {
   const useJsNext = opts.jsnext !== false;
   const override = opts.override || {};
   const skip = opts.skip ? ensureArray(opts.skip) : [];
-  const list = bowerUtil.list();
+  const offline = opts.offline !== false;
+  const list = bower.list(offline);
 
   return {
     resolveId(importee, importer) {

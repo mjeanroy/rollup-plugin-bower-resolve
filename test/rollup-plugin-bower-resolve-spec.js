@@ -24,7 +24,7 @@
 
 const Q = require('q');
 const mockPromises = require('mock-promises');
-const bowerUtil = require('../dist/bower-util');
+const bower = require('../dist/bower-util');
 const bowerResolve = require('../dist/rollup-plugin-bower-resolve');
 
 describe('bowerResolve', () => {
@@ -46,12 +46,52 @@ describe('bowerResolve', () => {
     const deferred = Q.defer();
     const promise = deferred.promise;
 
-    spyOn(bowerUtil, 'list').and.returnValue(promise);
+    spyOn(bower, 'list').and.returnValue(promise);
 
     const plugin = bowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bowerUtil.list).toHaveBeenCalled();
+    expect(bower.list).toHaveBeenCalledWith(true);
+    expect(result).toBeDefined();
+
+    const done = jasmine.createSpy('done');
+    const error = jasmine.createSpy('error');
+    result.then(done);
+    result.catch(error);
+
+    deferred.resolve({
+      underscore: {
+        canonicalDir: '/tmp/underscore',
+        pkgMeta: {
+          main: './underscore.js',
+        },
+      },
+    });
+
+    expect(done).not.toHaveBeenCalled();
+    expect(error).not.toHaveBeenCalled();
+
+    // Resolve previous two promises.
+    mockPromises.tick();
+    mockPromises.tick();
+
+    expect(error).not.toHaveBeenCalled();
+    expect(done).toHaveBeenCalledWith('/tmp/underscore/underscore.js');
+  });
+
+  it('should return a promise using bower online', () => {
+    const deferred = Q.defer();
+    const promise = deferred.promise;
+
+    spyOn(bower, 'list').and.returnValue(promise);
+
+    const plugin = bowerResolve({
+      offline: false,
+    });
+
+    const result = plugin.resolveId('underscore', './app.js');
+
+    expect(bower.list).toHaveBeenCalledWith(false);
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -83,7 +123,7 @@ describe('bowerResolve', () => {
     const deferred = Q.defer();
     const promise = deferred.promise;
 
-    spyOn(bowerUtil, 'list').and.returnValue(promise);
+    spyOn(bower, 'list').and.returnValue(promise);
 
     const plugin = bowerResolve({
       override: {
@@ -93,7 +133,7 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bowerUtil.list).toHaveBeenCalled();
+    expect(bower.list).toHaveBeenCalledWith(true);
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -125,13 +165,13 @@ describe('bowerResolve', () => {
     const deferred = Q.defer();
     const promise = deferred.promise;
 
-    spyOn(bowerUtil, 'list').and.returnValue(promise);
+    spyOn(bower, 'list').and.returnValue(promise);
 
     const plugin = bowerResolve();
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bowerUtil.list).toHaveBeenCalled();
+    expect(bower.list).toHaveBeenCalledWith(true);
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -164,7 +204,7 @@ describe('bowerResolve', () => {
     const deferred = Q.defer();
     const promise = deferred.promise;
 
-    spyOn(bowerUtil, 'list').and.returnValue(promise);
+    spyOn(bower, 'list').and.returnValue(promise);
 
     const plugin = bowerResolve({
       module: true,
@@ -172,7 +212,7 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bowerUtil.list).toHaveBeenCalled();
+    expect(bower.list).toHaveBeenCalledWith(true);
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -205,7 +245,7 @@ describe('bowerResolve', () => {
     const deferred = Q.defer();
     const promise = deferred.promise;
 
-    spyOn(bowerUtil, 'list').and.returnValue(promise);
+    spyOn(bower, 'list').and.returnValue(promise);
 
     const plugin = bowerResolve({
       module: false,
@@ -213,7 +253,7 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bowerUtil.list).toHaveBeenCalled();
+    expect(bower.list).toHaveBeenCalledWith(true);
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -246,7 +286,7 @@ describe('bowerResolve', () => {
     const deferred = Q.defer();
     const promise = deferred.promise;
 
-    spyOn(bowerUtil, 'list').and.returnValue(promise);
+    spyOn(bower, 'list').and.returnValue(promise);
 
     const plugin = bowerResolve({
       jsnext: true,
@@ -254,7 +294,7 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bowerUtil.list).toHaveBeenCalled();
+    expect(bower.list).toHaveBeenCalledWith(true);
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -287,7 +327,7 @@ describe('bowerResolve', () => {
     const deferred = Q.defer();
     const promise = deferred.promise;
 
-    spyOn(bowerUtil, 'list').and.returnValue(promise);
+    spyOn(bower, 'list').and.returnValue(promise);
 
     const plugin = bowerResolve({
       jsnext: false,
@@ -295,7 +335,7 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bowerUtil.list).toHaveBeenCalled();
+    expect(bower.list).toHaveBeenCalledWith(true);
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -328,13 +368,13 @@ describe('bowerResolve', () => {
     const deferred = Q.defer();
     const promise = deferred.promise;
 
-    spyOn(bowerUtil, 'list').and.returnValue(promise);
+    spyOn(bower, 'list').and.returnValue(promise);
 
     const plugin = bowerResolve();
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bowerUtil.list).toHaveBeenCalled();
+    expect(bower.list).toHaveBeenCalledWith(true);
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -367,7 +407,7 @@ describe('bowerResolve', () => {
     const deferred = Q.defer();
     const promise = deferred.promise;
 
-    spyOn(bowerUtil, 'list').and.returnValue(promise);
+    spyOn(bower, 'list').and.returnValue(promise);
 
     const plugin = bowerResolve({
       module: true,
@@ -376,7 +416,7 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bowerUtil.list).toHaveBeenCalled();
+    expect(bower.list).toHaveBeenCalledWith(true);
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -410,13 +450,13 @@ describe('bowerResolve', () => {
     const deferred = Q.defer();
     const promise = deferred.promise;
 
-    spyOn(bowerUtil, 'list').and.returnValue(promise);
+    spyOn(bower, 'list').and.returnValue(promise);
 
     const plugin = bowerResolve();
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bowerUtil.list).toHaveBeenCalled();
+    expect(bower.list).toHaveBeenCalledWith(true);
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -448,12 +488,12 @@ describe('bowerResolve', () => {
     const deferred = Q.defer();
     const promise = deferred.promise;
 
-    spyOn(bowerUtil, 'list').and.returnValue(promise);
+    spyOn(bower, 'list').and.returnValue(promise);
 
     const plugin = bowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bowerUtil.list).toHaveBeenCalled();
+    expect(bower.list).toHaveBeenCalledWith(true);
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -495,12 +535,12 @@ describe('bowerResolve', () => {
     const deferred = Q.defer();
     const promise = deferred.promise;
 
-    spyOn(bowerUtil, 'list').and.returnValue(promise);
+    spyOn(bower, 'list').and.returnValue(promise);
 
     const plugin = bowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bowerUtil.list).toHaveBeenCalled();
+    expect(bower.list).toHaveBeenCalledWith(true);
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -529,12 +569,12 @@ describe('bowerResolve', () => {
     const deferred = Q.defer();
     const promise = deferred.promise;
 
-    spyOn(bowerUtil, 'list').and.returnValue(promise);
+    spyOn(bower, 'list').and.returnValue(promise);
 
     const plugin = bowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bowerUtil.list).toHaveBeenCalled();
+    expect(bower.list).toHaveBeenCalledWith(true);
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -568,12 +608,12 @@ describe('bowerResolve', () => {
     const deferred = Q.defer();
     const promise = deferred.promise;
 
-    spyOn(bowerUtil, 'list').and.returnValue(promise);
+    spyOn(bower, 'list').and.returnValue(promise);
 
     const plugin = bowerResolve();
     const result = plugin.resolveId('bootstrap', './app.js');
 
-    expect(bowerUtil.list).toHaveBeenCalled();
+    expect(bower.list).toHaveBeenCalledWith(true);
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -608,12 +648,12 @@ describe('bowerResolve', () => {
     const deferred = Q.defer();
     const promise = deferred.promise;
 
-    spyOn(bowerUtil, 'list').and.returnValue(promise);
+    spyOn(bower, 'list').and.returnValue(promise);
 
     const plugin = bowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bowerUtil.list).toHaveBeenCalled();
+    expect(bower.list).toHaveBeenCalledWith(true);
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');

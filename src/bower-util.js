@@ -28,10 +28,14 @@ const bower = require('bower');
 const Q = require('q');
 
 module.exports = {
-  list() {
+  list(offline = true) {
     const deferred = Q.defer();
+    const config = {
+      json: true,
+      offline,
+    };
 
-    bower.commands.list({json: true, offline: true})
+    bower.commands.list(undefined, config)
       .on('end', (conf) => {
         deferred.resolve(conf.dependencies);
       })

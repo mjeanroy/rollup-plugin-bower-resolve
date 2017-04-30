@@ -45,7 +45,7 @@ describe('bower-util', () => {
     const promise = bowerUtil.list();
 
     expect(promise).toBeDefined();
-    expect(bower.commands.list).toHaveBeenCalledWith({
+    expect(bower.commands.list).toHaveBeenCalledWith(undefined, {
       json: true,
       offline: true,
     });
@@ -148,7 +148,7 @@ describe('bower-util', () => {
     const promise = bowerUtil.list();
 
     expect(promise).toBeDefined();
-    expect(bower.commands.list).toHaveBeenCalledWith({
+    expect(bower.commands.list).toHaveBeenCalledWith(undefined, {
       json: true,
       offline: true,
     });
