@@ -9,7 +9,7 @@
     "build": "gulp build",
     "test": "gulp test",
     "lint": "gulp lint",
-    "release": "gulp release:minor",
+    "release": "gulp release",
     "release:patch": "gulp release:patch",
     "release:minor": "gulp release:minor",
     "release:major": "gulp release:major"

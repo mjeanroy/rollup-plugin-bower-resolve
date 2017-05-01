@@ -22,7 +22,6 @@
  * SOFTWARE.
  */
 
-const fs = require('fs');
 const path = require('path');
 const gulp = require('gulp');
 const babel = require('gulp-babel');
@@ -35,6 +34,7 @@ const runSequence = require('run-sequence');
 const del = require('del');
 
 const ROOT = __dirname;
+const PKG_JSON = path.join(ROOT, 'package.json');
 const SRC = path.join(ROOT, 'src');
 const TEST = path.join(ROOT, 'test');
 const DIST = path.join(ROOT, 'dist');
@@ -62,43 +62,41 @@ gulp.task('test', ['build'], () => {
 });
 
 gulp.task('build', ['lint', 'clean'], () => {
-  return gulp.src(path.join(__dirname, 'src', '**/*.js'))
+  return gulp.src(path.join(SRC, '**', '*.js'))
     .pipe(babel())
     .pipe(gulp.dest(DIST));
 });
 
 gulp.task('pretag', () => {
-  const dist = path.join(__dirname, 'dist');
-  const packageJson = path.join(__dirname, 'package.json');
-  return gulp.src([packageJson, dist])
+  return gulp.src([PKG_JSON, DIST])
     .pipe(git.add({args: '-f'}))
     .pipe(git.commit('release: release version'));
 });
 
 gulp.task('posttag', () => {
-  const dist = path.join(__dirname, 'dist');
-  return gulp.src(dist)
+  return gulp.src(DIST)
     .pipe(git.rm({args: '-r'}))
     .pipe(git.commit('release: prepare next release'));
 });
 
 gulp.task('tag', (done) => {
-  const pkg = fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8');
-  const version = JSON.parse(pkg).version;
+  const pkg = require(PKG_JSON);
+  const version = pkg.version;
   git.tag(`v${version}`, `release: tag version ${version}`, done);
 });
 
-['major', 'minor', 'patch'].forEach((level) => {
-  gulp.task(`bump:${level}`, () => {
-    return gulp.src(path.join(__dirname, 'package.json'))
-      .pipe(bump({type: level})
+['major', 'minor', 'patch'].forEach((type) => {
+  gulp.task(`bump:${type}`, () => {
+    return gulp.src(PKG_JSON)
+      .pipe(bump({type})
       .on('error', gutil.log))
-      .pipe(gulp.dest(__dirname));
+      .pipe(gulp.dest(ROOT));
   });
 
-  gulp.task('release:' + level, ['build'], () => {
-    return runSequence(`bump:${level}`, 'pretag', 'tag', 'posttag');
+  gulp.task(`release:${type}`, ['build'], () => {
+    return runSequence(`bump:${type}`, 'pretag', 'tag', 'posttag');
   });
 });
 
+gulp.task('release', ['release:minor']);
 gulp.task('default', ['build']);
