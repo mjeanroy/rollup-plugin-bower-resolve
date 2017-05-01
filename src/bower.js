@@ -28,10 +28,8 @@ const _ = require('lodash');
 const bower = require('bower');
 const Q = require('q');
 
-module.exports = {
-  list(options = {}) {
-    return list(options);
-  },
+module.exports.list = function(options = {}) {
+  return execList(options);
 };
 
 /**
@@ -40,7 +38,7 @@ module.exports = {
  * @param {Object} options Bower options.
  * @return {Promise<Object>} The promise of dependency object.
  */
-function list(options) {
+function execList(options) {
   const deferred = Q.defer();
 
   const json = options.json !== false;
