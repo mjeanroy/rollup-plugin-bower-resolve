@@ -62,75 +62,11 @@ describe('bower', () => {
     expect(onEnd).not.toHaveBeenCalled();
     expect(onError).not.toHaveBeenCalled();
 
-    const dependencies = {
-      underscore: {
-        endpoint: {
-          name: 'underscore',
-          source: 'underscore',
-          target: '1.8.3',
-        },
-        canonicalDir: '/Users/mickael/dev/test-rollup-plugin-bower-resolve/vendors/underscore',
-        pkgMeta: {
-          name: 'underscore',
-          version: '1.8.3',
-          main: 'underscore.js',
-          keywords: ['util', 'functional', 'server', 'client', 'browser'],
-          ignore: [
-            'docs',
-            'test',
-            '*.yml',
-            'CNAME',
-            'index.html',
-            'favicon.ico',
-            'CONTRIBUTING.md',
-            '.*',
-            'component.json',
-            'package.json',
-            'karma.*',
-          ],
-          homepage: 'https://github.com/jashkenas/underscore',
-          _release: '1.8.3',
-          _resolution: {
-            type: 'version',
-            tag: '1.8.3',
-            commit: 'e4743ab712b8ab42ad4ccb48b155034d02394e4d',
-          },
-          _source: 'https://github.com/jashkenas/underscore.git',
-          _target: '1.8.3',
-          _originalSource: 'underscore',
-        },
-        missing: true,
-        nrDependants: 1,
-        versions: [],
-        update: {
-          target: '1.8.3',
-          latest: '1.8.3',
-        },
-      },
-    };
+    const underscore = require('./fixtures/underscore-meta')();
+    const main = require('./fixtures/main-meta')();
+    const dependencies = {underscore};
 
-    response.on.calls.first().args[1]({
-      endpoint: {
-        name: 'rollup-plugin-bower-resolve',
-        source: '/Users/mickael/dev/rollup-plugin-bower-resolve',
-        target: '*',
-      },
-
-      canonicalDir: '/Users/mickael/dev/rollup-plugin-bower-resolve',
-      pkgMeta: {
-        name: 'rollup-plugin-bower-resolve',
-        description: 'Use the bower resolution algorithm with Rollup',
-        main: 'src/rollup-plugin-bower-resolve.js',
-        authors: 'mjeanroy <mickael.jeanroy@gmail.com>',
-        license: 'MIT',
-        dependencies: {},
-        devDependencies: {},
-      },
-
-      dependencies: dependencies,
-      nrDependants: 0,
-      versions: [],
-    });
+    response.on.calls.first().args[1](main);
 
     expect(onEnd).not.toHaveBeenCalled();
     expect(onError).not.toHaveBeenCalled();
