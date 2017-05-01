@@ -24,7 +24,7 @@
 
 'use strict';
 
-const _ = require('underscore');
+const _ = require('lodash');
 const bower = require('bower');
 const Q = require('q');
 

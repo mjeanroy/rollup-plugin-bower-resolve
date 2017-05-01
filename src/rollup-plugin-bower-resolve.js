@@ -24,17 +24,16 @@
 
 'use strict';
 
-const _ = require('underscore');
+const _ = require('lodash');
 const path = require('path');
 const bower = require('./bower');
-const ensureArray = (val) => _.isArray(val) ? val : [val];
 
 module.exports = (options) => {
   const opts = options || {};
   const useModule = opts.module !== false;
   const useJsNext = opts.jsnext !== false;
   const override = opts.override || {};
-  const skip = opts.skip ? ensureArray(opts.skip) : [];
+  const skip = opts.skip ? _.castArray(opts.skip) : [];
   const list = bower.list(_.pick(opts, ['offline', 'cwd']));
 
   return {
@@ -44,7 +43,7 @@ module.exports = (options) => {
         return null;
       }
 
-      if (_.contains(skip, importee)) {
+      if (_.includes(skip, importee)) {
         // Skip dependency
         return null;
       }
