@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-const underscoreMeta = require('./underscore-meta');
+const underscore = require('./underscore-meta');
 
 module.exports = () => ({
   endpoint: {
@@ -43,7 +43,7 @@ module.exports = () => ({
   },
 
   dependencies: {
-    underscore: underscoreMeta(),
+    underscore: underscore(),
   },
 
   nrDependants: 0,

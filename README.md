@@ -77,6 +77,7 @@ rollup({
 - 0.4.0
   - Fix `offline` mode (and add options to disable offline).
   - Add `cwd` option.
+  - Fix transitive dependency resolution.
 - 0.3.0
   - Add `module` option
   - Add `jsnext` option

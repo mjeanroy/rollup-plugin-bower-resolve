@@ -70,7 +70,7 @@ describe('bower', () => {
     expect(onError).not.toHaveBeenCalled();
 
     const underscore = require('./fixtures/underscore-meta')();
-    const main = require('./fixtures/main-meta')();
+    const main = require('./fixtures/test1-meta')();
     const dependencies = {underscore};
 
     response.on.calls.first().args[1](main);
@@ -79,6 +79,50 @@ describe('bower', () => {
     expect(onError).not.toHaveBeenCalled();
     mockPromises.tick();
     expect(onEnd).toHaveBeenCalledWith(dependencies);
+    expect(onError).not.toHaveBeenCalled();
+  });
+
+  it('should get the list of bower dependencies with transitive dependencies', () => {
+    const response = jasmine.createSpyObj('bowerList', ['on']);
+    response.on.and.returnValue(response);
+
+    spyOn(bower.commands, 'list').and.returnValue(response);
+
+    const promise = bowerUtil.list();
+
+    expect(promise).toBeDefined();
+    expect(bower.commands.list).toHaveBeenCalledWith(undefined, {
+      json: true,
+      offline: true,
+      cwd,
+    });
+
+    expect(response.on).toHaveBeenCalledWith('end', jasmine.any(Function));
+    expect(response.on).toHaveBeenCalledWith('error', jasmine.any(Function));
+
+    const onEnd = jasmine.createSpy('end');
+    const onError = jasmine.createSpy('error');
+    promise.then(onEnd);
+    promise.catch(onError);
+
+    mockPromises.tick();
+    expect(onEnd).not.toHaveBeenCalled();
+    expect(onError).not.toHaveBeenCalled();
+
+    const backbone = require('./fixtures/backbone-meta')();
+    const main = require('./fixtures/test2-meta')();
+    const dependencies = {
+      backbone,
+      underscore: backbone.dependencies.underscore,
+    };
+
+    response.on.calls.first().args[1](main);
+
+    expect(onEnd).not.toHaveBeenCalled();
+    expect(onError).not.toHaveBeenCalled();
+    mockPromises.tick();
+    expect(onEnd).toHaveBeenCalledWith(dependencies);
+
     expect(onError).not.toHaveBeenCalled();
   });
 
@@ -113,7 +157,7 @@ describe('bower', () => {
     expect(onError).not.toHaveBeenCalled();
 
     const underscore = require('./fixtures/underscore-meta')();
-    const main = require('./fixtures/main-meta')();
+    const main = require('./fixtures/test1-meta')();
     const dependencies = {underscore};
 
     response.on.calls.first().args[1](main);

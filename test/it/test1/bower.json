@@ -1,0 +1,13 @@
+{
+  "name": "test1",
+  "homepage": "https://github.com/mjeanroy/rollup-plugin-bower-resolve",
+  "private": true,
+  "license": "MIT",
+  "ignore": [],
+  "authors": [
+    "Mickael Jeanroy <mickael.jeanroy@gmail.com>"
+  ],
+  "dependencies": {
+    "underscore": "^1.8.3"
+  }
+}

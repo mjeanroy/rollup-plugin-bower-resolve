@@ -24,26 +24,60 @@
 
 'use strict';
 
+const _ = require('underscore');
 const bower = require('bower');
 const Q = require('q');
 
 module.exports = {
   list(options = {}) {
-    const deferred = Q.defer();
-
-    const json = options.json !== false;
-    const offline = options.offline !== false;
-    const cwd = options.cwd || process.cwd();
-    const config = {json, offline, cwd};
-
-    bower.commands.list(undefined, config)
-      .on('end', (conf) => {
-        deferred.resolve(conf.dependencies);
-      })
-      .on('error', (error) => {
-        deferred.reject(error);
-      });
-
-    return deferred.promise;
+    return list(options);
   },
 };
+
+/**
+ * List all dependencies of a bower package.
+ *
+ * @param {Object} options Bower options.
+ * @return {Promise<Object>} The promise of dependency object.
+ */
+function list(options) {
+  const deferred = Q.defer();
+
+  const json = options.json !== false;
+  const offline = options.offline !== false;
+  const cwd = options.cwd || process.cwd();
+  const config = {json, offline, cwd};
+
+  bower.commands.list(undefined, config)
+    .on('end', (conf) => {
+      deferred.resolve(flatten(conf));
+    })
+    .on('error', (error) => {
+      deferred.reject(error);
+    });
+
+  return deferred.promise;
+}
+
+/**
+ * Flatten dependency tree into a single dependency object:
+ * - Object entry is the dependency name (i.e package name).
+ * - Object value is the dependency metadata.
+ *
+ * @param {Object} pkg The package entrypoint.
+ * @param {Object} dependencies Current dependencies (object populated and returned).
+ * @return {Object} The dependencies.
+ */
+function flatten(pkg, dependencies = {}) {
+  _.forEach(pkg.dependencies, (dep, id) => {
+    if (!_.has(dependencies, id)) {
+      // Store current dependency...
+      dependencies[id] = dep;
+
+      // ... and add transitive dependencies
+      _.extend(dependencies, flatten(dep, dependencies));
+    }
+  });
+
+  return dependencies;
+}
