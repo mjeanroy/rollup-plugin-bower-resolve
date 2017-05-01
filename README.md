@@ -20,6 +20,15 @@ rollup({
   entry: 'main.js',
   plugins: [
     bowerResolve({
+      // The working directory to use with bower (i.e the directory where
+      // the `bower.json` is stored).
+      // Default is `process.cwd()`.
+      cwd: '/tmp',
+
+      // Use `bower` offline.
+      // Default is `true`.
+      offline: false,
+
       // Use "module" field for ES6 module if possible, default is `true`.
       // See: https://github.com/rollup/rollup/wiki/pkg.module
       module: true,
@@ -65,6 +74,9 @@ rollup({
 
 ## Changelog
 
+- 0.4.0
+  - Fix `offline` mode (and add options to disable offline).
+  - Add `cwd` option.
 - 0.3.0
   - Add `module` option
   - Add `jsnext` option

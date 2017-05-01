@@ -35,8 +35,7 @@ module.exports = (options) => {
   const useJsNext = opts.jsnext !== false;
   const override = opts.override || {};
   const skip = opts.skip ? ensureArray(opts.skip) : [];
-  const offline = opts.offline !== false;
-  const list = bower.list(offline);
+  const list = bower.list(_.pick(opts, ['offline', 'cwd']));
 
   return {
     resolveId(importee, importer) {

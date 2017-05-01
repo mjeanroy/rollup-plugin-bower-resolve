@@ -28,6 +28,12 @@ const bowerUtil = require('../dist/bower');
 const mockPromises = require('mock-promises');
 
 describe('bower', () => {
+  let cwd;
+
+  beforeEach(() => {
+    cwd = process.cwd();
+  });
+
   beforeEach(() => {
     mockPromises.install(Q.makePromise);
   });
@@ -48,6 +54,50 @@ describe('bower', () => {
     expect(bower.commands.list).toHaveBeenCalledWith(undefined, {
       json: true,
       offline: true,
+      cwd,
+    });
+
+    expect(response.on).toHaveBeenCalledWith('end', jasmine.any(Function));
+    expect(response.on).toHaveBeenCalledWith('error', jasmine.any(Function));
+
+    const onEnd = jasmine.createSpy('end');
+    const onError = jasmine.createSpy('error');
+    promise.then(onEnd);
+    promise.catch(onError);
+
+    mockPromises.tick();
+    expect(onEnd).not.toHaveBeenCalled();
+    expect(onError).not.toHaveBeenCalled();
+
+    const underscore = require('./fixtures/underscore-meta')();
+    const main = require('./fixtures/main-meta')();
+    const dependencies = {underscore};
+
+    response.on.calls.first().args[1](main);
+
+    expect(onEnd).not.toHaveBeenCalled();
+    expect(onError).not.toHaveBeenCalled();
+    mockPromises.tick();
+    expect(onEnd).toHaveBeenCalledWith(dependencies);
+    expect(onError).not.toHaveBeenCalled();
+  });
+
+  it('should get the list of bower dependencies using custom options', () => {
+    const response = jasmine.createSpyObj('bowerList', ['on']);
+    response.on.and.returnValue(response);
+
+    spyOn(bower.commands, 'list').and.returnValue(response);
+
+    const offline = false;
+    const cwd = '/tmp';
+
+    const promise = bowerUtil.list({offline, cwd});
+
+    expect(promise).toBeDefined();
+    expect(bower.commands.list).toHaveBeenCalledWith(undefined, {
+      json: true,
+      offline,
+      cwd,
     });
 
     expect(response.on).toHaveBeenCalledWith('end', jasmine.any(Function));
@@ -87,6 +137,7 @@ describe('bower', () => {
     expect(bower.commands.list).toHaveBeenCalledWith(undefined, {
       json: true,
       offline: true,
+      cwd,
     });
 
     expect(response.on).toHaveBeenCalledWith('end', jasmine.any(Function));

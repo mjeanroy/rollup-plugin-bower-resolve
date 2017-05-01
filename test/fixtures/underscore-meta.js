@@ -28,7 +28,7 @@ module.exports = () => ({
     source: 'underscore',
     target: '1.8.3',
   },
-  canonicalDir: '/Users/mickael/dev/test-rollup-plugin-bower-resolve/vendors/underscore',
+  canonicalDir: '/tmp/underscore',
   pkgMeta: {
     name: 'underscore',
     version: '1.8.3',
@@ -58,7 +58,7 @@ module.exports = () => ({
     _target: '1.8.3',
     _originalSource: 'underscore',
   },
-  missing: true,
+  missing: false,
   nrDependants: 1,
   versions: [],
   update: {

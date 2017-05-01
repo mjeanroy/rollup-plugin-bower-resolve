@@ -28,6 +28,12 @@ const bower = require('../dist/bower');
 const bowerResolve = require('../dist/rollup-plugin-bower-resolve');
 
 describe('bowerResolve', () => {
+  let underscore;
+
+  beforeEach(() => {
+    underscore = require('./fixtures/underscore-meta')();
+  });
+
   beforeEach(() => {
     mockPromises.install(Q.makePromise);
   });
@@ -51,22 +57,15 @@ describe('bowerResolve', () => {
     const plugin = bowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith(true);
     expect(result).toBeDefined();
+    expect(bower.list).toHaveBeenCalledWith({});
 
     const done = jasmine.createSpy('done');
     const error = jasmine.createSpy('error');
     result.then(done);
     result.catch(error);
 
-    deferred.resolve({
-      underscore: {
-        canonicalDir: '/tmp/underscore',
-        pkgMeta: {
-          main: './underscore.js',
-        },
-      },
-    });
+    deferred.resolve({underscore});
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -91,7 +90,41 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith(false);
+    expect(result).toBeDefined();
+    expect(bower.list).toHaveBeenCalledWith({
+      offline: false,
+    });
+
+    const done = jasmine.createSpy('done');
+    const error = jasmine.createSpy('error');
+    result.then(done);
+    result.catch(error);
+
+    deferred.resolve({underscore});
+
+    expect(done).not.toHaveBeenCalled();
+    expect(error).not.toHaveBeenCalled();
+
+    // Resolve previous two promises.
+    mockPromises.tick();
+    mockPromises.tick();
+
+    expect(error).not.toHaveBeenCalled();
+    expect(done).toHaveBeenCalledWith('/tmp/underscore/underscore.js');
+  });
+
+  it('should return a promise using custom work directory', () => {
+    const deferred = Q.defer();
+    const promise = deferred.promise;
+
+    spyOn(bower, 'list').and.returnValue(promise);
+
+    const cwd = '/tmp';
+    const plugin = bowerResolve({cwd});
+
+    const result = plugin.resolveId('underscore', './app.js');
+
+    expect(bower.list).toHaveBeenCalledWith({cwd});
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -99,14 +132,7 @@ describe('bowerResolve', () => {
     result.then(done);
     result.catch(error);
 
-    deferred.resolve({
-      underscore: {
-        canonicalDir: '/tmp/underscore',
-        pkgMeta: {
-          main: './underscore.js',
-        },
-      },
-    });
+    deferred.resolve({underscore});
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -133,7 +159,7 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith(true);
+    expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -141,14 +167,7 @@ describe('bowerResolve', () => {
     result.then(done);
     result.catch(error);
 
-    deferred.resolve({
-      underscore: {
-        canonicalDir: '/tmp/underscore',
-        pkgMeta: {
-          main: './underscore.js',
-        },
-      },
-    });
+    deferred.resolve({underscore});
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -171,7 +190,7 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith(true);
+    expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -179,15 +198,9 @@ describe('bowerResolve', () => {
     result.then(done);
     result.catch(error);
 
-    deferred.resolve({
-      underscore: {
-        canonicalDir: '/tmp/underscore',
-        pkgMeta: {
-          module: './underscore.m.js',
-          main: './underscore.js',
-        },
-      },
-    });
+    underscore.pkgMeta.module = './underscore.m.js';
+    underscore.pkgMeta.main = './underscore.js';
+    deferred.resolve({underscore});
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -212,7 +225,7 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith(true);
+    expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -220,15 +233,9 @@ describe('bowerResolve', () => {
     result.then(done);
     result.catch(error);
 
-    deferred.resolve({
-      underscore: {
-        canonicalDir: '/tmp/underscore',
-        pkgMeta: {
-          module: './underscore.m.js',
-          main: './underscore.js',
-        },
-      },
-    });
+    underscore.pkgMeta.module = './underscore.m.js';
+    underscore.pkgMeta.main = './underscore.js';
+    deferred.resolve({underscore});
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -253,7 +260,7 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith(true);
+    expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -261,15 +268,9 @@ describe('bowerResolve', () => {
     result.then(done);
     result.catch(error);
 
-    deferred.resolve({
-      underscore: {
-        canonicalDir: '/tmp/underscore',
-        pkgMeta: {
-          module: './underscore.m.js',
-          main: './underscore.js',
-        },
-      },
-    });
+    underscore.pkgMeta.module = './underscore.m.js';
+    underscore.pkgMeta.main = './underscore.js';
+    deferred.resolve({underscore});
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -294,7 +295,7 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith(true);
+    expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -302,15 +303,9 @@ describe('bowerResolve', () => {
     result.then(done);
     result.catch(error);
 
-    deferred.resolve({
-      underscore: {
-        canonicalDir: '/tmp/underscore',
-        pkgMeta: {
-          'jsnext:main': './underscore.m.js',
-          'main': './underscore.js',
-        },
-      },
-    });
+    underscore.pkgMeta['jsnext:main'] = './underscore.m.js';
+    underscore.pkgMeta.main = './underscore.js';
+    deferred.resolve({underscore});
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -335,7 +330,7 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith(true);
+    expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -343,15 +338,9 @@ describe('bowerResolve', () => {
     result.then(done);
     result.catch(error);
 
-    deferred.resolve({
-      underscore: {
-        canonicalDir: '/tmp/underscore',
-        pkgMeta: {
-          'jsnext:main': './underscore.m.js',
-          'main': './underscore.js',
-        },
-      },
-    });
+    underscore.pkgMeta['jsnext:main'] = './underscore.m.js';
+    underscore.pkgMeta.main = './underscore.js';
+    deferred.resolve({underscore});
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -374,7 +363,7 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith(true);
+    expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -382,15 +371,9 @@ describe('bowerResolve', () => {
     result.then(done);
     result.catch(error);
 
-    deferred.resolve({
-      underscore: {
-        canonicalDir: '/tmp/underscore',
-        pkgMeta: {
-          'jsnext:main': './underscore.m.js',
-          'main': './underscore.js',
-        },
-      },
-    });
+    underscore.pkgMeta['jsnext:main'] = './underscore.m.js';
+    underscore.pkgMeta.main = './underscore.js';
+    deferred.resolve({underscore});
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -416,7 +399,7 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith(true);
+    expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -424,16 +407,10 @@ describe('bowerResolve', () => {
     result.then(done);
     result.catch(error);
 
-    deferred.resolve({
-      underscore: {
-        canonicalDir: '/tmp/underscore',
-        pkgMeta: {
-          'module': './underscore.module.js',
-          'jsnext:main': './underscore.jsnext.js',
-          'main': './underscore.js',
-        },
-      },
-    });
+    underscore.pkgMeta.module = './underscore.module.js';
+    underscore.pkgMeta['jsnext:main'] = './underscore.jsnext.js';
+    underscore.pkgMeta.main = './underscore.js';
+    deferred.resolve({underscore});
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -456,7 +433,7 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith(true);
+    expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -464,14 +441,8 @@ describe('bowerResolve', () => {
     result.then(done);
     result.catch(error);
 
-    deferred.resolve({
-      underscore: {
-        canonicalDir: '/tmp/underscore',
-        pkgMeta: {
-          main: ['./underscore.js'],
-        },
-      },
-    });
+    underscore.pkgMeta.main = ['./underscore.js'];
+    deferred.resolve({underscore});
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -493,7 +464,7 @@ describe('bowerResolve', () => {
     const plugin = bowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith(true);
+    expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -540,18 +511,15 @@ describe('bowerResolve', () => {
     const plugin = bowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith(true);
+    expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
     const error = jasmine.createSpy('error');
     result.then(done).catch(error);
 
-    deferred.resolve({
-      underscore: {
-        missing: true,
-      },
-    });
+    underscore.missing = true;
+    deferred.resolve({underscore});
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -574,7 +542,7 @@ describe('bowerResolve', () => {
     const plugin = bowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith(true);
+    expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -584,8 +552,7 @@ describe('bowerResolve', () => {
     deferred.resolve({
       underscore: {
         canonicalDir: '/tmp/underscore',
-        pkgMeta: {
-        },
+        pkgMeta: {},
       },
     });
 
@@ -613,7 +580,7 @@ describe('bowerResolve', () => {
     const plugin = bowerResolve();
     const result = plugin.resolveId('bootstrap', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith(true);
+    expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -653,7 +620,7 @@ describe('bowerResolve', () => {
     const plugin = bowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith(true);
+    expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');

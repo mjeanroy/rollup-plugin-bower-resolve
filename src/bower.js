@@ -28,12 +28,13 @@ const bower = require('bower');
 const Q = require('q');
 
 module.exports = {
-  list(offline = true) {
+  list(options = {}) {
     const deferred = Q.defer();
-    const config = {
-      json: true,
-      offline,
-    };
+
+    const json = options.json !== false;
+    const offline = options.offline !== false;
+    const cwd = options.cwd || process.cwd();
+    const config = {json, offline, cwd};
 
     bower.commands.list(undefined, config)
       .on('end', (conf) => {
