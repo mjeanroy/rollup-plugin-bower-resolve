@@ -67,7 +67,7 @@ gulp.task('build', ['lint', 'clean'], () => {
     .pipe(gulp.dest(DIST));
 });
 
-gulp.task('commit:pre', () => {
+gulp.task('pretag', () => {
   const dist = path.join(__dirname, 'dist');
   const packageJson = path.join(__dirname, 'package.json');
   return gulp.src([packageJson, dist])
@@ -75,7 +75,7 @@ gulp.task('commit:pre', () => {
     .pipe(git.commit('release: release version'));
 });
 
-gulp.task('commit:post', () => {
+gulp.task('posttag', () => {
   const dist = path.join(__dirname, 'dist');
   return gulp.src(dist)
     .pipe(git.rm({args: '-r'}))
@@ -97,7 +97,7 @@ gulp.task('tag', (done) => {
   });
 
   gulp.task('release:' + level, ['build'], () => {
-    runSequence(`bump:${level}`, 'commit:pre', 'tag', 'commit:post');
+    return runSequence(`bump:${level}`, 'pretag', 'tag', 'posttag');
   });
 });
 
