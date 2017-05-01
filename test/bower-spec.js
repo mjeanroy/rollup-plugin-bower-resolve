@@ -22,6 +22,8 @@
  * SOFTWARE.
  */
 
+'use strict';
+
 const Q = require('q');
 const bower = require('bower');
 const bowerUtil = require('../dist/bower');

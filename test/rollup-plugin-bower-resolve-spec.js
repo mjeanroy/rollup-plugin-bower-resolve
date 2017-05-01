@@ -22,6 +22,8 @@
  * SOFTWARE.
  */
 
+'use strict';
+
 const Q = require('q');
 const mockPromises = require('mock-promises');
 const bower = require('../dist/bower');

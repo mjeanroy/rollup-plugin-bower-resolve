@@ -22,6 +22,8 @@
  * SOFTWARE.
  */
 
+'use strict';
+
 const path = require('path');
 const bowerResolve = require('../dist/rollup-plugin-bower-resolve');
 
