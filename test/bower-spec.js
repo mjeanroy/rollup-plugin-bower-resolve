@@ -24,10 +24,10 @@
 
 const Q = require('q');
 const bower = require('bower');
-const bowerUtil = require('../dist/bower-util');
+const bowerUtil = require('../dist/bower');
 const mockPromises = require('mock-promises');
 
-describe('bower-util', () => {
+describe('bower', () => {
   beforeEach(() => {
     mockPromises.install(Q.makePromise);
   });

@@ -26,7 +26,7 @@
 
 const _ = require('underscore');
 const path = require('path');
-const bower = require('./bower-util');
+const bower = require('./bower');
 const ensureArray = (val) => _.isArray(val) ? val : [val];
 
 module.exports = (options) => {
