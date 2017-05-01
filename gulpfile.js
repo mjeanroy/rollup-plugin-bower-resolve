@@ -51,9 +51,9 @@ gulp.task('lint', () => {
   ];
 
   return gulp.src(src)
-        .pipe(eslint())
-        .pipe(eslint.format())
-        .pipe(eslint.failAfterError());
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
 });
 
 gulp.task('test', ['build'], () => {
