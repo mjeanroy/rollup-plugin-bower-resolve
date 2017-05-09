@@ -1,7 +1,6 @@
 # rollup-plugin-bower-resolve
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/mjeanroy/rollup-plugin-bower-resolve.svg)](https://greenkeeper.io/)
-
 [![Build Status](https://travis-ci.org/mjeanroy/rollup-plugin-bower-resolve.svg?branch=master)](https://travis-ci.org/mjeanroy/rollup-plugin-bower-resolve)
 
 Locate modules using the bower resolution algorithm for using third party modules in your bower component directory.
