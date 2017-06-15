@@ -24,11 +24,16 @@
 
 'use strict';
 
+const fs = require('fs');
 const path = require('path');
+const tmp = require('tmp');
+const rollup = require('rollup');
+const commonjs = require('rollup-plugin-commonjs');
 const bowerResolve = require('../dist/rollup-plugin-bower-resolve');
 
 describe('bowerResolve', () => {
   let cwd;
+  let tmpDir;
 
   beforeEach(() => {
     cwd = process.cwd();
@@ -36,6 +41,16 @@ describe('bowerResolve', () => {
 
   afterEach(() => {
     process.chdir(cwd);
+  });
+
+  beforeEach(() => {
+    tmpDir = tmp.dirSync({
+      unsafeCleanup: true,
+    });
+  });
+
+  afterEach(() => {
+    tmpDir.removeCallback();
   });
 
   it('should resolve dependency path of direct dependency', (done) => {
@@ -74,5 +89,38 @@ describe('bowerResolve', () => {
     promise.catch((err) => {
       done.fail(err);
     });
+  });
+
+  it('should bundle file', (done) => {
+    const test1Dir = path.join(__dirname, 'it', 'test1');
+    process.chdir(test1Dir);
+
+    const bundleOutput = path.join(tmpDir.name, 'bundle.js');
+    const bundleInput = path.join(test1Dir, 'bundle.js');
+
+    const rollupConfig = {
+      entry: bundleInput,
+      dest: bundleOutput,
+      format: 'es',
+      plugins: [
+        bowerResolve(),
+        commonjs(),
+      ],
+    };
+
+    rollup.rollup(rollupConfig)
+      .then((bundle) => bundle.write(rollupConfig))
+      .then(() => {
+        fs.readFile(bundleOutput, 'utf8', (err, data) => {
+          if (err) {
+            done.fail(err);
+          }
+
+          const content = data.toString();
+          expect(content).toBeDefined();
+          expect(content).toContain('_.VERSION');
+          done();
+        });
+      });
   });
 });

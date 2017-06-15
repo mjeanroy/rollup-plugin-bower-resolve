@@ -43,7 +43,10 @@
     "gulp-util": "3.0.8",
     "jasmine-core": "2.6.3",
     "mock-promises": "0.8.2",
-    "run-sequence": "1.2.2"
+    "rollup": "0.43.0",
+    "rollup-plugin-commonjs": "8.0.2",
+    "run-sequence": "1.2.2",
+    "tmp": "0.0.31"
   },
   "peerDependencies": {
     "bower": ">=1.7.0"
