@@ -99,9 +99,6 @@ describe('bowerResolve', () => {
     const bundleInput = path.join(test1Dir, 'bundle.js');
 
     const rollupConfig = {
-      // Keep the `entry` option because of `rollup-plugin-commonjs`.
-      entry: bundleInput,
-
       input: bundleInput,
 
       output: {
