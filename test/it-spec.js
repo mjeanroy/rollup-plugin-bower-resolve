@@ -99,9 +99,16 @@ describe('bowerResolve', () => {
     const bundleInput = path.join(test1Dir, 'bundle.js');
 
     const rollupConfig = {
+      // Keep the `entry` option because of `rollup-plugin-commonjs`.
       entry: bundleInput,
-      dest: bundleOutput,
-      format: 'es',
+
+      input: bundleInput,
+
+      output: {
+        file: bundleOutput,
+        format: 'es',
+      },
+
       plugins: [
         bowerResolve(),
         commonjs(),
@@ -109,7 +116,7 @@ describe('bowerResolve', () => {
     };
 
     rollup.rollup(rollupConfig)
-      .then((bundle) => bundle.write(rollupConfig))
+      .then((bundle) => bundle.write(rollupConfig.output))
       .then(() => {
         fs.readFile(bundleOutput, 'utf8', (err, data) => {
           if (err) {
