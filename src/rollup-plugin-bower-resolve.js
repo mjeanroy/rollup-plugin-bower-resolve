@@ -48,17 +48,25 @@ module.exports = (options) => {
         return null;
       }
 
+      const parts = importee.split( /[\/\\]/ );
+      const id = parts.shift();
+
       return list.then((dependencies) => {
-        if (!_.has(dependencies, importee)) {
+        if (!_.has(dependencies, id)) {
           return null;
         }
 
-        const dependency = dependencies[importee];
+        const dependency = dependencies[id];
         if (dependency.missing) {
-          throw new Error(`Dependency '${importee}' is missing, did you run 'bower install'?`);
+          throw new Error(`Dependency '${id}' is missing, did you run 'bower install'?`);
         }
 
         const dir = dependency.canonicalDir;
+
+        // If a full path is specified, such as: `import 'underscore/dist/underscore.js';`
+        if (parts.length > 0) {
+          return path.join(dir, ...parts);
+        }
 
         // Allow path to be overridden
         if (_.has(override, importee)) {

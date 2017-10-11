@@ -80,6 +80,36 @@ describe('bowerResolve', () => {
     expect(done).toHaveBeenCalledWith('/tmp/underscore/underscore.js');
   });
 
+  it('should return a promise with full path', () => {
+    const deferred = Q.defer();
+    const promise = deferred.promise;
+
+    spyOn(bower, 'list').and.returnValue(promise);
+
+    const plugin = bowerResolve();
+    const result = plugin.resolveId('underscore/dist/underscore.js', './app.js');
+
+    expect(result).toBeDefined();
+    expect(bower.list).toHaveBeenCalledWith({});
+
+    const done = jasmine.createSpy('done');
+    const error = jasmine.createSpy('error');
+    result.then(done);
+    result.catch(error);
+
+    deferred.resolve({underscore});
+
+    expect(done).not.toHaveBeenCalled();
+    expect(error).not.toHaveBeenCalled();
+
+    // Resolve previous two promises.
+    mockPromises.tick();
+    mockPromises.tick();
+
+    expect(error).not.toHaveBeenCalled();
+    expect(done).toHaveBeenCalledWith('/tmp/underscore/dist/underscore.js');
+  });
+
   it('should return a promise using bower online', () => {
     const deferred = Q.defer();
     const promise = deferred.promise;
