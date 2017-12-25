@@ -88,8 +88,8 @@ gulp.task('tag', (done) => {
 ['major', 'minor', 'patch'].forEach((type) => {
   gulp.task(`bump:${type}`, () => {
     return gulp.src(PKG_JSON)
-      .pipe(bump({type})
-      .on('error', (e) => log.error(e)))
+      .pipe(bump({type}))
+      .on('error', (e) => log.error(e))
       .pipe(gulp.dest(ROOT));
   });
 
