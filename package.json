@@ -45,7 +45,7 @@
     "mock-promises": "0.8.2",
     "rollup": "0.53.3",
     "rollup-plugin-commonjs": "8.2.6",
-    "run-sequence": "2.2.0",
+    "run-sequence": "2.2.1",
     "tmp": "0.0.33"
   },
   "peerDependencies": {
