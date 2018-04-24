@@ -24,7 +24,7 @@
     "bower"
   ],
   "dependencies": {
-    "lodash": "4.17.5",
+    "lodash": "4.17.9",
     "q": "1.5.1"
   },
   "devDependencies": {
