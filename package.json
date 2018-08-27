@@ -45,7 +45,7 @@
     "jasmine-core": "3.2.1",
     "mock-promises": "0.8.2",
     "rollup": "0.65.0",
-    "rollup-plugin-commonjs": "9.1.5",
+    "rollup-plugin-commonjs": "9.1.6",
     "run-sequence": "2.2.1",
     "tmp": "0.0.33"
   },
