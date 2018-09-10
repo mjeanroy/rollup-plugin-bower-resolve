@@ -51,9 +51,9 @@ gulp.task('lint', () => {
   ];
 
   return gulp.src(src)
-    .pipe(eslint())
-    .pipe(eslint.format())
-    .pipe(eslint.failAfterError());
+      .pipe(eslint())
+      .pipe(eslint.format())
+      .pipe(eslint.failAfterError());
 });
 
 gulp.task('test', ['build'], () => {
@@ -63,20 +63,20 @@ gulp.task('test', ['build'], () => {
 
 gulp.task('build', ['lint', 'clean'], () => {
   return gulp.src(path.join(SRC, '**', '*.js'))
-    .pipe(babel())
-    .pipe(gulp.dest(DIST));
+      .pipe(babel())
+      .pipe(gulp.dest(DIST));
 });
 
 gulp.task('pretag', () => {
   return gulp.src([PKG_JSON, DIST])
-    .pipe(git.add({args: '-f'}))
-    .pipe(git.commit('release: release version'));
+      .pipe(git.add({args: '-f'}))
+      .pipe(git.commit('release: release version'));
 });
 
 gulp.task('posttag', () => {
   return gulp.src(DIST)
-    .pipe(git.rm({args: '-r'}))
-    .pipe(git.commit('release: prepare next release'));
+      .pipe(git.rm({args: '-r'}))
+      .pipe(git.commit('release: prepare next release'));
 });
 
 gulp.task('tag', (done) => {
@@ -88,9 +88,9 @@ gulp.task('tag', (done) => {
 ['major', 'minor', 'patch'].forEach((type) => {
   gulp.task(`bump:${type}`, () => {
     return gulp.src(PKG_JSON)
-      .pipe(bump({type}))
-      .on('error', (e) => log.error(e))
-      .pipe(gulp.dest(ROOT));
+        .pipe(bump({type}))
+        .on('error', (e) => log.error(e))
+        .pipe(gulp.dest(ROOT));
   });
 
   gulp.task(`release:${type}`, ['build'], () => {

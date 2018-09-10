@@ -47,12 +47,12 @@ function execList(options) {
   const config = {json, offline, cwd};
 
   bower.commands.list(undefined, config)
-    .on('end', (conf) => {
-      deferred.resolve(flatten(conf));
-    })
-    .on('error', (error) => {
-      deferred.reject(error);
-    });
+      .on('end', (conf) => {
+        deferred.resolve(flatten(conf));
+      })
+      .on('error', (error) => {
+        deferred.reject(error);
+      });
 
   return deferred.promise;
 }
