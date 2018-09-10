@@ -113,18 +113,18 @@ describe('bowerResolve', () => {
     };
 
     rollup.rollup(rollupConfig)
-      .then((bundle) => bundle.write(rollupConfig.output))
-      .then(() => {
-        fs.readFile(bundleOutput, 'utf8', (err, data) => {
-          if (err) {
-            done.fail(err);
-          }
+        .then((bundle) => bundle.write(rollupConfig.output))
+        .then(() => {
+          fs.readFile(bundleOutput, 'utf8', (err, data) => {
+            if (err) {
+              done.fail(err);
+            }
 
-          const content = data.toString();
-          expect(content).toBeDefined();
-          expect(content).toContain('_.VERSION');
-          done();
+            const content = data.toString();
+            expect(content).toBeDefined();
+            expect(content).toContain('_.VERSION');
+            done();
+          });
         });
-      });
   });
 });

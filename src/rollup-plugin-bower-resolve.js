@@ -86,7 +86,7 @@ module.exports = (options) => {
 
         if (!main) {
           throw new Error(
-            `Dependency ${importee} does not specify any main entry, please use 'override' options to specify main file`
+              `Dependency ${importee} does not specify any main entry, please use 'override' options to specify main file`
           );
         }
 
@@ -99,11 +99,11 @@ module.exports = (options) => {
 
           if (jsFiles.length === 0) {
             throw new Error(
-              `Dependency ${importee} does not specify any js main, please use 'override' options to specify main file`
+                `Dependency ${importee} does not specify any js main, please use 'override' options to specify main file`
             );
           } else if (jsFiles.length > 1) {
             throw new Error(
-              `Dependency ${importee} specify multiple js main entries, please use 'override' options to specify main file`
+                `Dependency ${importee} specify multiple js main entries, please use 'override' options to specify main file`
             );
           }
 
