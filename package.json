@@ -6,10 +6,11 @@
   "author": "mjeanroy <mickael.jeanroy@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "clean": "gulp clean",
     "build": "gulp build",
     "test": "gulp test",
     "lint": "gulp lint",
-    "release": "gulp release",
+    "release": "gulp release:minor",
     "release:patch": "gulp release:patch",
     "release:minor": "gulp release:minor",
     "release:major": "gulp release:major"
@@ -46,7 +47,6 @@
     "mock-promises": "0.8.2",
     "rollup": "0.67.4",
     "rollup-plugin-commonjs": "9.2.0",
-    "run-sequence": "2.2.1",
     "tmp": "0.0.33"
   },
   "peerDependencies": {
