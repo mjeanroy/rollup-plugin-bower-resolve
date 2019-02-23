@@ -46,7 +46,7 @@
     "jasmine-core": "3.3.0",
     "mock-promises": "0.8.2",
     "rollup": "1.2.2",
-    "rollup-plugin-commonjs": "9.2.0",
+    "rollup-plugin-commonjs": "9.2.1",
     "tmp": "0.0.33"
   },
   "peerDependencies": {
