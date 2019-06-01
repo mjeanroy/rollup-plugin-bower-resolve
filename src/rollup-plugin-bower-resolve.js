@@ -48,7 +48,7 @@ module.exports = (options) => {
         return null;
       }
 
-      const parts = importee.split( /[\/\\]/ );
+      const parts = importee.split( /[/\\]/ );
       const id = parts.shift();
 
       return list.then((dependencies) => {
