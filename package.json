@@ -29,7 +29,7 @@
     "q": "1.5.1"
   },
   "devDependencies": {
-    "@babel/core": "7.5.0",
+    "@babel/core": "7.5.4",
     "@babel/preset-env": "7.5.0",
     "bower": ">=1.7.0",
     "del": "5.0.0",
