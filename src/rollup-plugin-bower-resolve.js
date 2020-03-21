@@ -22,7 +22,12 @@
  * SOFTWARE.
  */
 
-import _ from 'lodash';
+import castArray from 'lodash.castarray';
+import pick from 'lodash.pick';
+import includes from 'lodash.includes';
+import has from 'lodash.has';
+import isArray from 'lodash.isarray';
+import filter from 'lodash.filter';
 import path from 'path';
 import {bower} from './bower';
 
@@ -37,8 +42,8 @@ export function rollupPluginbowerResolve(options) {
   const useModule = opts.module !== false;
   const useJsNext = opts.jsnext !== false;
   const override = opts.override || {};
-  const skip = opts.skip ? _.castArray(opts.skip) : [];
-  const list = bower.list(_.pick(opts, ['offline', 'cwd']));
+  const skip = opts.skip ? castArray(opts.skip) : [];
+  const list = bower.list(pick(opts, ['offline', 'cwd']));
 
   return {
     resolveId(importee, importer) {
@@ -47,7 +52,7 @@ export function rollupPluginbowerResolve(options) {
         return null;
       }
 
-      if (_.includes(skip, importee)) {
+      if (includes(skip, importee)) {
         // Skip dependency
         return null;
       }
@@ -56,7 +61,7 @@ export function rollupPluginbowerResolve(options) {
       const id = parts.shift();
 
       return list.then((dependencies) => {
-        if (!_.has(dependencies, id)) {
+        if (!has(dependencies, id)) {
           return null;
         }
 
@@ -73,7 +78,7 @@ export function rollupPluginbowerResolve(options) {
         }
 
         // Allow path to be overridden
-        if (_.has(override, importee)) {
+        if (has(override, importee)) {
           return path.join(dir, override[importee]);
         }
 
@@ -95,8 +100,8 @@ export function rollupPluginbowerResolve(options) {
         }
 
         // If it is an array, find main file.
-        if (_.isArray(main)) {
-          const jsFiles = _.filter(main, (f) => {
+        if (isArray(main)) {
+          const jsFiles = filter(main, (f) => {
             const extension = path.extname(f);
             return extension.toLowerCase() === '.js';
           });

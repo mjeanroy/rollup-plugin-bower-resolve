@@ -22,7 +22,9 @@
  * SOFTWARE.
  */
 
-import _ from 'lodash';
+import forEach from 'lodash.foreach';
+import has from 'lodash.has';
+import assign from 'lodash.assign';
 import _bower from 'bower';
 import Q from 'q';
 
@@ -71,13 +73,13 @@ function execList(options) {
  * @return {Object} The dependencies.
  */
 function flatten(pkg, dependencies = {}) {
-  _.forEach(pkg.dependencies, (dep, id) => {
-    if (!_.has(dependencies, id)) {
+  forEach(pkg.dependencies, (dep, id) => {
+    if (!has(dependencies, id)) {
       // Store current dependency...
       dependencies[id] = dep;
 
       // ... and add transitive dependencies
-      _.extend(dependencies, flatten(dep, dependencies));
+      assign(dependencies, flatten(dep, dependencies));
     }
   });
 
