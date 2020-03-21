@@ -26,8 +26,6 @@ import castArray from 'lodash.castarray';
 import pick from 'lodash.pick';
 import includes from 'lodash.includes';
 import has from 'lodash.has';
-import isArray from 'lodash.isarray';
-import filter from 'lodash.filter';
 import path from 'path';
 import {bower} from './bower';
 
@@ -100,8 +98,8 @@ export function rollupPluginbowerResolve(options) {
         }
 
         // If it is an array, find main file.
-        if (isArray(main)) {
-          const jsFiles = filter(main, (f) => {
+        if (Array.isArray(main)) {
+          const jsFiles = main.filter((f) => {
             const extension = path.extname(f);
             return extension.toLowerCase() === '.js';
           });

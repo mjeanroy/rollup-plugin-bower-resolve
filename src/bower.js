@@ -24,7 +24,6 @@
 
 import forEach from 'lodash.foreach';
 import has from 'lodash.has';
-import assign from 'lodash.assign';
 import _bower from 'bower';
 import Q from 'q';
 
@@ -79,7 +78,7 @@ function flatten(pkg, dependencies = {}) {
       dependencies[id] = dep;
 
       // ... and add transitive dependencies
-      assign(dependencies, flatten(dep, dependencies));
+      Object.assign(dependencies, flatten(dep, dependencies));
     }
   });
 
