@@ -66,6 +66,6 @@
   },
   "peerDependencies": {
     "bower": ">=1.7.0",
-    "rollup": "<2"
+    "rollup": "^1.0.0"
   }
 }
