@@ -22,12 +22,10 @@
  * SOFTWARE.
  */
 
-'use strict';
-
-const Q = require('q');
-const bower = require('bower');
-const bowerUtil = require('../dist/bower');
-const mockPromises = require('mock-promises');
+import Q from 'q';
+import _bower from 'bower';
+import mockPromises from 'mock-promises';
+import {bower} from '../src/bower';
 
 describe('bower', () => {
   let cwd;
@@ -48,12 +46,12 @@ describe('bower', () => {
     const response = jasmine.createSpyObj('bowerList', ['on']);
     response.on.and.returnValue(response);
 
-    spyOn(bower.commands, 'list').and.returnValue(response);
+    spyOn(_bower.commands, 'list').and.returnValue(response);
 
-    const promise = bowerUtil.list();
+    const promise = bower.list();
 
     expect(promise).toBeDefined();
-    expect(bower.commands.list).toHaveBeenCalledWith(undefined, {
+    expect(_bower.commands.list).toHaveBeenCalledWith(undefined, {
       json: true,
       offline: true,
       cwd,
@@ -88,12 +86,12 @@ describe('bower', () => {
     const response = jasmine.createSpyObj('bowerList', ['on']);
     response.on.and.returnValue(response);
 
-    spyOn(bower.commands, 'list').and.returnValue(response);
+    spyOn(_bower.commands, 'list').and.returnValue(response);
 
-    const promise = bowerUtil.list();
+    const promise = bower.list();
 
     expect(promise).toBeDefined();
-    expect(bower.commands.list).toHaveBeenCalledWith(undefined, {
+    expect(_bower.commands.list).toHaveBeenCalledWith(undefined, {
       json: true,
       offline: true,
       cwd,
@@ -132,15 +130,15 @@ describe('bower', () => {
     const response = jasmine.createSpyObj('bowerList', ['on']);
     response.on.and.returnValue(response);
 
-    spyOn(bower.commands, 'list').and.returnValue(response);
+    spyOn(_bower.commands, 'list').and.returnValue(response);
 
     const offline = false;
     const cwd = '/tmp';
 
-    const promise = bowerUtil.list({offline, cwd});
+    const promise = bower.list({offline, cwd});
 
     expect(promise).toBeDefined();
-    expect(bower.commands.list).toHaveBeenCalledWith(undefined, {
+    expect(_bower.commands.list).toHaveBeenCalledWith(undefined, {
       json: true,
       offline,
       cwd,
@@ -175,12 +173,12 @@ describe('bower', () => {
     const response = jasmine.createSpyObj('bowerList', ['on']);
     response.on.and.returnValue(response);
 
-    spyOn(bower.commands, 'list').and.returnValue(response);
+    spyOn(_bower.commands, 'list').and.returnValue(response);
 
-    const promise = bowerUtil.list();
+    const promise = bower.list();
 
     expect(promise).toBeDefined();
-    expect(bower.commands.list).toHaveBeenCalledWith(undefined, {
+    expect(_bower.commands.list).toHaveBeenCalledWith(undefined, {
       json: true,
       offline: true,
       cwd,

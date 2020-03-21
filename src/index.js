@@ -22,30 +22,6 @@
  * SOFTWARE.
  */
 
-require('@babel/register')({
-  ignore: [
-    /node_modules/,
-  ],
-});
+import {rollupPluginbowerResolve} from './rollup-plugin-bower-resolve';
 
-const gulp = require('gulp');
-const clean = require('./scripts/clean');
-const lint = require('./scripts/lint');
-const build = require('./scripts/build');
-const test = require('./scripts/test');
-const release = require('./scripts/release');
-
-const prebuild = gulp.series(clean, lint);
-const pretest = gulp.series(prebuild, build);
-const prerelease = gulp.series(pretest, test.test);
-
-module.exports = {
-  'clean': clean,
-  'lint': lint,
-  'build': gulp.series(prebuild, build),
-  'tdd': gulp.series(pretest, test.tdd),
-  'test': gulp.series(pretest, test.test),
-  'release:patch': gulp.series(prerelease, release.patch),
-  'release:minor': gulp.series(prerelease, release.minor),
-  'release:major': gulp.series(prerelease, release.major),
-};
+export default rollupPluginbowerResolve;

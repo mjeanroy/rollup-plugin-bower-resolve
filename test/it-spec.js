@@ -22,14 +22,12 @@
  * SOFTWARE.
  */
 
-'use strict';
-
-const fs = require('fs');
-const path = require('path');
-const tmp = require('tmp');
-const rollup = require('rollup');
-const commonjs = require('rollup-plugin-commonjs');
-const bowerResolve = require('../dist/rollup-plugin-bower-resolve');
+import fs from 'fs';
+import path from 'path';
+import tmp from 'tmp';
+import * as rollup from 'rollup';
+import commonjs from 'rollup-plugin-commonjs';
+import bowerResolve from '../src/index';
 
 describe('bowerResolve', () => {
   let cwd;

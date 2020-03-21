@@ -22,13 +22,11 @@
  * SOFTWARE.
  */
 
-'use strict';
-
-const path = require('path');
-const Q = require('q');
-const mockPromises = require('mock-promises');
-const bower = require('../dist/bower');
-const bowerResolve = require('../dist/rollup-plugin-bower-resolve');
+import path from 'path';
+import Q from 'q';
+import mockPromises from 'mock-promises';
+import {bower} from '../src/bower';
+import {rollupPluginbowerResolve} from '../src/rollup-plugin-bower-resolve';
 
 describe('bowerResolve', () => {
   let underscore;
@@ -46,7 +44,7 @@ describe('bowerResolve', () => {
   });
 
   it('should return null if importer is null', () => {
-    const plugin = bowerResolve();
+    const plugin = rollupPluginbowerResolve();
     const result = plugin.resolveId('underscore', null);
     expect(result).toBeNull();
   });
@@ -57,7 +55,7 @@ describe('bowerResolve', () => {
 
     spyOn(bower, 'list').and.returnValue(promise);
 
-    const plugin = bowerResolve();
+    const plugin = rollupPluginbowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
 
     expect(result).toBeDefined();
@@ -89,7 +87,7 @@ describe('bowerResolve', () => {
 
     spyOn(bower, 'list').and.returnValue(promise);
 
-    const plugin = bowerResolve();
+    const plugin = rollupPluginbowerResolve();
     const result = plugin.resolveId('underscore/dist/underscore.js', './app.js');
 
     expect(result).toBeDefined();
@@ -121,7 +119,7 @@ describe('bowerResolve', () => {
 
     spyOn(bower, 'list').and.returnValue(promise);
 
-    const plugin = bowerResolve({
+    const plugin = rollupPluginbowerResolve({
       offline: false,
     });
 
@@ -159,7 +157,7 @@ describe('bowerResolve', () => {
     spyOn(bower, 'list').and.returnValue(promise);
 
     const cwd = '/tmp';
-    const plugin = bowerResolve({cwd});
+    const plugin = rollupPluginbowerResolve({cwd});
 
     const result = plugin.resolveId('underscore', './app.js');
 
@@ -192,7 +190,7 @@ describe('bowerResolve', () => {
 
     spyOn(bower, 'list').and.returnValue(promise);
 
-    const plugin = bowerResolve({
+    const plugin = rollupPluginbowerResolve({
       override: {
         underscore: './dist/underscore.js',
       },
@@ -229,7 +227,7 @@ describe('bowerResolve', () => {
 
     spyOn(bower, 'list').and.returnValue(promise);
 
-    const plugin = bowerResolve();
+    const plugin = rollupPluginbowerResolve();
 
     const result = plugin.resolveId('underscore', './app.js');
 
@@ -264,7 +262,7 @@ describe('bowerResolve', () => {
 
     spyOn(bower, 'list').and.returnValue(promise);
 
-    const plugin = bowerResolve({
+    const plugin = rollupPluginbowerResolve({
       module: true,
     });
 
@@ -301,7 +299,7 @@ describe('bowerResolve', () => {
 
     spyOn(bower, 'list').and.returnValue(promise);
 
-    const plugin = bowerResolve({
+    const plugin = rollupPluginbowerResolve({
       module: false,
     });
 
@@ -338,7 +336,7 @@ describe('bowerResolve', () => {
 
     spyOn(bower, 'list').and.returnValue(promise);
 
-    const plugin = bowerResolve({
+    const plugin = rollupPluginbowerResolve({
       jsnext: true,
     });
 
@@ -375,7 +373,7 @@ describe('bowerResolve', () => {
 
     spyOn(bower, 'list').and.returnValue(promise);
 
-    const plugin = bowerResolve({
+    const plugin = rollupPluginbowerResolve({
       jsnext: false,
     });
 
@@ -412,7 +410,7 @@ describe('bowerResolve', () => {
 
     spyOn(bower, 'list').and.returnValue(promise);
 
-    const plugin = bowerResolve();
+    const plugin = rollupPluginbowerResolve();
 
     const result = plugin.resolveId('underscore', './app.js');
 
@@ -447,7 +445,7 @@ describe('bowerResolve', () => {
 
     spyOn(bower, 'list').and.returnValue(promise);
 
-    const plugin = bowerResolve({
+    const plugin = rollupPluginbowerResolve({
       module: true,
       jsnext: true,
     });
@@ -486,7 +484,7 @@ describe('bowerResolve', () => {
 
     spyOn(bower, 'list').and.returnValue(promise);
 
-    const plugin = bowerResolve();
+    const plugin = rollupPluginbowerResolve();
 
     const result = plugin.resolveId('underscore', './app.js');
 
@@ -520,7 +518,7 @@ describe('bowerResolve', () => {
 
     spyOn(bower, 'list').and.returnValue(promise);
 
-    const plugin = bowerResolve();
+    const plugin = rollupPluginbowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
 
     expect(bower.list).toHaveBeenCalledWith({});
@@ -552,7 +550,7 @@ describe('bowerResolve', () => {
   });
 
   it('should return null with skipped dependency', () => {
-    const plugin = bowerResolve({
+    const plugin = rollupPluginbowerResolve({
       skip: ['underscore'],
     });
 
@@ -567,7 +565,7 @@ describe('bowerResolve', () => {
 
     spyOn(bower, 'list').and.returnValue(promise);
 
-    const plugin = bowerResolve();
+    const plugin = rollupPluginbowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
 
     expect(bower.list).toHaveBeenCalledWith({});
@@ -598,7 +596,7 @@ describe('bowerResolve', () => {
 
     spyOn(bower, 'list').and.returnValue(promise);
 
-    const plugin = bowerResolve();
+    const plugin = rollupPluginbowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
 
     expect(bower.list).toHaveBeenCalledWith({});
@@ -636,7 +634,7 @@ describe('bowerResolve', () => {
 
     spyOn(bower, 'list').and.returnValue(promise);
 
-    const plugin = bowerResolve();
+    const plugin = rollupPluginbowerResolve();
     const result = plugin.resolveId('bootstrap', './app.js');
 
     expect(bower.list).toHaveBeenCalledWith({});
@@ -676,7 +674,7 @@ describe('bowerResolve', () => {
 
     spyOn(bower, 'list').and.returnValue(promise);
 
-    const plugin = bowerResolve();
+    const plugin = rollupPluginbowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
 
     expect(bower.list).toHaveBeenCalledWith({});

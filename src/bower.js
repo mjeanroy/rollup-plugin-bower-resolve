@@ -22,15 +22,19 @@
  * SOFTWARE.
  */
 
-'use strict';
+import _ from 'lodash';
+import _bower from 'bower';
+import Q from 'q';
 
-const _ = require('lodash');
-const bower = require('bower');
-const Q = require('q');
-
-module.exports.list = function(options = {}) {
+/**
+ * List all dependencies of a bower package.
+ *
+ * @param {Object} options Bower options.
+ * @return {Promise<Object>} The promise of dependency object.
+ */
+function list(options = {}) {
   return execList(options);
-};
+}
 
 /**
  * List all dependencies of a bower package.
@@ -46,7 +50,7 @@ function execList(options) {
   const cwd = options.cwd || process.cwd();
   const config = {json, offline, cwd};
 
-  bower.commands.list(undefined, config)
+  _bower.commands.list(undefined, config)
       .on('end', (conf) => {
         deferred.resolve(flatten(conf));
       })
@@ -79,3 +83,7 @@ function flatten(pkg, dependencies = {}) {
 
   return dependencies;
 }
+
+export const bower = {
+  list,
+};

@@ -22,13 +22,17 @@
  * SOFTWARE.
  */
 
-'use strict';
+import _ from 'lodash';
+import path from 'path';
+import {bower} from './bower';
 
-const _ = require('lodash');
-const path = require('path');
-const bower = require('./bower');
-
-module.exports = (options) => {
+/**
+ * Create plugin instance.
+ *
+ * @param {Object} options Plugin options.
+ * @return {Object} Plugin instance.
+ */
+export function rollupPluginbowerResolve(options) {
   const opts = options || {};
   const useModule = opts.module !== false;
   const useJsNext = opts.jsnext !== false;
@@ -114,4 +118,4 @@ module.exports = (options) => {
       });
     },
   };
-};
+}

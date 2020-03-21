@@ -2,7 +2,7 @@
   "name": "rollup-plugin-bower-resolve",
   "version": "0.5.0",
   "description": "Use the bower resolution algorithm with Rollup",
-  "main": "dist/rollup-plugin-bower-resolve.js",
+  "main": "dist/index.js",
   "author": "mjeanroy <mickael.jeanroy@gmail.com>",
   "license": "MIT",
   "scripts": {
@@ -32,6 +32,8 @@
   "devDependencies": {
     "@babel/core": "7.9.0",
     "@babel/preset-env": "7.9.0",
+    "@babel/register": "7.9.0",
+    "babel-plugin-add-module-exports": "1.0.2",
     "bower": ">=1.7.0",
     "eslint": "6.8.0",
     "eslint-config-google": "0.14.0",
