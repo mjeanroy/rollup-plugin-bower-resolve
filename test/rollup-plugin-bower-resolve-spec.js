@@ -24,6 +24,7 @@
 
 'use strict';
 
+const path = require('path');
 const Q = require('q');
 const mockPromises = require('mock-promises');
 const bower = require('../dist/bower');
@@ -77,7 +78,9 @@ describe('bowerResolve', () => {
     mockPromises.tick();
 
     expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith('/tmp/underscore/underscore.js');
+    expect(done).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.js')
+    );
   });
 
   it('should return a promise with full path', () => {
@@ -107,7 +110,9 @@ describe('bowerResolve', () => {
     mockPromises.tick();
 
     expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith('/tmp/underscore/dist/underscore.js');
+    expect(done).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'dist', 'underscore.js')
+    );
   });
 
   it('should return a promise using bower online', () => {
@@ -142,7 +147,9 @@ describe('bowerResolve', () => {
     mockPromises.tick();
 
     expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith('/tmp/underscore/underscore.js');
+    expect(done).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.js')
+    );
   });
 
   it('should return a promise using custom work directory', () => {
@@ -174,7 +181,9 @@ describe('bowerResolve', () => {
     mockPromises.tick();
 
     expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith('/tmp/underscore/underscore.js');
+    expect(done).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.js')
+    );
   });
 
   it('should return a promise of bower dependency path with overridden main', () => {
@@ -209,7 +218,9 @@ describe('bowerResolve', () => {
     mockPromises.tick();
 
     expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith('/tmp/underscore/dist/underscore.js');
+    expect(done).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'dist', 'underscore.js')
+    );
   });
 
   it('should return a promise of bower dependency path with module entry by default', () => {
@@ -242,7 +253,9 @@ describe('bowerResolve', () => {
     mockPromises.tick();
 
     expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith('/tmp/underscore/underscore.m.js');
+    expect(done).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.m.js')
+    );
   });
 
   it('should return a promise of bower dependency path with module entry', () => {
@@ -277,7 +290,9 @@ describe('bowerResolve', () => {
     mockPromises.tick();
 
     expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith('/tmp/underscore/underscore.m.js');
+    expect(done).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.m.js')
+    );
   });
 
   it('should return a promise of bower dependency path with main entry if `module` is false', () => {
@@ -312,7 +327,9 @@ describe('bowerResolve', () => {
     mockPromises.tick();
 
     expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith('/tmp/underscore/underscore.js');
+    expect(done).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.js')
+    );
   });
 
   it('should return a promise of bower dependency path with jsnext entry if enabled', () => {
@@ -347,7 +364,9 @@ describe('bowerResolve', () => {
     mockPromises.tick();
 
     expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith('/tmp/underscore/underscore.m.js');
+    expect(done).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.m.js')
+    );
   });
 
   it('should return a promise of bower dependency path without jsnext entry if disabled', () => {
@@ -382,7 +401,9 @@ describe('bowerResolve', () => {
     mockPromises.tick();
 
     expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith('/tmp/underscore/underscore.js');
+    expect(done).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.js')
+    );
   });
 
   it('should return a promise of bower dependency path with jsnext entry by default', () => {
@@ -415,7 +436,9 @@ describe('bowerResolve', () => {
     mockPromises.tick();
 
     expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith('/tmp/underscore/underscore.m.js');
+    expect(done).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.m.js')
+    );
   });
 
   it('should return a promise of bower dependency path with module entry by default instead of jsnext', () => {
@@ -452,7 +475,9 @@ describe('bowerResolve', () => {
     mockPromises.tick();
 
     expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith('/tmp/underscore/underscore.module.js');
+    expect(done).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.module.js')
+    );
   });
 
   it('should return a promise of bower dependency path with overridden main', () => {
@@ -484,7 +509,9 @@ describe('bowerResolve', () => {
     mockPromises.tick();
 
     expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith('/tmp/underscore/underscore.js');
+    expect(done).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.js')
+    );
   });
 
   it('should return a promise of null with missing dependency', () => {
