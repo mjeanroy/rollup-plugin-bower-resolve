@@ -1,3 +1,22 @@
+## <small>2.0.1 (2020-03-22)</small>
+
+* release: prepare next release ([f574d74](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/f574d74))
+* release: release version ([f58e551](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/f58e551))
+* chore: fix package.json to also support rollup ^1.0.0 ([b9b20e1](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/b9b20e1))
+* chore: support node >= 10.0.0 ([a14500c](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/a14500c))
+* chore: update npmignore ([d3c7c16](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/d3c7c16))
+
+
+
+## 2.0.0 (2020-03-21)
+
+* release: prepare next release ([567bab6](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/567bab6))
+* release: release version ([b827386](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/b827386))
+* chore: support rollup 2.x.x ([44c43ab](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/44c43ab))
+* docs: update changelog ([20005c4](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/20005c4))
+
+
+
 ## 1.0.0 (2020-03-21)
 
 * release: prepare next release ([11eaad0](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/11eaad0))
@@ -26,8 +45,8 @@
 * chore: pin jasmine version to 3.1.0 ([6f8deb2](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/6f8deb2))
 * chore: remove outdated node version ([42f2bc6](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/42f2bc6))
 * chore: update babel rollup configuration ([7cbea2a](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/7cbea2a))
-* chore: update copyright header ([903b345](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/903b345))
 * chore: update copyright header ([eb0f6b1](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/eb0f6b1))
+* chore: update copyright header ([903b345](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/903b345))
 * chore: update eslint configuration ([1c6f6af](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/1c6f6af))
 * chore: update eslint to version 5.5.0 ([4cd2c70](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/4cd2c70))
 * chore: update gitignore ([b00e0d9](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/b00e0d9))
