@@ -76,6 +76,21 @@ rollup({
 
 ## Changelog
 
+- 2.0.1
+  - Add `engines` field in `package.json` file.
+- 2.0.0
+  - Add support for rollup 2.x.x
+  - Remove support for node < 10.0.0
+- 1.0.1
+  - Add `engines` field in `package.json` file.
+- 1.0.0
+  - Remove support for rollup < 1.0.0.
+  - Remove support for node < 6.0.0
+- 0.6.0
+  - Dependency updates.
+- 0.5.0
+  - Fix importing main entry point when it is located in a sub directory.
+  - Dependency updates.
 - 0.4.0
   - Fix `offline` mode (and add options to disable offline).
   - Add `cwd` option.
