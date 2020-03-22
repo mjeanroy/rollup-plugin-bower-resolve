@@ -1,3 +1,10 @@
+## <small>1.0.1 (2020-03-22)</small>
+
+* release: release version ([a942b83](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/a942b83))
+* chore: add engines field to package.json ([46c77a1](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/46c77a1))
+
+
+
 ## <small>2.0.1 (2020-03-22)</small>
 
 * release: prepare next release ([f574d74](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/f574d74))
@@ -5,6 +12,22 @@
 * chore: fix package.json to also support rollup ^1.0.0 ([b9b20e1](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/b9b20e1))
 * chore: support node >= 10.0.0 ([a14500c](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/a14500c))
 * chore: update npmignore ([d3c7c16](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/d3c7c16))
+
+
+
+## 2.0.0 (2020-03-21)
+
+* release: prepare next release ([567bab6](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/567bab6))
+* release: release version ([b827386](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/b827386))
+* chore: support rollup 2.x.x ([44c43ab](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/44c43ab))
+* docs: update changelog ([20005c4](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/20005c4))
+
+
+
+## <small>1.0.1 (2020-03-22)</small>
+
+* release: release version ([a942b83](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/a942b83))
+* chore: add engines field to package.json ([46c77a1](https://github.com/mjeanroy/rollup-plugin-bower-resolve/commit/46c77a1))
 
 
 
