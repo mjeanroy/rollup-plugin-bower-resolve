@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-bower-resolve",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Use the bower resolution algorithm with Rollup",
   "main": "dist/index.js",
   "author": "mjeanroy <mickael.jeanroy@gmail.com>",
