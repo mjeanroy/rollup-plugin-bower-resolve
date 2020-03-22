@@ -31,6 +31,7 @@
 /src
 /scripts
 /gulpfile.js
+/.gitattributes
 /.nvmrc
 /.eslintrc
 /.eslintignore
