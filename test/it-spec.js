@@ -26,7 +26,7 @@ import fs from 'fs';
 import path from 'path';
 import tmp from 'tmp';
 import * as rollup from 'rollup';
-import commonjs from 'rollup-plugin-commonjs';
+import commonjs from '@rollup/plugin-commonjs';
 import bowerResolve from '../src/index';
 
 describe('bowerResolve', () => {
