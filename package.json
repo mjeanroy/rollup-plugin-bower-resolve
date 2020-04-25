@@ -60,7 +60,7 @@
     "rollup-plugin-license": "2.0.0",
     "rollup-plugin-prettier": "2.0.0",
     "rollup-plugin-strip-banner": "2.0.0",
-    "tmp": "0.1.0"
+    "tmp": "0.2.0"
   },
   "peerDependencies": {
     "bower": ">=1.7.0",
