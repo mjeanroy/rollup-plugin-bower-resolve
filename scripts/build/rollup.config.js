@@ -24,7 +24,7 @@
 
 const path = require('path');
 const stripBanner = require('rollup-plugin-strip-banner');
-const babel = require('rollup-plugin-babel');
+const babel = require('@rollup/plugin-babel').default;
 const license = require('rollup-plugin-license');
 const prettier = require('rollup-plugin-prettier');
 const config = require('../config');
