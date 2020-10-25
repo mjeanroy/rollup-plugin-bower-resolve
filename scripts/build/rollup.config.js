@@ -33,7 +33,11 @@ const pkg = require('../../package.json');
 module.exports = {
   input: path.join(config.src, 'index.js'),
   output: [
-    {format: 'cjs', file: path.join(config.dist, 'index.js')},
+    {
+      format: 'cjs',
+      file: path.join(config.dist, 'index.js'),
+      exports: 'default',
+    },
   ],
 
   plugins: [
