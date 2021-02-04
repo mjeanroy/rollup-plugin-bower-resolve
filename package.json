@@ -39,7 +39,7 @@
     "@babel/preset-env": "7.12.11",
     "@babel/register": "7.12.10",
     "@rollup/plugin-babel": "5.2.3",
-    "@rollup/plugin-commonjs": "17.0.0",
+    "@rollup/plugin-commonjs": "17.1.0",
     "babel-plugin-add-module-exports": "1.0.4",
     "bower": ">=1.7.0",
     "eslint": "7.19.0",
