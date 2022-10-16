@@ -30,6 +30,10 @@
 /npm-debug.log
 /package-lock.json
 
+# IDE
+/.idea
+*.iml
+
 # Logs
 *.log
 
