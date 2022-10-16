@@ -27,6 +27,7 @@
 
 # Do not send dev resources
 /.github
+/.idea
 /test
 /src
 /scripts
@@ -38,6 +39,7 @@
 /.eslintignore
 /.babelrc
 /.travis.yml
+/*.iml
 
 # Logs
 *.log
