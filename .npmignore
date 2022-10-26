@@ -31,6 +31,7 @@
 /test
 /src
 /scripts
+/package
 /gulpfile.js
 /.gitattributes
 /.npmrc
@@ -40,6 +41,7 @@
 /.babelrc
 /.travis.yml
 /*.iml
+/*.tar.gz
 
 # Logs
 *.log
