@@ -57,7 +57,7 @@
     "mock-promises": "0.8.2",
     "prettier": "2.8.1",
     "rimraf": "3.0.2",
-    "rollup": "3.8.1",
+    "rollup": "3.9.0",
     "rollup-plugin-license": "3.0.1",
     "rollup-plugin-prettier": "3.0.0",
     "rollup-plugin-strip-banner": "3.0.0",
