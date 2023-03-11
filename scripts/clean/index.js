@@ -25,6 +25,6 @@
 const rimraf = require('rimraf');
 const config = require('../config');
 
-module.exports = function clean(done) {
-  rimraf(config.dist, done);
+module.exports = function clean() {
+  return rimraf(config.dist);
 };
