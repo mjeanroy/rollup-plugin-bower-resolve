@@ -23,13 +23,11 @@
  */
 
 const path = require('path');
-const gulp = require('gulp');
-const eslint = require('gulp-eslint');
 const log = require('../log');
 const config = require('../config');
 
 module.exports = function lint() {
-  const src = [
+  const inputs = [
     path.join(config.root, '*.js'),
     path.join(config.src, '**', '*.js'),
     path.join(config.test, '**', '*.js'),
@@ -38,12 +36,23 @@ module.exports = function lint() {
 
   log.debug('Linting files: ');
 
-  src.forEach((input) => (
+  inputs.forEach((input) => (
     log.debug(`  ${input}`)
   ));
 
-  return gulp.src(src)
-      .pipe(eslint())
-      .pipe(eslint.format())
-      .pipe(eslint.failAfterError());
+  const {ESLint} = require('eslint');
+  const fancyLog = require('fancy-log');
+  const eslint = new ESLint({
+    errorOnUnmatchedPattern: false,
+  });
+
+  const lintFiles = eslint.lintFiles(inputs);
+  const loadFormatter = eslint.loadFormatter('stylish');
+
+  return Promise.all([lintFiles, loadFormatter]).then(([results, formatter]) => {
+    if (results.errorCount > 0 || results.warningCount > 0) {
+      fancyLog(formatter.format(results));
+      throw new Error('ESLintError');
+    }
+  });
 };
