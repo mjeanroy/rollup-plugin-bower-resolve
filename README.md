@@ -77,6 +77,11 @@ rollup({
 
 ## Changelog
 
+- 3.1.0
+  - Add support for rollup ^4.0.0
+- 3.0.0
+  - Add support for rollup ^3.0.0
+  - Remove support for node < 14
 - 2.0.1
   - Add `engines` field in `package.json` file.
 - 2.0.0
