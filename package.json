@@ -52,7 +52,7 @@
     "jasmine": "3.1.0",
     "jasmine-core": "3.10.1",
     "mock-promises": "0.8.2",
-    "prettier": "3.1.0",
+    "prettier": "3.1.1",
     "rimraf": "5.0.5",
     "rollup": "4.7.0",
     "rollup-plugin-license": "3.2.0",
