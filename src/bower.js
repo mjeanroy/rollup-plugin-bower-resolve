@@ -49,15 +49,15 @@ function execList(options) {
   const json = options.json !== false;
   const offline = options.offline !== false;
   const cwd = options.cwd || process.cwd();
-  const config = {json, offline, cwd};
+  const config = { json, offline, cwd };
 
   _bower.commands.list(undefined, config)
-      .on('end', (conf) => {
-        deferred.resolve(flatten(conf));
-      })
-      .on('error', (error) => {
-        deferred.reject(error);
-      });
+    .on('end', (conf) => {
+      deferred.resolve(flatten(conf));
+    })
+    .on('error', (error) => {
+      deferred.reject(error);
+    });
 
   return deferred.promise;
 }
@@ -75,6 +75,7 @@ function flatten(pkg, dependencies = {}) {
   forEach(pkg.dependencies, (dep, id) => {
     if (!has(dependencies, id)) {
       // Store current dependency...
+      // eslint-disable-next-line no-param-reassign
       dependencies[id] = dep;
 
       // ... and add transitive dependencies

@@ -22,6 +22,6 @@
  * SOFTWARE.
  */
 
-import {rollupPluginbowerResolve} from './rollup-plugin-bower-resolve';
+import { rollupPluginbowerResolve } from './rollup-plugin-bower-resolve';
 
 export default rollupPluginbowerResolve;

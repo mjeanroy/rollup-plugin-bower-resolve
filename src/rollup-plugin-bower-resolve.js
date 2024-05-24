@@ -27,7 +27,7 @@ import pick from 'lodash.pick';
 import includes from 'lodash.includes';
 import has from 'lodash.has';
 import path from 'path';
-import {bower} from './bower';
+import { bower } from './bower';
 
 /**
  * Create plugin instance.
@@ -55,7 +55,7 @@ export function rollupPluginbowerResolve(options) {
         return null;
       }
 
-      const parts = importee.split( /[/\\]/ );
+      const parts = importee.split(/[/\\]/);
       const id = parts.shift();
 
       return list.then((dependencies) => {
@@ -93,7 +93,7 @@ export function rollupPluginbowerResolve(options) {
 
         if (!main) {
           throw new Error(
-              `Dependency ${importee} does not specify any main entry, please use 'override' options to specify main file`
+            `Dependency ${importee} does not specify any main entry, please use 'override' options to specify main file`,
           );
         }
 
@@ -106,11 +106,11 @@ export function rollupPluginbowerResolve(options) {
 
           if (jsFiles.length === 0) {
             throw new Error(
-                `Dependency ${importee} does not specify any js main, please use 'override' options to specify main file`
+              `Dependency ${importee} does not specify any js main, please use 'override' options to specify main file`,
             );
           } else if (jsFiles.length > 1) {
             throw new Error(
-                `Dependency ${importee} specify multiple js main entries, please use 'override' options to specify main file`
+              `Dependency ${importee} specify multiple js main entries, please use 'override' options to specify main file`,
             );
           }
 

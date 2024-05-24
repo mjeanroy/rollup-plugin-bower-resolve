@@ -22,10 +22,12 @@
  * SOFTWARE.
  */
 
+/* eslint-disable global-require */
+
 import Q from 'q';
 import _bower from 'bower';
 import mockPromises from 'mock-promises';
-import {bower} from '../src/bower';
+import { bower } from '../src/bower';
 
 describe('bower', () => {
   let cwd;
@@ -71,7 +73,7 @@ describe('bower', () => {
 
     const underscore = require('./fixtures/underscore-meta')();
     const main = require('./fixtures/test1-meta')();
-    const dependencies = {underscore};
+    const dependencies = { underscore };
 
     response.on.calls.first().args[1](main);
 
@@ -133,15 +135,15 @@ describe('bower', () => {
     spyOn(_bower.commands, 'list').and.returnValue(response);
 
     const offline = false;
-    const cwd = '/tmp';
+    const tmp = '/tmp';
 
-    const promise = bower.list({offline, cwd});
+    const promise = bower.list({ offline, cwd: tmp });
 
     expect(promise).toBeDefined();
     expect(_bower.commands.list).toHaveBeenCalledWith(undefined, {
       json: true,
       offline,
-      cwd,
+      cwd: tmp,
     });
 
     expect(response.on).toHaveBeenCalledWith('end', jasmine.any(Function));
@@ -158,7 +160,7 @@ describe('bower', () => {
 
     const underscore = require('./fixtures/underscore-meta')();
     const main = require('./fixtures/test1-meta')();
-    const dependencies = {underscore};
+    const dependencies = { underscore };
 
     response.on.calls.first().args[1](main);
 

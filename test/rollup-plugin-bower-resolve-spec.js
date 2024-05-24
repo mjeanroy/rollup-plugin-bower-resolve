@@ -25,13 +25,14 @@
 import path from 'path';
 import Q from 'q';
 import mockPromises from 'mock-promises';
-import {bower} from '../src/bower';
-import {rollupPluginbowerResolve} from '../src/rollup-plugin-bower-resolve';
+import { bower } from '../src/bower';
+import { rollupPluginbowerResolve } from '../src/rollup-plugin-bower-resolve';
 
 describe('bowerResolve', () => {
   let underscore;
 
   beforeEach(() => {
+    // eslint-disable-next-line global-require
     underscore = require('./fixtures/underscore-meta')();
   });
 
@@ -51,7 +52,7 @@ describe('bowerResolve', () => {
 
   it('should return a promise of bower dependency path', () => {
     const deferred = Q.defer();
-    const promise = deferred.promise;
+    const { promise } = deferred;
 
     spyOn(bower, 'list').and.returnValue(promise);
 
@@ -66,7 +67,7 @@ describe('bowerResolve', () => {
     result.then(done);
     result.catch(error);
 
-    deferred.resolve({underscore});
+    deferred.resolve({ underscore });
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -77,13 +78,13 @@ describe('bowerResolve', () => {
 
     expect(error).not.toHaveBeenCalled();
     expect(done).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.js')
+      path.join('/', 'tmp', 'underscore', 'underscore.js'),
     );
   });
 
   it('should return a promise with full path', () => {
     const deferred = Q.defer();
-    const promise = deferred.promise;
+    const { promise } = deferred;
 
     spyOn(bower, 'list').and.returnValue(promise);
 
@@ -98,7 +99,7 @@ describe('bowerResolve', () => {
     result.then(done);
     result.catch(error);
 
-    deferred.resolve({underscore});
+    deferred.resolve({ underscore });
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -109,13 +110,13 @@ describe('bowerResolve', () => {
 
     expect(error).not.toHaveBeenCalled();
     expect(done).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'dist', 'underscore.js')
+      path.join('/', 'tmp', 'underscore', 'dist', 'underscore.js'),
     );
   });
 
   it('should return a promise using bower online', () => {
     const deferred = Q.defer();
-    const promise = deferred.promise;
+    const { promise } = deferred;
 
     spyOn(bower, 'list').and.returnValue(promise);
 
@@ -135,7 +136,7 @@ describe('bowerResolve', () => {
     result.then(done);
     result.catch(error);
 
-    deferred.resolve({underscore});
+    deferred.resolve({ underscore });
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -146,22 +147,22 @@ describe('bowerResolve', () => {
 
     expect(error).not.toHaveBeenCalled();
     expect(done).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.js')
+      path.join('/', 'tmp', 'underscore', 'underscore.js'),
     );
   });
 
   it('should return a promise using custom work directory', () => {
     const deferred = Q.defer();
-    const promise = deferred.promise;
+    const { promise } = deferred;
 
     spyOn(bower, 'list').and.returnValue(promise);
 
     const cwd = '/tmp';
-    const plugin = rollupPluginbowerResolve({cwd});
+    const plugin = rollupPluginbowerResolve({ cwd });
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith({cwd});
+    expect(bower.list).toHaveBeenCalledWith({ cwd });
     expect(result).toBeDefined();
 
     const done = jasmine.createSpy('done');
@@ -169,7 +170,7 @@ describe('bowerResolve', () => {
     result.then(done);
     result.catch(error);
 
-    deferred.resolve({underscore});
+    deferred.resolve({ underscore });
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -180,13 +181,13 @@ describe('bowerResolve', () => {
 
     expect(error).not.toHaveBeenCalled();
     expect(done).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.js')
+      path.join('/', 'tmp', 'underscore', 'underscore.js'),
     );
   });
 
   it('should return a promise of bower dependency path with overridden main', () => {
     const deferred = Q.defer();
-    const promise = deferred.promise;
+    const { promise } = deferred;
 
     spyOn(bower, 'list').and.returnValue(promise);
 
@@ -206,7 +207,7 @@ describe('bowerResolve', () => {
     result.then(done);
     result.catch(error);
 
-    deferred.resolve({underscore});
+    deferred.resolve({ underscore });
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -217,13 +218,13 @@ describe('bowerResolve', () => {
 
     expect(error).not.toHaveBeenCalled();
     expect(done).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'dist', 'underscore.js')
+      path.join('/', 'tmp', 'underscore', 'dist', 'underscore.js'),
     );
   });
 
   it('should return a promise of bower dependency path with module entry by default', () => {
     const deferred = Q.defer();
-    const promise = deferred.promise;
+    const { promise } = deferred;
 
     spyOn(bower, 'list').and.returnValue(promise);
 
@@ -241,7 +242,7 @@ describe('bowerResolve', () => {
 
     underscore.pkgMeta.module = './underscore.m.js';
     underscore.pkgMeta.main = './underscore.js';
-    deferred.resolve({underscore});
+    deferred.resolve({ underscore });
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -252,13 +253,13 @@ describe('bowerResolve', () => {
 
     expect(error).not.toHaveBeenCalled();
     expect(done).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.m.js')
+      path.join('/', 'tmp', 'underscore', 'underscore.m.js'),
     );
   });
 
   it('should return a promise of bower dependency path with module entry', () => {
     const deferred = Q.defer();
-    const promise = deferred.promise;
+    const { promise } = deferred;
 
     spyOn(bower, 'list').and.returnValue(promise);
 
@@ -278,7 +279,7 @@ describe('bowerResolve', () => {
 
     underscore.pkgMeta.module = './underscore.m.js';
     underscore.pkgMeta.main = './underscore.js';
-    deferred.resolve({underscore});
+    deferred.resolve({ underscore });
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -289,13 +290,13 @@ describe('bowerResolve', () => {
 
     expect(error).not.toHaveBeenCalled();
     expect(done).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.m.js')
+      path.join('/', 'tmp', 'underscore', 'underscore.m.js'),
     );
   });
 
   it('should return a promise of bower dependency path with main entry if `module` is false', () => {
     const deferred = Q.defer();
-    const promise = deferred.promise;
+    const { promise } = deferred;
 
     spyOn(bower, 'list').and.returnValue(promise);
 
@@ -315,7 +316,7 @@ describe('bowerResolve', () => {
 
     underscore.pkgMeta.module = './underscore.m.js';
     underscore.pkgMeta.main = './underscore.js';
-    deferred.resolve({underscore});
+    deferred.resolve({ underscore });
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -326,13 +327,13 @@ describe('bowerResolve', () => {
 
     expect(error).not.toHaveBeenCalled();
     expect(done).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.js')
+      path.join('/', 'tmp', 'underscore', 'underscore.js'),
     );
   });
 
   it('should return a promise of bower dependency path with jsnext entry if enabled', () => {
     const deferred = Q.defer();
-    const promise = deferred.promise;
+    const { promise } = deferred;
 
     spyOn(bower, 'list').and.returnValue(promise);
 
@@ -352,7 +353,7 @@ describe('bowerResolve', () => {
 
     underscore.pkgMeta['jsnext:main'] = './underscore.m.js';
     underscore.pkgMeta.main = './underscore.js';
-    deferred.resolve({underscore});
+    deferred.resolve({ underscore });
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -363,13 +364,13 @@ describe('bowerResolve', () => {
 
     expect(error).not.toHaveBeenCalled();
     expect(done).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.m.js')
+      path.join('/', 'tmp', 'underscore', 'underscore.m.js'),
     );
   });
 
   it('should return a promise of bower dependency path without jsnext entry if disabled', () => {
     const deferred = Q.defer();
-    const promise = deferred.promise;
+    const { promise } = deferred;
 
     spyOn(bower, 'list').and.returnValue(promise);
 
@@ -389,7 +390,7 @@ describe('bowerResolve', () => {
 
     underscore.pkgMeta['jsnext:main'] = './underscore.m.js';
     underscore.pkgMeta.main = './underscore.js';
-    deferred.resolve({underscore});
+    deferred.resolve({ underscore });
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -400,13 +401,13 @@ describe('bowerResolve', () => {
 
     expect(error).not.toHaveBeenCalled();
     expect(done).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.js')
+      path.join('/', 'tmp', 'underscore', 'underscore.js'),
     );
   });
 
   it('should return a promise of bower dependency path with jsnext entry by default', () => {
     const deferred = Q.defer();
-    const promise = deferred.promise;
+    const { promise } = deferred;
 
     spyOn(bower, 'list').and.returnValue(promise);
 
@@ -424,7 +425,7 @@ describe('bowerResolve', () => {
 
     underscore.pkgMeta['jsnext:main'] = './underscore.m.js';
     underscore.pkgMeta.main = './underscore.js';
-    deferred.resolve({underscore});
+    deferred.resolve({ underscore });
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -435,13 +436,13 @@ describe('bowerResolve', () => {
 
     expect(error).not.toHaveBeenCalled();
     expect(done).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.m.js')
+      path.join('/', 'tmp', 'underscore', 'underscore.m.js'),
     );
   });
 
   it('should return a promise of bower dependency path with module entry by default instead of jsnext', () => {
     const deferred = Q.defer();
-    const promise = deferred.promise;
+    const { promise } = deferred;
 
     spyOn(bower, 'list').and.returnValue(promise);
 
@@ -463,7 +464,7 @@ describe('bowerResolve', () => {
     underscore.pkgMeta.module = './underscore.module.js';
     underscore.pkgMeta['jsnext:main'] = './underscore.jsnext.js';
     underscore.pkgMeta.main = './underscore.js';
-    deferred.resolve({underscore});
+    deferred.resolve({ underscore });
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -474,13 +475,13 @@ describe('bowerResolve', () => {
 
     expect(error).not.toHaveBeenCalled();
     expect(done).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.module.js')
+      path.join('/', 'tmp', 'underscore', 'underscore.module.js'),
     );
   });
 
   it('should return a promise of bower dependency path with overridden main', () => {
     const deferred = Q.defer();
-    const promise = deferred.promise;
+    const { promise } = deferred;
 
     spyOn(bower, 'list').and.returnValue(promise);
 
@@ -497,7 +498,7 @@ describe('bowerResolve', () => {
     result.catch(error);
 
     underscore.pkgMeta.main = ['./underscore.js'];
-    deferred.resolve({underscore});
+    deferred.resolve({ underscore });
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -508,13 +509,13 @@ describe('bowerResolve', () => {
 
     expect(error).not.toHaveBeenCalled();
     expect(done).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.js')
+      path.join('/', 'tmp', 'underscore', 'underscore.js'),
     );
   });
 
   it('should return a promise of null with missing dependency', () => {
     const deferred = Q.defer();
-    const promise = deferred.promise;
+    const { promise } = deferred;
 
     spyOn(bower, 'list').and.returnValue(promise);
 
@@ -561,7 +562,7 @@ describe('bowerResolve', () => {
 
   it('should return fail promise if dependency is not on dist', () => {
     const deferred = Q.defer();
-    const promise = deferred.promise;
+    const { promise } = deferred;
 
     spyOn(bower, 'list').and.returnValue(promise);
 
@@ -576,7 +577,7 @@ describe('bowerResolve', () => {
     result.then(done).catch(error);
 
     underscore.missing = true;
-    deferred.resolve({underscore});
+    deferred.resolve({ underscore });
 
     expect(done).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
@@ -586,13 +587,13 @@ describe('bowerResolve', () => {
     mockPromises.tick();
     mockPromises.tick();
 
-    expect(error).toHaveBeenCalledWith(new Error(`Dependency 'underscore' is missing, did you run 'bower install'?`));
+    expect(error).toHaveBeenCalledWith(new Error("Dependency 'underscore' is missing, did you run 'bower install'?"));
     expect(done).not.toHaveBeenCalled();
   });
 
   it('should return fail promise without main entry', () => {
     const deferred = Q.defer();
-    const promise = deferred.promise;
+    const { promise } = deferred;
 
     spyOn(bower, 'list').and.returnValue(promise);
 
@@ -622,7 +623,7 @@ describe('bowerResolve', () => {
     mockPromises.tick();
 
     expect(error).toHaveBeenCalledWith(new Error(
-        `Dependency underscore does not specify any main entry, please use 'override' options to specify main file`
+      "Dependency underscore does not specify any main entry, please use 'override' options to specify main file",
     ));
 
     expect(done).not.toHaveBeenCalled();
@@ -630,7 +631,7 @@ describe('bowerResolve', () => {
 
   it('should return fail promise without js main entry', () => {
     const deferred = Q.defer();
-    const promise = deferred.promise;
+    const { promise } = deferred;
 
     spyOn(bower, 'list').and.returnValue(promise);
 
@@ -662,7 +663,7 @@ describe('bowerResolve', () => {
     mockPromises.tick();
 
     expect(error).toHaveBeenCalledWith(new Error(
-        `Dependency bootstrap does not specify any js main, please use 'override' options to specify main file`
+      "Dependency bootstrap does not specify any js main, please use 'override' options to specify main file",
     ));
 
     expect(done).not.toHaveBeenCalled();
@@ -670,7 +671,7 @@ describe('bowerResolve', () => {
 
   it('should return fail promise with multiple js main entry', () => {
     const deferred = Q.defer();
-    const promise = deferred.promise;
+    const { promise } = deferred;
 
     spyOn(bower, 'list').and.returnValue(promise);
 
@@ -702,7 +703,7 @@ describe('bowerResolve', () => {
     mockPromises.tick();
 
     expect(error).toHaveBeenCalledWith(new Error(
-        `Dependency underscore specify multiple js main entries, please use 'override' options to specify main file`
+      "Dependency underscore specify multiple js main entries, please use 'override' options to specify main file",
     ));
 
     expect(done).not.toHaveBeenCalled();
