@@ -35,9 +35,9 @@
     "q": "1.5.1"
   },
   "devDependencies": {
-    "@babel/core": "7.24.5",
-    "@babel/preset-env": "7.24.5",
-    "@babel/register": "7.23.7",
+    "@babel/core": "7.24.6",
+    "@babel/preset-env": "7.24.6",
+    "@babel/register": "7.24.6",
     "@rollup/plugin-babel": "6.0.4",
     "@rollup/plugin-commonjs": "25.0.8",
     "ansi-colors": "4.1.3",
