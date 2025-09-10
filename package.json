@@ -35,7 +35,7 @@
     "q": "1.5.1"
   },
   "devDependencies": {
-    "@babel/core": "7.28.3",
+    "@babel/core": "7.28.4",
     "@babel/preset-env": "7.28.3",
     "@babel/register": "7.28.3",
     "@rollup/plugin-babel": "6.0.4",
