@@ -24,9 +24,7 @@
 
 /* eslint-disable global-require */
 
-import Q from 'q';
 import _bower from 'bower';
-import mockPromises from 'mock-promises';
 import { bower } from '../src/bower';
 
 describe('bower', () => {
@@ -36,57 +34,20 @@ describe('bower', () => {
     cwd = process.cwd();
   });
 
-  beforeEach(() => {
-    mockPromises.install(Q.makePromise);
-  });
-
-  afterEach(() => {
-    mockPromises.uninstall();
-  });
-
-  it('should get the list of bower dependencies', () => {
-    const response = jasmine.createSpyObj('bowerList', ['on']);
-    response.on.and.returnValue(response);
-
-    spyOn(_bower.commands, 'list').and.returnValue(response);
-
-    const promise = bower.list();
-
-    expect(promise).toBeDefined();
-    expect(_bower.commands.list).toHaveBeenCalledWith(undefined, {
-      json: true,
-      offline: true,
-      cwd,
-    });
-
-    expect(response.on).toHaveBeenCalledWith('end', jasmine.any(Function));
-    expect(response.on).toHaveBeenCalledWith('error', jasmine.any(Function));
-
-    const onEnd = jasmine.createSpy('end');
-    const onError = jasmine.createSpy('error');
-    promise.then(onEnd);
-    promise.catch(onError);
-
-    mockPromises.tick();
-    expect(onEnd).not.toHaveBeenCalled();
-    expect(onError).not.toHaveBeenCalled();
-
+  it('should get the list of bower dependencies', (done) => {
     const underscore = require('./fixtures/underscore-meta')();
     const main = require('./fixtures/test1-meta')();
     const dependencies = { underscore };
 
-    response.on.calls.first().args[1](main);
+    const response = {
+      on: jasmine.createSpy('on').and.callFake((evt, cb) => {
+        if (evt === 'end') {
+          cb(main);
+        }
 
-    expect(onEnd).not.toHaveBeenCalled();
-    expect(onError).not.toHaveBeenCalled();
-    mockPromises.tick();
-    expect(onEnd).toHaveBeenCalledWith(dependencies);
-    expect(onError).not.toHaveBeenCalled();
-  });
-
-  it('should get the list of bower dependencies with transitive dependencies', () => {
-    const response = jasmine.createSpyObj('bowerList', ['on']);
-    response.on.and.returnValue(response);
+        return response;
+      }),
+    };
 
     spyOn(_bower.commands, 'list').and.returnValue(response);
 
@@ -104,13 +65,15 @@ describe('bower', () => {
 
     const onEnd = jasmine.createSpy('end');
     const onError = jasmine.createSpy('error');
-    promise.then(onEnd);
-    promise.catch(onError);
 
-    mockPromises.tick();
-    expect(onEnd).not.toHaveBeenCalled();
-    expect(onError).not.toHaveBeenCalled();
+    promise.then(onEnd).catch(onError).finally(() => {
+      expect(onEnd).toHaveBeenCalledWith(dependencies);
+      expect(onError).not.toHaveBeenCalled();
+      done();
+    });
+  });
 
+  it('should get the list of bower dependencies with transitive dependencies', (done) => {
     const backbone = require('./fixtures/backbone-meta')();
     const main = require('./fixtures/test2-meta')();
     const dependencies = {
@@ -118,19 +81,54 @@ describe('bower', () => {
       underscore: backbone.dependencies.underscore,
     };
 
-    response.on.calls.first().args[1](main);
+    const response = {
+      on: jasmine.createSpy('on').and.callFake((evt, fn) => {
+        if (evt === 'end') {
+          fn(main);
+        }
 
-    expect(onEnd).not.toHaveBeenCalled();
-    expect(onError).not.toHaveBeenCalled();
-    mockPromises.tick();
-    expect(onEnd).toHaveBeenCalledWith(dependencies);
+        return response;
+      }),
+    };
 
-    expect(onError).not.toHaveBeenCalled();
+    spyOn(_bower.commands, 'list').and.returnValue(response);
+
+    const promise = bower.list();
+
+    expect(promise).toBeDefined();
+    expect(_bower.commands.list).toHaveBeenCalledWith(undefined, {
+      json: true,
+      offline: true,
+      cwd,
+    });
+
+    expect(response.on).toHaveBeenCalledWith('end', jasmine.any(Function));
+    expect(response.on).toHaveBeenCalledWith('error', jasmine.any(Function));
+
+    const onEnd = jasmine.createSpy('end');
+    const onError = jasmine.createSpy('error');
+
+    promise.then(onEnd).catch(onError).finally(() => {
+      expect(onEnd).toHaveBeenCalledWith(dependencies);
+      expect(onError).not.toHaveBeenCalled();
+      done();
+    });
   });
 
-  it('should get the list of bower dependencies using custom options', () => {
-    const response = jasmine.createSpyObj('bowerList', ['on']);
-    response.on.and.returnValue(response);
+  it('should get the list of bower dependencies using custom options', (done) => {
+    const underscore = require('./fixtures/underscore-meta')();
+    const main = require('./fixtures/test1-meta')();
+    const dependencies = { underscore };
+
+    const response = {
+      on: jasmine.createSpy('on').and.callFake((evt, fn) => {
+        if (evt === 'end') {
+          fn(main);
+        }
+
+        return response;
+      }),
+    };
 
     spyOn(_bower.commands, 'list').and.returnValue(response);
 
@@ -151,29 +149,25 @@ describe('bower', () => {
 
     const onEnd = jasmine.createSpy('end');
     const onError = jasmine.createSpy('error');
-    promise.then(onEnd);
-    promise.catch(onError);
 
-    mockPromises.tick();
-    expect(onEnd).not.toHaveBeenCalled();
-    expect(onError).not.toHaveBeenCalled();
-
-    const underscore = require('./fixtures/underscore-meta')();
-    const main = require('./fixtures/test1-meta')();
-    const dependencies = { underscore };
-
-    response.on.calls.first().args[1](main);
-
-    expect(onEnd).not.toHaveBeenCalled();
-    expect(onError).not.toHaveBeenCalled();
-    mockPromises.tick();
-    expect(onEnd).toHaveBeenCalledWith(dependencies);
-    expect(onError).not.toHaveBeenCalled();
+    promise.then(onEnd).catch(onError).finally(() => {
+      expect(onEnd).toHaveBeenCalledWith(dependencies);
+      expect(onError).not.toHaveBeenCalled();
+      done();
+    });
   });
 
-  it('should reject promises with error', () => {
-    const response = jasmine.createSpyObj('bowerList', ['on']);
-    response.on.and.returnValue(response);
+  it('should reject promises with error', (done) => {
+    const error = {};
+    const response = {
+      on: jasmine.createSpy('on').and.callFake((evt, fn) => {
+        if (evt === 'error') {
+          fn(error);
+        }
+
+        return response;
+      }),
+    };
 
     spyOn(_bower.commands, 'list').and.returnValue(response);
 
@@ -191,20 +185,10 @@ describe('bower', () => {
 
     const onEnd = jasmine.createSpy('end');
     const onError = jasmine.createSpy('error');
-    promise.then(onEnd);
-    promise.catch(onError);
-
-    mockPromises.tick();
-    expect(onEnd).not.toHaveBeenCalled();
-    expect(onError).not.toHaveBeenCalled();
-
-    const error = {};
-    response.on.calls.mostRecent().args[1](error);
-
-    expect(onEnd).not.toHaveBeenCalled();
-    expect(onError).not.toHaveBeenCalled();
-    mockPromises.tick();
-    expect(onEnd).not.toHaveBeenCalled();
-    expect(onError).toHaveBeenCalledWith(error);
+    promise.then(onEnd).catch(onError).finally(() => {
+      expect(onEnd).not.toHaveBeenCalled();
+      expect(onError).toHaveBeenCalledWith(error);
+      done();
+    });
   });
 });

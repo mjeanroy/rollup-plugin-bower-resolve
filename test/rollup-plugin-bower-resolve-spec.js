@@ -23,8 +23,6 @@
  */
 
 import path from 'path';
-import Q from 'q';
-import mockPromises from 'mock-promises';
 import { bower } from '../src/bower';
 import { rollupPluginbowerResolve } from '../src/rollup-plugin-bower-resolve';
 
@@ -36,25 +34,16 @@ describe('bowerResolve', () => {
     underscore = require('./fixtures/underscore-meta')();
   });
 
-  beforeEach(() => {
-    mockPromises.install(Q.makePromise);
-  });
-
-  afterEach(() => {
-    mockPromises.uninstall();
-  });
-
   it('should return null if importer is null', () => {
     const plugin = rollupPluginbowerResolve();
     const result = plugin.resolveId('underscore', null);
     expect(result).toBeNull();
   });
 
-  it('should return a promise of bower dependency path', () => {
-    const deferred = Q.defer();
-    const { promise } = deferred;
-
-    spyOn(bower, 'list').and.returnValue(promise);
+  it('should return a promise of bower dependency path', (done) => {
+    spyOn(bower, 'list').and.callFake(() => (
+      Promise.resolve({ underscore })
+    ));
 
     const plugin = rollupPluginbowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
@@ -62,31 +51,23 @@ describe('bowerResolve', () => {
     expect(result).toBeDefined();
     expect(bower.list).toHaveBeenCalledWith({});
 
-    const done = jasmine.createSpy('done');
+    const then = jasmine.createSpy('then');
     const error = jasmine.createSpy('error');
-    result.then(done);
-    result.catch(error);
 
-    deferred.resolve({ underscore });
+    result.then(then).catch(error).finally(() => {
+      expect(error).not.toHaveBeenCalled();
+      expect(then).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.js'),
+      );
 
-    expect(done).not.toHaveBeenCalled();
-    expect(error).not.toHaveBeenCalled();
-
-    // Resolve previous two promises.
-    mockPromises.tick();
-    mockPromises.tick();
-
-    expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith(
-      path.join('/', 'tmp', 'underscore', 'underscore.js'),
-    );
+      done();
+    });
   });
 
-  it('should return a promise with full path', () => {
-    const deferred = Q.defer();
-    const { promise } = deferred;
-
-    spyOn(bower, 'list').and.returnValue(promise);
+  it('should return a promise with full path', (done) => {
+    spyOn(bower, 'list').and.callFake(() => (
+      Promise.resolve({ underscore })
+    ));
 
     const plugin = rollupPluginbowerResolve();
     const result = plugin.resolveId('underscore/dist/underscore.js', './app.js');
@@ -94,31 +75,23 @@ describe('bowerResolve', () => {
     expect(result).toBeDefined();
     expect(bower.list).toHaveBeenCalledWith({});
 
-    const done = jasmine.createSpy('done');
+    const then = jasmine.createSpy('done');
     const error = jasmine.createSpy('error');
-    result.then(done);
-    result.catch(error);
 
-    deferred.resolve({ underscore });
+    result.then(then).catch(error).finally(() => {
+      expect(error).not.toHaveBeenCalled();
+      expect(then).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'dist', 'underscore.js'),
+      );
 
-    expect(done).not.toHaveBeenCalled();
-    expect(error).not.toHaveBeenCalled();
-
-    // Resolve previous two promises.
-    mockPromises.tick();
-    mockPromises.tick();
-
-    expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith(
-      path.join('/', 'tmp', 'underscore', 'dist', 'underscore.js'),
-    );
+      done();
+    });
   });
 
-  it('should return a promise using bower online', () => {
-    const deferred = Q.defer();
-    const { promise } = deferred;
-
-    spyOn(bower, 'list').and.returnValue(promise);
+  it('should return a promise using bower online', (done) => {
+    spyOn(bower, 'list').and.callFake(() => (
+      Promise.resolve({ underscore })
+    ));
 
     const plugin = rollupPluginbowerResolve({
       offline: false,
@@ -131,31 +104,23 @@ describe('bowerResolve', () => {
       offline: false,
     });
 
-    const done = jasmine.createSpy('done');
+    const then = jasmine.createSpy('done');
     const error = jasmine.createSpy('error');
-    result.then(done);
-    result.catch(error);
 
-    deferred.resolve({ underscore });
+    result.then(then).catch(error).finally(() => {
+      expect(error).not.toHaveBeenCalled();
+      expect(then).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.js'),
+      );
 
-    expect(done).not.toHaveBeenCalled();
-    expect(error).not.toHaveBeenCalled();
-
-    // Resolve previous two promises.
-    mockPromises.tick();
-    mockPromises.tick();
-
-    expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith(
-      path.join('/', 'tmp', 'underscore', 'underscore.js'),
-    );
+      done();
+    });
   });
 
-  it('should return a promise using custom work directory', () => {
-    const deferred = Q.defer();
-    const { promise } = deferred;
-
-    spyOn(bower, 'list').and.returnValue(promise);
+  it('should return a promise using custom work directory', (done) => {
+    spyOn(bower, 'list').and.callFake(() => (
+      Promise.resolve({ underscore })
+    ));
 
     const cwd = '/tmp';
     const plugin = rollupPluginbowerResolve({ cwd });
@@ -165,31 +130,23 @@ describe('bowerResolve', () => {
     expect(bower.list).toHaveBeenCalledWith({ cwd });
     expect(result).toBeDefined();
 
-    const done = jasmine.createSpy('done');
+    const then = jasmine.createSpy('done');
     const error = jasmine.createSpy('error');
-    result.then(done);
-    result.catch(error);
 
-    deferred.resolve({ underscore });
+    result.then(then).catch(error).finally(() => {
+      expect(error).not.toHaveBeenCalled();
+      expect(then).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.js'),
+      );
 
-    expect(done).not.toHaveBeenCalled();
-    expect(error).not.toHaveBeenCalled();
-
-    // Resolve previous two promises.
-    mockPromises.tick();
-    mockPromises.tick();
-
-    expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith(
-      path.join('/', 'tmp', 'underscore', 'underscore.js'),
-    );
+      done();
+    });
   });
 
-  it('should return a promise of bower dependency path with overridden main', () => {
-    const deferred = Q.defer();
-    const { promise } = deferred;
-
-    spyOn(bower, 'list').and.returnValue(promise);
+  it('should return a promise of bower dependency path with overridden main', (done) => {
+    spyOn(bower, 'list').and.callFake(() => (
+      Promise.resolve({ underscore })
+    ));
 
     const plugin = rollupPluginbowerResolve({
       override: {
@@ -202,31 +159,25 @@ describe('bowerResolve', () => {
     expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
-    const done = jasmine.createSpy('done');
+    const then = jasmine.createSpy('done');
     const error = jasmine.createSpy('error');
-    result.then(done);
-    result.catch(error);
 
-    deferred.resolve({ underscore });
+    result.then(then).catch(error).finally(() => {
+      expect(error).not.toHaveBeenCalled();
+      expect(then).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'dist', 'underscore.js'),
+      );
 
-    expect(done).not.toHaveBeenCalled();
-    expect(error).not.toHaveBeenCalled();
-
-    // Resolve previous two promises.
-    mockPromises.tick();
-    mockPromises.tick();
-
-    expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith(
-      path.join('/', 'tmp', 'underscore', 'dist', 'underscore.js'),
-    );
+      done();
+    });
   });
 
-  it('should return a promise of bower dependency path with module entry by default', () => {
-    const deferred = Q.defer();
-    const { promise } = deferred;
-
-    spyOn(bower, 'list').and.returnValue(promise);
+  it('should return a promise of bower dependency path with module entry by default', (done) => {
+    spyOn(bower, 'list').and.callFake(() => {
+      underscore.pkgMeta.module = './underscore.m.js';
+      underscore.pkgMeta.main = './underscore.js';
+      return Promise.resolve({ underscore });
+    });
 
     const plugin = rollupPluginbowerResolve();
 
@@ -235,33 +186,25 @@ describe('bowerResolve', () => {
     expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
-    const done = jasmine.createSpy('done');
+    const then = jasmine.createSpy('done');
     const error = jasmine.createSpy('error');
-    result.then(done);
-    result.catch(error);
 
-    underscore.pkgMeta.module = './underscore.m.js';
-    underscore.pkgMeta.main = './underscore.js';
-    deferred.resolve({ underscore });
+    result.then(then).catch(error).finally(() => {
+      expect(error).not.toHaveBeenCalled();
+      expect(then).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.m.js'),
+      );
 
-    expect(done).not.toHaveBeenCalled();
-    expect(error).not.toHaveBeenCalled();
-
-    // Resolve previous two promises.
-    mockPromises.tick();
-    mockPromises.tick();
-
-    expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith(
-      path.join('/', 'tmp', 'underscore', 'underscore.m.js'),
-    );
+      done();
+    });
   });
 
-  it('should return a promise of bower dependency path with module entry', () => {
-    const deferred = Q.defer();
-    const { promise } = deferred;
-
-    spyOn(bower, 'list').and.returnValue(promise);
+  it('should return a promise of bower dependency path with module entry', (done) => {
+    spyOn(bower, 'list').and.callFake(() => {
+      underscore.pkgMeta.module = './underscore.m.js';
+      underscore.pkgMeta.main = './underscore.js';
+      return Promise.resolve({ underscore });
+    });
 
     const plugin = rollupPluginbowerResolve({
       module: true,
@@ -272,33 +215,25 @@ describe('bowerResolve', () => {
     expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
-    const done = jasmine.createSpy('done');
+    const then = jasmine.createSpy('done');
     const error = jasmine.createSpy('error');
-    result.then(done);
-    result.catch(error);
 
-    underscore.pkgMeta.module = './underscore.m.js';
-    underscore.pkgMeta.main = './underscore.js';
-    deferred.resolve({ underscore });
+    result.then(then).catch(error).finally(() => {
+      expect(error).not.toHaveBeenCalled();
+      expect(then).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.m.js'),
+      );
 
-    expect(done).not.toHaveBeenCalled();
-    expect(error).not.toHaveBeenCalled();
-
-    // Resolve previous two promises.
-    mockPromises.tick();
-    mockPromises.tick();
-
-    expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith(
-      path.join('/', 'tmp', 'underscore', 'underscore.m.js'),
-    );
+      done();
+    });
   });
 
-  it('should return a promise of bower dependency path with main entry if `module` is false', () => {
-    const deferred = Q.defer();
-    const { promise } = deferred;
-
-    spyOn(bower, 'list').and.returnValue(promise);
+  it('should return a promise of bower dependency path with main entry if `module` is false', (done) => {
+    spyOn(bower, 'list').and.callFake(() => {
+      underscore.pkgMeta.module = './underscore.m.js';
+      underscore.pkgMeta.main = './underscore.js';
+      return Promise.resolve({ underscore });
+    });
 
     const plugin = rollupPluginbowerResolve({
       module: false,
@@ -309,33 +244,25 @@ describe('bowerResolve', () => {
     expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
-    const done = jasmine.createSpy('done');
+    const then = jasmine.createSpy('done');
     const error = jasmine.createSpy('error');
-    result.then(done);
-    result.catch(error);
 
-    underscore.pkgMeta.module = './underscore.m.js';
-    underscore.pkgMeta.main = './underscore.js';
-    deferred.resolve({ underscore });
+    result.then(then).catch(error).finally(() => {
+      expect(error).not.toHaveBeenCalled();
+      expect(then).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.js'),
+      );
 
-    expect(done).not.toHaveBeenCalled();
-    expect(error).not.toHaveBeenCalled();
-
-    // Resolve previous two promises.
-    mockPromises.tick();
-    mockPromises.tick();
-
-    expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith(
-      path.join('/', 'tmp', 'underscore', 'underscore.js'),
-    );
+      done();
+    });
   });
 
-  it('should return a promise of bower dependency path with jsnext entry if enabled', () => {
-    const deferred = Q.defer();
-    const { promise } = deferred;
-
-    spyOn(bower, 'list').and.returnValue(promise);
+  it('should return a promise of bower dependency path with jsnext entry if enabled', (done) => {
+    spyOn(bower, 'list').and.callFake(() => {
+      underscore.pkgMeta['jsnext:main'] = './underscore.m.js';
+      underscore.pkgMeta.main = './underscore.js';
+      return Promise.resolve({ underscore });
+    });
 
     const plugin = rollupPluginbowerResolve({
       jsnext: true,
@@ -346,33 +273,25 @@ describe('bowerResolve', () => {
     expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
-    const done = jasmine.createSpy('done');
+    const then = jasmine.createSpy('done');
     const error = jasmine.createSpy('error');
-    result.then(done);
-    result.catch(error);
 
-    underscore.pkgMeta['jsnext:main'] = './underscore.m.js';
-    underscore.pkgMeta.main = './underscore.js';
-    deferred.resolve({ underscore });
+    result.then(then).catch(error).finally(() => {
+      expect(error).not.toHaveBeenCalled();
+      expect(then).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.m.js'),
+      );
 
-    expect(done).not.toHaveBeenCalled();
-    expect(error).not.toHaveBeenCalled();
-
-    // Resolve previous two promises.
-    mockPromises.tick();
-    mockPromises.tick();
-
-    expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith(
-      path.join('/', 'tmp', 'underscore', 'underscore.m.js'),
-    );
+      done();
+    });
   });
 
-  it('should return a promise of bower dependency path without jsnext entry if disabled', () => {
-    const deferred = Q.defer();
-    const { promise } = deferred;
-
-    spyOn(bower, 'list').and.returnValue(promise);
+  it('should return a promise of bower dependency path without jsnext entry if disabled', (done) => {
+    spyOn(bower, 'list').and.callFake(() => {
+      underscore.pkgMeta['jsnext:main'] = './underscore.m.js';
+      underscore.pkgMeta.main = './underscore.js';
+      return Promise.resolve({ underscore });
+    });
 
     const plugin = rollupPluginbowerResolve({
       jsnext: false,
@@ -383,33 +302,25 @@ describe('bowerResolve', () => {
     expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
-    const done = jasmine.createSpy('done');
+    const then = jasmine.createSpy('done');
     const error = jasmine.createSpy('error');
-    result.then(done);
-    result.catch(error);
 
-    underscore.pkgMeta['jsnext:main'] = './underscore.m.js';
-    underscore.pkgMeta.main = './underscore.js';
-    deferred.resolve({ underscore });
+    result.then(then).catch(error).finally(() => {
+      expect(error).not.toHaveBeenCalled();
+      expect(then).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.js'),
+      );
 
-    expect(done).not.toHaveBeenCalled();
-    expect(error).not.toHaveBeenCalled();
-
-    // Resolve previous two promises.
-    mockPromises.tick();
-    mockPromises.tick();
-
-    expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith(
-      path.join('/', 'tmp', 'underscore', 'underscore.js'),
-    );
+      done();
+    });
   });
 
-  it('should return a promise of bower dependency path with jsnext entry by default', () => {
-    const deferred = Q.defer();
-    const { promise } = deferred;
-
-    spyOn(bower, 'list').and.returnValue(promise);
+  it('should return a promise of bower dependency path with jsnext entry by default', (done) => {
+    spyOn(bower, 'list').and.callFake(() => {
+      underscore.pkgMeta['jsnext:main'] = './underscore.m.js';
+      underscore.pkgMeta.main = './underscore.js';
+      return Promise.resolve({ underscore });
+    });
 
     const plugin = rollupPluginbowerResolve();
 
@@ -418,33 +329,26 @@ describe('bowerResolve', () => {
     expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
-    const done = jasmine.createSpy('done');
+    const then = jasmine.createSpy('done');
     const error = jasmine.createSpy('error');
-    result.then(done);
-    result.catch(error);
 
-    underscore.pkgMeta['jsnext:main'] = './underscore.m.js';
-    underscore.pkgMeta.main = './underscore.js';
-    deferred.resolve({ underscore });
+    result.then(then).catch(error).finally(() => {
+      expect(error).not.toHaveBeenCalled();
+      expect(then).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.m.js'),
+      );
 
-    expect(done).not.toHaveBeenCalled();
-    expect(error).not.toHaveBeenCalled();
-
-    // Resolve previous two promises.
-    mockPromises.tick();
-    mockPromises.tick();
-
-    expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith(
-      path.join('/', 'tmp', 'underscore', 'underscore.m.js'),
-    );
+      done();
+    });
   });
 
-  it('should return a promise of bower dependency path with module entry by default instead of jsnext', () => {
-    const deferred = Q.defer();
-    const { promise } = deferred;
-
-    spyOn(bower, 'list').and.returnValue(promise);
+  it('should return a promise of bower dependency path with module entry by default instead of jsnext', (done) => {
+    spyOn(bower, 'list').and.callFake(() => {
+      underscore.pkgMeta.module = './underscore.module.js';
+      underscore.pkgMeta['jsnext:main'] = './underscore.jsnext.js';
+      underscore.pkgMeta.main = './underscore.js';
+      return Promise.resolve({ underscore });
+    });
 
     const plugin = rollupPluginbowerResolve({
       module: true,
@@ -456,98 +360,71 @@ describe('bowerResolve', () => {
     expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
-    const done = jasmine.createSpy('done');
+    const then = jasmine.createSpy('done');
     const error = jasmine.createSpy('error');
-    result.then(done);
-    result.catch(error);
 
-    underscore.pkgMeta.module = './underscore.module.js';
-    underscore.pkgMeta['jsnext:main'] = './underscore.jsnext.js';
-    underscore.pkgMeta.main = './underscore.js';
-    deferred.resolve({ underscore });
+    result.then(then).catch(error).finally(() => {
+      expect(error).not.toHaveBeenCalled();
+      expect(then).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.module.js'),
+      );
 
-    expect(done).not.toHaveBeenCalled();
-    expect(error).not.toHaveBeenCalled();
-
-    // Resolve previous two promises.
-    mockPromises.tick();
-    mockPromises.tick();
-
-    expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith(
-      path.join('/', 'tmp', 'underscore', 'underscore.module.js'),
-    );
+      done();
+    });
   });
 
-  it('should return a promise of bower dependency path with overridden main', () => {
-    const deferred = Q.defer();
-    const { promise } = deferred;
-
-    spyOn(bower, 'list').and.returnValue(promise);
-
-    const plugin = rollupPluginbowerResolve();
-
-    const result = plugin.resolveId('underscore', './app.js');
-
-    expect(bower.list).toHaveBeenCalledWith({});
-    expect(result).toBeDefined();
-
-    const done = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-    result.then(done);
-    result.catch(error);
-
-    underscore.pkgMeta.main = ['./underscore.js'];
-    deferred.resolve({ underscore });
-
-    expect(done).not.toHaveBeenCalled();
-    expect(error).not.toHaveBeenCalled();
-
-    // Resolve previous two promises.
-    mockPromises.tick();
-    mockPromises.tick();
-
-    expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith(
-      path.join('/', 'tmp', 'underscore', 'underscore.js'),
-    );
-  });
-
-  it('should return a promise of null with missing dependency', () => {
-    const deferred = Q.defer();
-    const { promise } = deferred;
-
-    spyOn(bower, 'list').and.returnValue(promise);
-
-    const plugin = rollupPluginbowerResolve();
-    const result = plugin.resolveId('underscore', './app.js');
-
-    expect(bower.list).toHaveBeenCalledWith({});
-    expect(result).toBeDefined();
-
-    const done = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-    result.then(done);
-    result.catch(error);
-
-    deferred.resolve({
-      jquery: {
-        canonicalDir: '/tmp/jquery',
-        pkgMeta: {
-          main: ['./dist/jquery.js'],
-        },
-      },
+  it('should return a promise of bower dependency path with overridden main', (done) => {
+    spyOn(bower, 'list').and.callFake(() => {
+      underscore.pkgMeta.main = ['./underscore.js'];
+      return Promise.resolve({ underscore });
     });
 
-    expect(done).not.toHaveBeenCalled();
-    expect(error).not.toHaveBeenCalled();
+    const plugin = rollupPluginbowerResolve();
 
-    // Resolve previous two promises.
-    mockPromises.tick();
-    mockPromises.tick();
+    const result = plugin.resolveId('underscore', './app.js');
 
-    expect(error).not.toHaveBeenCalled();
-    expect(done).toHaveBeenCalledWith(null);
+    expect(bower.list).toHaveBeenCalledWith({});
+    expect(result).toBeDefined();
+
+    const then = jasmine.createSpy('done');
+    const error = jasmine.createSpy('error');
+
+    result.then(then).catch(error).finally(() => {
+      expect(error).not.toHaveBeenCalled();
+      expect(then).toHaveBeenCalledWith(
+        path.join('/', 'tmp', 'underscore', 'underscore.js'),
+      );
+
+      done();
+    });
+  });
+
+  it('should return a promise of null with missing dependency', (done) => {
+    spyOn(bower, 'list').and.callFake(() => (
+      Promise.resolve({
+        jquery: {
+          canonicalDir: '/tmp/jquery',
+          pkgMeta: {
+            main: ['./dist/jquery.js'],
+          },
+        },
+      })
+    ));
+
+    const plugin = rollupPluginbowerResolve();
+    const result = plugin.resolveId('underscore', './app.js');
+
+    expect(bower.list).toHaveBeenCalledWith({});
+    expect(result).toBeDefined();
+
+    const then = jasmine.createSpy('done');
+    const error = jasmine.createSpy('error');
+
+    result.then(then).catch(error).finally(() => {
+      expect(error).not.toHaveBeenCalled();
+      expect(then).toHaveBeenCalledWith(null);
+      done();
+    });
   });
 
   it('should return null with skipped dependency', () => {
@@ -560,80 +437,68 @@ describe('bowerResolve', () => {
     expect(result).toBeNull();
   });
 
-  it('should return fail promise if dependency is not on dist', () => {
-    const deferred = Q.defer();
-    const { promise } = deferred;
-
-    spyOn(bower, 'list').and.returnValue(promise);
-
-    const plugin = rollupPluginbowerResolve();
-    const result = plugin.resolveId('underscore', './app.js');
-
-    expect(bower.list).toHaveBeenCalledWith({});
-    expect(result).toBeDefined();
-
-    const done = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-    result.then(done).catch(error);
-
-    underscore.missing = true;
-    deferred.resolve({ underscore });
-
-    expect(done).not.toHaveBeenCalled();
-    expect(error).not.toHaveBeenCalled();
-
-    // Resolve previous two promises.
-    mockPromises.tick();
-    mockPromises.tick();
-    mockPromises.tick();
-
-    expect(error).toHaveBeenCalledWith(new Error("Dependency 'underscore' is missing, did you run 'bower install'?"));
-    expect(done).not.toHaveBeenCalled();
-  });
-
-  it('should return fail promise without main entry', () => {
-    const deferred = Q.defer();
-    const { promise } = deferred;
-
-    spyOn(bower, 'list').and.returnValue(promise);
-
-    const plugin = rollupPluginbowerResolve();
-    const result = plugin.resolveId('underscore', './app.js');
-
-    expect(bower.list).toHaveBeenCalledWith({});
-    expect(result).toBeDefined();
-
-    const done = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-    result.then(done).catch(error);
-
-    deferred.resolve({
-      underscore: {
-        canonicalDir: '/tmp/underscore',
-        pkgMeta: {},
-      },
+  it('should return fail promise if dependency is not on dist', (done) => {
+    spyOn(bower, 'list').and.callFake(() => {
+      underscore.missing = true;
+      return Promise.resolve({ underscore });
     });
 
-    expect(done).not.toHaveBeenCalled();
-    expect(error).not.toHaveBeenCalled();
+    const plugin = rollupPluginbowerResolve();
+    const result = plugin.resolveId('underscore', './app.js');
 
-    // Resolve previous two promises.
-    mockPromises.tick();
-    mockPromises.tick();
-    mockPromises.tick();
+    expect(bower.list).toHaveBeenCalledWith({});
+    expect(result).toBeDefined();
 
-    expect(error).toHaveBeenCalledWith(new Error(
-      "Dependency underscore does not specify any main entry, please use 'override' options to specify main file",
-    ));
+    const then = jasmine.createSpy('done');
+    const error = jasmine.createSpy('error');
 
-    expect(done).not.toHaveBeenCalled();
+    result.then(then).catch(error).finally(() => {
+      expect(error).toHaveBeenCalledWith(new Error("Dependency 'underscore' is missing, did you run 'bower install'?"));
+      expect(then).not.toHaveBeenCalled();
+      done();
+    });
   });
 
-  it('should return fail promise without js main entry', () => {
-    const deferred = Q.defer();
-    const { promise } = deferred;
+  it('should return fail promise without main entry', (done) => {
+    spyOn(bower, 'list').and.callFake(() => (
+      Promise.resolve({
+        underscore: {
+          canonicalDir: '/tmp/underscore',
+          pkgMeta: {},
+        },
+      })
+    ));
 
-    spyOn(bower, 'list').and.returnValue(promise);
+    const plugin = rollupPluginbowerResolve();
+    const result = plugin.resolveId('underscore', './app.js');
+
+    expect(bower.list).toHaveBeenCalledWith({});
+    expect(result).toBeDefined();
+
+    const then = jasmine.createSpy('done');
+    const error = jasmine.createSpy('error');
+
+    result.then(then).catch(error).finally(() => {
+      expect(error).toHaveBeenCalledWith(new Error(
+        "Dependency underscore does not specify any main entry, please use 'override' options to specify main file",
+      ));
+
+      expect(then).not.toHaveBeenCalled();
+      done();
+    });
+  });
+
+  it('should return fail promise without js main entry', (done) => {
+    spyOn(bower, 'list').and.callFake(() => (
+      Promise.resolve({
+        bootstrap: {
+          canonicalDir: '/tmp/bootstrap',
+          pkgMeta: {
+            main: ['bootstrap.css'],
+          },
+        },
+      })
+    ));
 
     const plugin = rollupPluginbowerResolve();
     const result = plugin.resolveId('bootstrap', './app.js');
@@ -641,39 +506,30 @@ describe('bowerResolve', () => {
     expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
-    const done = jasmine.createSpy('done');
+    const then = jasmine.createSpy('done');
     const error = jasmine.createSpy('error');
-    result.then(done).catch(error);
 
-    deferred.resolve({
-      bootstrap: {
-        canonicalDir: '/tmp/bootstrap',
-        pkgMeta: {
-          main: ['bootstrap.css'],
-        },
-      },
+    result.then(then).catch(error).finally(() => {
+      expect(error).toHaveBeenCalledWith(new Error(
+        "Dependency bootstrap does not specify any js main, please use 'override' options to specify main file",
+      ));
+
+      expect(then).not.toHaveBeenCalled();
+      done();
     });
-
-    expect(done).not.toHaveBeenCalled();
-    expect(error).not.toHaveBeenCalled();
-
-    // Resolve previous two promises.
-    mockPromises.tick();
-    mockPromises.tick();
-    mockPromises.tick();
-
-    expect(error).toHaveBeenCalledWith(new Error(
-      "Dependency bootstrap does not specify any js main, please use 'override' options to specify main file",
-    ));
-
-    expect(done).not.toHaveBeenCalled();
   });
 
-  it('should return fail promise with multiple js main entry', () => {
-    const deferred = Q.defer();
-    const { promise } = deferred;
-
-    spyOn(bower, 'list').and.returnValue(promise);
+  it('should return fail promise with multiple js main entry', (done) => {
+    spyOn(bower, 'list').and.callFake(() => (
+      Promise.resolve({
+        underscore: {
+          canonicalDir: '/tmp/underscore',
+          pkgMeta: {
+            main: ['underscore.js', 'dist/underscore.js'],
+          },
+        },
+      })
+    ));
 
     const plugin = rollupPluginbowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
@@ -681,31 +537,16 @@ describe('bowerResolve', () => {
     expect(bower.list).toHaveBeenCalledWith({});
     expect(result).toBeDefined();
 
-    const done = jasmine.createSpy('done');
+    const then = jasmine.createSpy('done');
     const error = jasmine.createSpy('error');
-    result.then(done).catch(error);
 
-    deferred.resolve({
-      underscore: {
-        canonicalDir: '/tmp/underscore',
-        pkgMeta: {
-          main: ['underscore.js', 'dist/underscore.js'],
-        },
-      },
+    result.then(then).catch(error).finally(() => {
+      expect(error).toHaveBeenCalledWith(new Error(
+        "Dependency underscore specify multiple js main entries, please use 'override' options to specify main file",
+      ));
+
+      expect(then).not.toHaveBeenCalled();
+      done();
     });
-
-    expect(done).not.toHaveBeenCalled();
-    expect(error).not.toHaveBeenCalled();
-
-    // Resolve previous two promises.
-    mockPromises.tick();
-    mockPromises.tick();
-    mockPromises.tick();
-
-    expect(error).toHaveBeenCalledWith(new Error(
-      "Dependency underscore specify multiple js main entries, please use 'override' options to specify main file",
-    ));
-
-    expect(done).not.toHaveBeenCalled();
   });
 });

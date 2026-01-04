@@ -25,7 +25,6 @@
 import forEach from 'lodash.foreach';
 import has from 'lodash.has';
 import _bower from 'bower';
-import Q from 'q';
 
 /**
  * List all dependencies of a bower package.
@@ -44,22 +43,20 @@ function list(options = {}) {
  * @return {Promise<Object>} The promise of dependency object.
  */
 function execList(options) {
-  const deferred = Q.defer();
+  return new Promise((resolve, reject) => {
+    const json = options.json !== false;
+    const offline = options.offline !== false;
+    const cwd = options.cwd || process.cwd();
+    const config = { json, offline, cwd };
 
-  const json = options.json !== false;
-  const offline = options.offline !== false;
-  const cwd = options.cwd || process.cwd();
-  const config = { json, offline, cwd };
-
-  _bower.commands.list(undefined, config)
-    .on('end', (conf) => {
-      deferred.resolve(flatten(conf));
-    })
-    .on('error', (error) => {
-      deferred.reject(error);
-    });
-
-  return deferred.promise;
+    _bower.commands.list(undefined, config)
+      .on('end', (conf) => {
+        resolve(flatten(conf));
+      })
+      .on('error', (error) => {
+        reject(error);
+      });
+  });
 }
 
 /**
