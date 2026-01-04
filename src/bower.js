@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-import has from 'lodash.has';
 import _bower from 'bower';
+import { hasOwn } from './hasOwn';
 
 /**
  * List all dependencies of a bower package.
@@ -71,7 +71,7 @@ function flatten(pkg, dependencies = {}) {
   if (pkg && pkg.dependencies) {
     Object.keys(pkg.dependencies).forEach((id) => {
       const dep = pkg.dependencies[id];
-      if (!has(dependencies, id)) {
+      if (!hasOwn(dependencies, id)) {
         // Store current dependency...
         // eslint-disable-next-line no-param-reassign
         dependencies[id] = dep;

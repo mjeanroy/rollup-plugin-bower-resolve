@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-import has from 'lodash.has';
 import path from 'path';
+import { hasOwn } from './hasOwn';
 import { bower } from './bower';
 
 /**
@@ -71,7 +71,7 @@ export function rollupPluginbowerResolve(options) {
       const id = parts.shift();
 
       return list.then((dependencies) => {
-        if (!has(dependencies, id)) {
+        if (!hasOwn(dependencies, id)) {
           return null;
         }
 
@@ -88,7 +88,7 @@ export function rollupPluginbowerResolve(options) {
         }
 
         // Allow path to be overridden
-        if (has(override, importee)) {
+        if (hasOwn(override, importee)) {
           return path.join(dir, override[importee]);
         }
 
