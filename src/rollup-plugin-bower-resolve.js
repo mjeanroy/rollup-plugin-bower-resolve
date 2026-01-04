@@ -22,11 +22,22 @@
  * SOFTWARE.
  */
 
-import castArray from 'lodash.castarray';
 import includes from 'lodash.includes';
 import has from 'lodash.has';
 import path from 'path';
 import { bower } from './bower';
+
+/**
+ * Translate given value to an array:
+ * - Returns original array if `value` is already an array.
+ * - Otherwise, returns `[value]`.
+ *
+ * @param {*} value Value, may be an array or not.
+ * @returns {array<*>} Original array or array containing value.
+ */
+function toArray(value) {
+  return Array.isArray(value) ? value : [value];
+}
 
 /**
  * Create plugin instance.
@@ -39,7 +50,7 @@ export function rollupPluginbowerResolve(options) {
   const useModule = opts.module !== false;
   const useJsNext = opts.jsnext !== false;
   const override = opts.override || {};
-  const skip = opts.skip ? castArray(opts.skip) : [];
+  const skip = opts.skip ? toArray(opts.skip) : [];
   const list = bower.list({
     offline: opts.offline,
     cwd: opts.cwd,
