@@ -69,8 +69,7 @@ function execList(options) {
  */
 function flatten(pkg, dependencies = {}) {
   if (pkg && pkg.dependencies) {
-    Object.keys(pkg.dependencies).forEach((id) => {
-      const dep = pkg.dependencies[id];
+    Object.entries(pkg.dependencies).forEach(([id, dep]) => {
       if (!hasOwn(dependencies, id)) {
         // Store current dependency...
         // eslint-disable-next-line no-param-reassign
