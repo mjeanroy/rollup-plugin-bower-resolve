@@ -22,7 +22,6 @@
  * SOFTWARE.
  */
 
-import includes from 'lodash.includes';
 import has from 'lodash.has';
 import path from 'path';
 import { bower } from './bower';
@@ -63,7 +62,7 @@ export function rollupPluginbowerResolve(options) {
         return null;
       }
 
-      if (includes(skip, importee)) {
+      if (skip.includes(importee)) {
         // Skip dependency
         return null;
       }
