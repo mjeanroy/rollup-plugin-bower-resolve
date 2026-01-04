@@ -49,7 +49,10 @@ describe('bowerResolve', () => {
     const result = plugin.resolveId('underscore', './app.js');
 
     expect(result).toBeDefined();
-    expect(bower.list).toHaveBeenCalledWith({});
+    expect(bower.list).toHaveBeenCalledWith({
+      offline: undefined,
+      cwd: undefined,
+    });
 
     const then = jasmine.createSpy('then');
     const error = jasmine.createSpy('error');
@@ -73,7 +76,10 @@ describe('bowerResolve', () => {
     const result = plugin.resolveId('underscore/dist/underscore.js', './app.js');
 
     expect(result).toBeDefined();
-    expect(bower.list).toHaveBeenCalledWith({});
+    expect(bower.list).toHaveBeenCalledWith({
+      offline: undefined,
+      cwd: undefined,
+    });
 
     const then = jasmine.createSpy('done');
     const error = jasmine.createSpy('error');
@@ -102,6 +108,7 @@ describe('bowerResolve', () => {
     expect(result).toBeDefined();
     expect(bower.list).toHaveBeenCalledWith({
       offline: false,
+      cwd: undefined,
     });
 
     const then = jasmine.createSpy('done');
@@ -127,7 +134,11 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith({ cwd });
+    expect(bower.list).toHaveBeenCalledWith({
+      offline: undefined,
+      cwd,
+    });
+
     expect(result).toBeDefined();
 
     const then = jasmine.createSpy('done');
@@ -156,7 +167,11 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith({});
+    expect(bower.list).toHaveBeenCalledWith({
+      offline: undefined,
+      cwd: undefined,
+    });
+
     expect(result).toBeDefined();
 
     const then = jasmine.createSpy('done');
@@ -183,7 +198,11 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith({});
+    expect(bower.list).toHaveBeenCalledWith({
+      offline: undefined,
+      cwd: undefined,
+    });
+
     expect(result).toBeDefined();
 
     const then = jasmine.createSpy('done');
@@ -212,7 +231,11 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith({});
+    expect(bower.list).toHaveBeenCalledWith({
+      offline: undefined,
+      cwd: undefined,
+    });
+
     expect(result).toBeDefined();
 
     const then = jasmine.createSpy('done');
@@ -241,7 +264,11 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith({});
+    expect(bower.list).toHaveBeenCalledWith({
+      offline: undefined,
+      cwd: undefined,
+    });
+
     expect(result).toBeDefined();
 
     const then = jasmine.createSpy('done');
@@ -270,7 +297,11 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith({});
+    expect(bower.list).toHaveBeenCalledWith({
+      offline: undefined,
+      cwd: undefined,
+    });
+
     expect(result).toBeDefined();
 
     const then = jasmine.createSpy('done');
@@ -299,7 +330,11 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith({});
+    expect(bower.list).toHaveBeenCalledWith({
+      offline: undefined,
+      cwd: undefined,
+    });
+
     expect(result).toBeDefined();
 
     const then = jasmine.createSpy('done');
@@ -326,7 +361,11 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith({});
+    expect(bower.list).toHaveBeenCalledWith({
+      offline: undefined,
+      cwd: undefined,
+    });
+
     expect(result).toBeDefined();
 
     const then = jasmine.createSpy('done');
@@ -357,7 +396,11 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith({});
+    expect(bower.list).toHaveBeenCalledWith({
+      offline: undefined,
+      cwd: undefined,
+    });
+
     expect(result).toBeDefined();
 
     const then = jasmine.createSpy('done');
@@ -383,7 +426,11 @@ describe('bowerResolve', () => {
 
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith({});
+    expect(bower.list).toHaveBeenCalledWith({
+      offline: undefined,
+      cwd: undefined,
+    });
+
     expect(result).toBeDefined();
 
     const then = jasmine.createSpy('done');
@@ -414,7 +461,11 @@ describe('bowerResolve', () => {
     const plugin = rollupPluginbowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith({});
+    expect(bower.list).toHaveBeenCalledWith({
+      offline: undefined,
+      cwd: undefined,
+    });
+
     expect(result).toBeDefined();
 
     const then = jasmine.createSpy('done');
@@ -446,7 +497,11 @@ describe('bowerResolve', () => {
     const plugin = rollupPluginbowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith({});
+    expect(bower.list).toHaveBeenCalledWith({
+      offline: undefined,
+      cwd: undefined,
+    });
+
     expect(result).toBeDefined();
 
     const then = jasmine.createSpy('done');
@@ -472,7 +527,11 @@ describe('bowerResolve', () => {
     const plugin = rollupPluginbowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith({});
+    expect(bower.list).toHaveBeenCalledWith({
+      offline: undefined,
+      cwd: undefined,
+    });
+
     expect(result).toBeDefined();
 
     const then = jasmine.createSpy('done');
@@ -503,7 +562,11 @@ describe('bowerResolve', () => {
     const plugin = rollupPluginbowerResolve();
     const result = plugin.resolveId('bootstrap', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith({});
+    expect(bower.list).toHaveBeenCalledWith({
+      offline: undefined,
+      cwd: undefined,
+    });
+
     expect(result).toBeDefined();
 
     const then = jasmine.createSpy('done');
@@ -534,7 +597,11 @@ describe('bowerResolve', () => {
     const plugin = rollupPluginbowerResolve();
     const result = plugin.resolveId('underscore', './app.js');
 
-    expect(bower.list).toHaveBeenCalledWith({});
+    expect(bower.list).toHaveBeenCalledWith({
+      offline: undefined,
+      cwd: undefined,
+    });
+
     expect(result).toBeDefined();
 
     const then = jasmine.createSpy('done');

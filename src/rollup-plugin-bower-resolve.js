@@ -23,7 +23,6 @@
  */
 
 import castArray from 'lodash.castarray';
-import pick from 'lodash.pick';
 import includes from 'lodash.includes';
 import has from 'lodash.has';
 import path from 'path';
@@ -41,7 +40,10 @@ export function rollupPluginbowerResolve(options) {
   const useJsNext = opts.jsnext !== false;
   const override = opts.override || {};
   const skip = opts.skip ? castArray(opts.skip) : [];
-  const list = bower.list(pick(opts, ['offline', 'cwd']));
+  const list = bower.list({
+    offline: opts.offline,
+    cwd: opts.cwd,
+  });
 
   return {
     resolveId(importee, importer) {
