@@ -22,7 +22,6 @@
  * SOFTWARE.
  */
 
-import forEach from 'lodash.foreach';
 import has from 'lodash.has';
 import _bower from 'bower';
 
@@ -69,16 +68,19 @@ function execList(options) {
  * @return {Object} The dependencies.
  */
 function flatten(pkg, dependencies = {}) {
-  forEach(pkg.dependencies, (dep, id) => {
-    if (!has(dependencies, id)) {
-      // Store current dependency...
-      // eslint-disable-next-line no-param-reassign
-      dependencies[id] = dep;
+  if (pkg && pkg.dependencies) {
+    Object.keys(pkg.dependencies).forEach((id) => {
+      const dep = pkg.dependencies[id];
+      if (!has(dependencies, id)) {
+        // Store current dependency...
+        // eslint-disable-next-line no-param-reassign
+        dependencies[id] = dep;
 
-      // ... and add transitive dependencies
-      Object.assign(dependencies, flatten(dep, dependencies));
-    }
-  });
+        // ... and add transitive dependencies
+        Object.assign(dependencies, flatten(dep, dependencies));
+      }
+    });
+  }
 
   return dependencies;
 }
