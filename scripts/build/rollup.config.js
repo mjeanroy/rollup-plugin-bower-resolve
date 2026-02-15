@@ -65,7 +65,7 @@ module.exports = {
   ],
 
   external: [
-    'path',
+    'node:path',
 
     ...Object.keys(pkg.dependencies),
     ...Object.keys(pkg.peerDependencies),

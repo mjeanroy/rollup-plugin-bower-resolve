@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import path from 'path';
+import path from 'node:path';
 import { bower } from '../src/bower';
 import { rollupPluginbowerResolve } from '../src/rollup-plugin-bower-resolve';
 

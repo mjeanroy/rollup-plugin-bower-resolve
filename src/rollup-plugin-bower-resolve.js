@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import path from 'path';
+import path from 'node:path';
 import { hasOwn } from './hasOwn';
 import { bower } from './bower';
 
