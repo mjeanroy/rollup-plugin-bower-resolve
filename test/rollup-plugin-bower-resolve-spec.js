@@ -320,7 +320,7 @@ describe('bowerResolve', () => {
     );
   });
 
-  it('should return a promise of bower dependency path with overridden main', async () => {
+  it('should return a promise of bower dependency path with main', async () => {
     spyOn(bower, 'list').and.callFake(() => {
       underscore.pkgMeta.main = ['./underscore.js'];
       return Promise.resolve({ underscore });

@@ -29,7 +29,7 @@ import * as rollup from 'rollup';
 import commonjs from '@rollup/plugin-commonjs';
 import bowerResolve from '../src/index';
 
-describe('bowerResolve', () => {
+describe('[it] bowerResolve', () => {
   let cwd;
   let tmpDir;
 
