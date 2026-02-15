@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import fs from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
 import tmp from 'tmp';
 import * as rollup from 'rollup';
@@ -51,7 +51,7 @@ describe('bowerResolve', () => {
     tmpDir.removeCallback();
   });
 
-  it('should resolve dependency path of direct dependency', (done) => {
+  it('should resolve dependency path of direct dependency', async () => {
     const test1 = path.join(__dirname, 'it', 'test1');
 
     process.chdir(test1);
@@ -59,18 +59,12 @@ describe('bowerResolve', () => {
     const plugin = bowerResolve();
     const promise = plugin.resolveId('underscore', './index.js');
 
-    promise.then((dependencyPath) => {
-      expect(dependencyPath).toBeDefined();
-      expect(dependencyPath).toBe(path.join(test1, 'vendors', 'underscore', 'underscore.js'));
-      done();
-    });
-
-    promise.catch((err) => {
-      done.fail(err);
-    });
+    await expectAsync(promise).toBeResolvedTo(
+      path.join(test1, 'vendors', 'underscore', 'underscore.js'),
+    );
   });
 
-  it('should resolve dependency path of transitive dependency', (done) => {
+  it('should resolve dependency path of transitive dependency', async () => {
     const test2 = path.join(__dirname, 'it', 'test2');
 
     process.chdir(test2);
@@ -78,18 +72,12 @@ describe('bowerResolve', () => {
     const plugin = bowerResolve();
     const promise = plugin.resolveId('underscore', './index.js');
 
-    promise.then((dependencyPath) => {
-      expect(dependencyPath).toBeDefined();
-      expect(dependencyPath).toBe(path.join(test2, 'vendors', 'underscore', 'underscore.js'));
-      done();
-    });
-
-    promise.catch((err) => {
-      done.fail(err);
-    });
+    await expectAsync(promise).toBeResolvedTo(
+      path.join(test2, 'vendors', 'underscore', 'underscore.js'),
+    );
   });
 
-  it('should bundle file', (done) => {
+  it('should bundle file', async () => {
     const test1Dir = path.join(__dirname, 'it', 'test1');
     process.chdir(test1Dir);
 
@@ -110,19 +98,13 @@ describe('bowerResolve', () => {
       ],
     };
 
-    rollup.rollup(rollupConfig)
-      .then((bundle) => bundle.write(rollupConfig.output))
-      .then(() => {
-        fs.readFile(bundleOutput, 'utf8', (err, data) => {
-          if (err) {
-            done.fail(err);
-          }
+    const bundle = await rollup.rollup(rollupConfig);
 
-          const content = data.toString();
-          expect(content).toBeDefined();
-          expect(content).toContain('_.VERSION');
-          done();
-        });
-      });
+    await bundle.write(rollupConfig.output);
+
+    const data = await fs.readFile(bundleOutput, 'utf-8');
+    const content = data.toString();
+    expect(content).toBeDefined();
+    expect(content).toContain('_.VERSION');
   });
 });

@@ -34,7 +34,7 @@ describe('bower', () => {
     cwd = process.cwd();
   });
 
-  it('should get the list of bower dependencies', (done) => {
+  it('should get the list of bower dependencies', async () => {
     const underscore = require('./fixtures/underscore-meta')();
     const main = require('./fixtures/test1-meta')();
     const dependencies = { underscore };
@@ -63,17 +63,10 @@ describe('bower', () => {
     expect(response.on).toHaveBeenCalledWith('end', jasmine.any(Function));
     expect(response.on).toHaveBeenCalledWith('error', jasmine.any(Function));
 
-    const onEnd = jasmine.createSpy('end');
-    const onError = jasmine.createSpy('error');
-
-    promise.then(onEnd).catch(onError).finally(() => {
-      expect(onEnd).toHaveBeenCalledWith(dependencies);
-      expect(onError).not.toHaveBeenCalled();
-      done();
-    });
+    await expectAsync(promise).toBeResolvedTo(dependencies);
   });
 
-  it('should get the list of bower dependencies with transitive dependencies', (done) => {
+  it('should get the list of bower dependencies with transitive dependencies', async () => {
     const backbone = require('./fixtures/backbone-meta')();
     const main = require('./fixtures/test2-meta')();
     const dependencies = {
@@ -105,17 +98,10 @@ describe('bower', () => {
     expect(response.on).toHaveBeenCalledWith('end', jasmine.any(Function));
     expect(response.on).toHaveBeenCalledWith('error', jasmine.any(Function));
 
-    const onEnd = jasmine.createSpy('end');
-    const onError = jasmine.createSpy('error');
-
-    promise.then(onEnd).catch(onError).finally(() => {
-      expect(onEnd).toHaveBeenCalledWith(dependencies);
-      expect(onError).not.toHaveBeenCalled();
-      done();
-    });
+    await expectAsync(promise).toBeResolvedTo(dependencies);
   });
 
-  it('should get the list of bower dependencies using custom options', (done) => {
+  it('should get the list of bower dependencies using custom options', async () => {
     const underscore = require('./fixtures/underscore-meta')();
     const main = require('./fixtures/test1-meta')();
     const dependencies = { underscore };
@@ -147,17 +133,10 @@ describe('bower', () => {
     expect(response.on).toHaveBeenCalledWith('end', jasmine.any(Function));
     expect(response.on).toHaveBeenCalledWith('error', jasmine.any(Function));
 
-    const onEnd = jasmine.createSpy('end');
-    const onError = jasmine.createSpy('error');
-
-    promise.then(onEnd).catch(onError).finally(() => {
-      expect(onEnd).toHaveBeenCalledWith(dependencies);
-      expect(onError).not.toHaveBeenCalled();
-      done();
-    });
+    await expectAsync(promise).toBeResolvedTo(dependencies);
   });
 
-  it('should reject promises with error', (done) => {
+  it('should reject promises with error', async () => {
     const error = {};
     const response = {
       on: jasmine.createSpy('on').and.callFake((evt, fn) => {
@@ -183,12 +162,6 @@ describe('bower', () => {
     expect(response.on).toHaveBeenCalledWith('end', jasmine.any(Function));
     expect(response.on).toHaveBeenCalledWith('error', jasmine.any(Function));
 
-    const onEnd = jasmine.createSpy('end');
-    const onError = jasmine.createSpy('error');
-    promise.then(onEnd).catch(onError).finally(() => {
-      expect(onEnd).not.toHaveBeenCalled();
-      expect(onError).toHaveBeenCalledWith(error);
-      done();
-    });
+    await expectAsync(promise).toBeRejectedWith(error);
   });
 });

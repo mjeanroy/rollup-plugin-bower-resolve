@@ -40,7 +40,7 @@ describe('bowerResolve', () => {
     expect(result).toBeNull();
   });
 
-  it('should return a promise of bower dependency path', (done) => {
+  it('should return a promise of bower dependency path', async () => {
     spyOn(bower, 'list').and.callFake(() => (
       Promise.resolve({ underscore })
     ));
@@ -54,20 +54,12 @@ describe('bowerResolve', () => {
       cwd: undefined,
     });
 
-    const then = jasmine.createSpy('then');
-    const error = jasmine.createSpy('error');
-
-    result.then(then).catch(error).finally(() => {
-      expect(error).not.toHaveBeenCalled();
-      expect(then).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.js'),
-      );
-
-      done();
-    });
+    await expectAsync(result).toBeResolvedTo(
+      path.join('/', 'tmp', 'underscore', 'underscore.js'),
+    );
   });
 
-  it('should return a promise with full path', (done) => {
+  it('should return a promise with full path', async () => {
     spyOn(bower, 'list').and.callFake(() => (
       Promise.resolve({ underscore })
     ));
@@ -81,20 +73,12 @@ describe('bowerResolve', () => {
       cwd: undefined,
     });
 
-    const then = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-
-    result.then(then).catch(error).finally(() => {
-      expect(error).not.toHaveBeenCalled();
-      expect(then).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'dist', 'underscore.js'),
-      );
-
-      done();
-    });
+    await expectAsync(result).toBeResolvedTo(
+      path.join('/', 'tmp', 'underscore', 'dist', 'underscore.js'),
+    );
   });
 
-  it('should return a promise using bower online', (done) => {
+  it('should return a promise using bower online', async () => {
     spyOn(bower, 'list').and.callFake(() => (
       Promise.resolve({ underscore })
     ));
@@ -111,20 +95,12 @@ describe('bowerResolve', () => {
       cwd: undefined,
     });
 
-    const then = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-
-    result.then(then).catch(error).finally(() => {
-      expect(error).not.toHaveBeenCalled();
-      expect(then).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.js'),
-      );
-
-      done();
-    });
+    await expectAsync(result).toBeResolvedTo(
+      path.join('/', 'tmp', 'underscore', 'underscore.js'),
+    );
   });
 
-  it('should return a promise using custom work directory', (done) => {
+  it('should return a promise using custom work directory', async () => {
     spyOn(bower, 'list').and.callFake(() => (
       Promise.resolve({ underscore })
     ));
@@ -141,20 +117,12 @@ describe('bowerResolve', () => {
 
     expect(result).toBeDefined();
 
-    const then = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-
-    result.then(then).catch(error).finally(() => {
-      expect(error).not.toHaveBeenCalled();
-      expect(then).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.js'),
-      );
-
-      done();
-    });
+    await expectAsync(result).toBeResolvedTo(
+      path.join('/', 'tmp', 'underscore', 'underscore.js'),
+    );
   });
 
-  it('should return a promise of bower dependency path with overridden main', (done) => {
+  it('should return a promise of bower dependency path with overridden main', async () => {
     spyOn(bower, 'list').and.callFake(() => (
       Promise.resolve({ underscore })
     ));
@@ -174,20 +142,12 @@ describe('bowerResolve', () => {
 
     expect(result).toBeDefined();
 
-    const then = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-
-    result.then(then).catch(error).finally(() => {
-      expect(error).not.toHaveBeenCalled();
-      expect(then).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'dist', 'underscore.js'),
-      );
-
-      done();
-    });
+    await expectAsync(result).toBeResolvedTo(
+      path.join('/', 'tmp', 'underscore', 'dist', 'underscore.js'),
+    );
   });
 
-  it('should return a promise of bower dependency path with module entry by default', (done) => {
+  it('should return a promise of bower dependency path with module entry by default', async () => {
     spyOn(bower, 'list').and.callFake(() => {
       underscore.pkgMeta.module = './underscore.m.js';
       underscore.pkgMeta.main = './underscore.js';
@@ -205,20 +165,12 @@ describe('bowerResolve', () => {
 
     expect(result).toBeDefined();
 
-    const then = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-
-    result.then(then).catch(error).finally(() => {
-      expect(error).not.toHaveBeenCalled();
-      expect(then).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.m.js'),
-      );
-
-      done();
-    });
+    await expectAsync(result).toBeResolvedTo(
+      path.join('/', 'tmp', 'underscore', 'underscore.m.js'),
+    );
   });
 
-  it('should return a promise of bower dependency path with module entry', (done) => {
+  it('should return a promise of bower dependency path with module entry', async () => {
     spyOn(bower, 'list').and.callFake(() => {
       underscore.pkgMeta.module = './underscore.m.js';
       underscore.pkgMeta.main = './underscore.js';
@@ -238,20 +190,12 @@ describe('bowerResolve', () => {
 
     expect(result).toBeDefined();
 
-    const then = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-
-    result.then(then).catch(error).finally(() => {
-      expect(error).not.toHaveBeenCalled();
-      expect(then).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.m.js'),
-      );
-
-      done();
-    });
+    await expectAsync(result).toBeResolvedTo(
+      path.join('/', 'tmp', 'underscore', 'underscore.m.js'),
+    );
   });
 
-  it('should return a promise of bower dependency path with main entry if `module` is false', (done) => {
+  it('should return a promise of bower dependency path with main entry if `module` is false', async () => {
     spyOn(bower, 'list').and.callFake(() => {
       underscore.pkgMeta.module = './underscore.m.js';
       underscore.pkgMeta.main = './underscore.js';
@@ -271,20 +215,12 @@ describe('bowerResolve', () => {
 
     expect(result).toBeDefined();
 
-    const then = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-
-    result.then(then).catch(error).finally(() => {
-      expect(error).not.toHaveBeenCalled();
-      expect(then).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.js'),
-      );
-
-      done();
-    });
+    await expectAsync(result).toBeResolvedTo(
+      path.join('/', 'tmp', 'underscore', 'underscore.js'),
+    );
   });
 
-  it('should return a promise of bower dependency path with jsnext entry if enabled', (done) => {
+  it('should return a promise of bower dependency path with jsnext entry if enabled', async () => {
     spyOn(bower, 'list').and.callFake(() => {
       underscore.pkgMeta['jsnext:main'] = './underscore.m.js';
       underscore.pkgMeta.main = './underscore.js';
@@ -304,20 +240,12 @@ describe('bowerResolve', () => {
 
     expect(result).toBeDefined();
 
-    const then = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-
-    result.then(then).catch(error).finally(() => {
-      expect(error).not.toHaveBeenCalled();
-      expect(then).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.m.js'),
-      );
-
-      done();
-    });
+    await expectAsync(result).toBeResolvedTo(
+      path.join('/', 'tmp', 'underscore', 'underscore.m.js'),
+    );
   });
 
-  it('should return a promise of bower dependency path without jsnext entry if disabled', (done) => {
+  it('should return a promise of bower dependency path without jsnext entry if disabled', async () => {
     spyOn(bower, 'list').and.callFake(() => {
       underscore.pkgMeta['jsnext:main'] = './underscore.m.js';
       underscore.pkgMeta.main = './underscore.js';
@@ -337,20 +265,12 @@ describe('bowerResolve', () => {
 
     expect(result).toBeDefined();
 
-    const then = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-
-    result.then(then).catch(error).finally(() => {
-      expect(error).not.toHaveBeenCalled();
-      expect(then).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.js'),
-      );
-
-      done();
-    });
+    await expectAsync(result).toBeResolvedTo(
+      path.join('/', 'tmp', 'underscore', 'underscore.js'),
+    );
   });
 
-  it('should return a promise of bower dependency path with jsnext entry by default', (done) => {
+  it('should return a promise of bower dependency path with jsnext entry by default', async () => {
     spyOn(bower, 'list').and.callFake(() => {
       underscore.pkgMeta['jsnext:main'] = './underscore.m.js';
       underscore.pkgMeta.main = './underscore.js';
@@ -368,20 +288,12 @@ describe('bowerResolve', () => {
 
     expect(result).toBeDefined();
 
-    const then = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-
-    result.then(then).catch(error).finally(() => {
-      expect(error).not.toHaveBeenCalled();
-      expect(then).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.m.js'),
-      );
-
-      done();
-    });
+    await expectAsync(result).toBeResolvedTo(
+      path.join('/', 'tmp', 'underscore', 'underscore.m.js'),
+    );
   });
 
-  it('should return a promise of bower dependency path with module entry by default instead of jsnext', (done) => {
+  it('should return a promise of bower dependency path with module entry by default instead of jsnext', async () => {
     spyOn(bower, 'list').and.callFake(() => {
       underscore.pkgMeta.module = './underscore.module.js';
       underscore.pkgMeta['jsnext:main'] = './underscore.jsnext.js';
@@ -403,20 +315,12 @@ describe('bowerResolve', () => {
 
     expect(result).toBeDefined();
 
-    const then = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-
-    result.then(then).catch(error).finally(() => {
-      expect(error).not.toHaveBeenCalled();
-      expect(then).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.module.js'),
-      );
-
-      done();
-    });
+    await expectAsync(result).toBeResolvedTo(
+      path.join('/', 'tmp', 'underscore', 'underscore.module.js'),
+    );
   });
 
-  it('should return a promise of bower dependency path with overridden main', (done) => {
+  it('should return a promise of bower dependency path with overridden main', async () => {
     spyOn(bower, 'list').and.callFake(() => {
       underscore.pkgMeta.main = ['./underscore.js'];
       return Promise.resolve({ underscore });
@@ -433,20 +337,12 @@ describe('bowerResolve', () => {
 
     expect(result).toBeDefined();
 
-    const then = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-
-    result.then(then).catch(error).finally(() => {
-      expect(error).not.toHaveBeenCalled();
-      expect(then).toHaveBeenCalledWith(
-        path.join('/', 'tmp', 'underscore', 'underscore.js'),
-      );
-
-      done();
-    });
+    await expectAsync(result).toBeResolvedTo(
+      path.join('/', 'tmp', 'underscore', 'underscore.js'),
+    );
   });
 
-  it('should return a promise of null with missing dependency', (done) => {
+  it('should return a promise of null with missing dependency', async () => {
     spyOn(bower, 'list').and.callFake(() => (
       Promise.resolve({
         jquery: {
@@ -468,14 +364,7 @@ describe('bowerResolve', () => {
 
     expect(result).toBeDefined();
 
-    const then = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-
-    result.then(then).catch(error).finally(() => {
-      expect(error).not.toHaveBeenCalled();
-      expect(then).toHaveBeenCalledWith(null);
-      done();
-    });
+    await expectAsync(result).toBeResolvedTo(null);
   });
 
   it('should return null with skipped dependency', () => {
@@ -488,7 +377,7 @@ describe('bowerResolve', () => {
     expect(result).toBeNull();
   });
 
-  it('should return fail promise if dependency is not on dist', (done) => {
+  it('should return fail promise if dependency is not on dist', async () => {
     spyOn(bower, 'list').and.callFake(() => {
       underscore.missing = true;
       return Promise.resolve({ underscore });
@@ -504,17 +393,12 @@ describe('bowerResolve', () => {
 
     expect(result).toBeDefined();
 
-    const then = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-
-    result.then(then).catch(error).finally(() => {
-      expect(error).toHaveBeenCalledWith(new Error("Dependency 'underscore' is missing, did you run 'bower install'?"));
-      expect(then).not.toHaveBeenCalled();
-      done();
-    });
+    await expectAsync(result).toBeRejectedWithError(
+      "Dependency 'underscore' is missing, did you run 'bower install'?",
+    );
   });
 
-  it('should return fail promise without main entry', (done) => {
+  it('should return fail promise without main entry', async () => {
     spyOn(bower, 'list').and.callFake(() => (
       Promise.resolve({
         underscore: {
@@ -534,20 +418,12 @@ describe('bowerResolve', () => {
 
     expect(result).toBeDefined();
 
-    const then = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-
-    result.then(then).catch(error).finally(() => {
-      expect(error).toHaveBeenCalledWith(new Error(
-        "Dependency underscore does not specify any main entry, please use 'override' options to specify main file",
-      ));
-
-      expect(then).not.toHaveBeenCalled();
-      done();
-    });
+    await expectAsync(result).toBeRejectedWithError(
+      "Dependency underscore does not specify any main entry, please use 'override' options to specify main file",
+    );
   });
 
-  it('should return fail promise without js main entry', (done) => {
+  it('should return fail promise without js main entry', async () => {
     spyOn(bower, 'list').and.callFake(() => (
       Promise.resolve({
         bootstrap: {
@@ -569,20 +445,12 @@ describe('bowerResolve', () => {
 
     expect(result).toBeDefined();
 
-    const then = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-
-    result.then(then).catch(error).finally(() => {
-      expect(error).toHaveBeenCalledWith(new Error(
-        "Dependency bootstrap does not specify any js main, please use 'override' options to specify main file",
-      ));
-
-      expect(then).not.toHaveBeenCalled();
-      done();
-    });
+    await expectAsync(result).toBeRejectedWithError(
+      "Dependency bootstrap does not specify any js main, please use 'override' options to specify main file",
+    );
   });
 
-  it('should return fail promise with multiple js main entry', (done) => {
+  it('should return fail promise with multiple js main entry', async () => {
     spyOn(bower, 'list').and.callFake(() => (
       Promise.resolve({
         underscore: {
@@ -604,16 +472,8 @@ describe('bowerResolve', () => {
 
     expect(result).toBeDefined();
 
-    const then = jasmine.createSpy('done');
-    const error = jasmine.createSpy('error');
-
-    result.then(then).catch(error).finally(() => {
-      expect(error).toHaveBeenCalledWith(new Error(
-        "Dependency underscore specify multiple js main entries, please use 'override' options to specify main file",
-      ));
-
-      expect(then).not.toHaveBeenCalled();
-      done();
-    });
+    await expectAsync(result).toBeRejectedWithError(
+      "Dependency underscore specify multiple js main entries, please use 'override' options to specify main file",
+    );
   });
 });
