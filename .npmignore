@@ -42,6 +42,8 @@
 /.travis.yml
 /*.iml
 /*.tar.gz
+/pnpm-workspace.yaml
+/pnpm-lock.yaml
 
 # Logs
 *.log
