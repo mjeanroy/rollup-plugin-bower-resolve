@@ -23,12 +23,48 @@
  */
 
 const path = require('node:path');
+const { parseArgs } = require('node:util');
 const gulp = require('gulp');
 const Jasmine = require('jasmine');
 const config = require('../config');
 
-function loadJasmine() {
-  const runner = new Jasmine();
+/**
+ * Read CLI options used to restrict the test run:
+ * - `--file <path>`: spec file to run (may be repeated).
+ * - `--filter <regexp>`: only run specs whose full name matches.
+ *
+ * @return {Object} The options: `files` (array of spec paths) and `filter` (optional string).
+ */
+function readCliOptions() {
+  const { values } = parseArgs({
+    args: process.argv.slice(2),
+    strict: false,
+    options: {
+      file: { type: 'string', multiple: true },
+      filter: { type: 'string' },
+    },
+  });
+
+  const files = (values.file || []).map((file) => (
+    path.relative(config.root, path.resolve(config.root, file)).split(path.sep).join('/')
+  ));
+
+  return {
+    files,
+    filter: values.filter,
+  };
+}
+
+/**
+ * Create a function running the Jasmine suite.
+ *
+ * @param {Object} options Options: `files` (spec paths to run) and `filter` (spec name filter).
+ * @return {function} The function executing the test suite.
+ */
+function loadJasmine({ files, filter } = {}) {
+  const runner = new Jasmine({
+    projectBaseDir: config.root,
+  });
 
   runner.loadConfig({
     failSpecWithNoExpectations: true,
@@ -41,7 +77,7 @@ function loadJasmine() {
   });
 
   runner.exitOnCompletion = false;
-  return runner.execute.bind(runner);
+  return () => runner.execute(files && files.length > 0 ? files : undefined, filter);
 }
 
 function deleteRequireCache() {
@@ -53,10 +89,13 @@ function deleteRequireCache() {
 /**
  * Run unit test suite and exit.
  *
- * @return {WritableStream} The pipe stream.
+ * Optionally, run a subset of the test suite:
+ *   pnpm run test:unit --file test/bower-spec.js --filter "should list dependencies"
+ *
+ * @return {Promise<void>} A promise resolved when the test suite has been executed.
  */
 function test() {
-  return loadJasmine()().then((result) => {
+  return loadJasmine(readCliOptions())().then((result) => {
     if (result.overallStatus !== 'passed') {
       throw new Error('JasmineError');
     }
