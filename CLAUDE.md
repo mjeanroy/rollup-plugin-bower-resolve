@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-Package manager is pnpm (CI uses pnpm 10; `pnpm-workspace.yaml` sets supply-chain policies such as `minimumReleaseAge`). All npm scripts delegate to gulp tasks in `gulpfile.js` → `scripts/*`.
+Package manager is **pnpm 11** (CI pins 11.28.12 through `pnpm/setup`; pnpm 11 itself needs Node ≥ 22.13, but CI installs its standalone binary, so the Node 18–21 runners still work). pnpm settings live in `pnpm-workspace.yaml` (including supply-chain policies such as `minimumReleaseAge`): pnpm 11 only reads auth/registry settings from `.npmrc`, which is kept for npm (`npm version` in the release task). Don't add `engines.pnpm`: it is published with the package and would affect plugin users. All npm scripts delegate to gulp tasks in `gulpfile.js` → `scripts/*`.
 
 - `pnpm test` — runs **clean → lint → build → Jasmine**. Lint errors (including warnings) fail the test run.
 - `pnpm run lint` — ESLint (airbnb-base) over root `*.js`, `src/`, `test/`, `scripts/`. Any warning is treated as an error. Lint only some files with `--file` (repeatable; a path that matches nothing fails):
