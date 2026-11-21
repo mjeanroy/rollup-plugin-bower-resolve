@@ -25,15 +25,23 @@
 const path = require('node:path');
 const log = require('../log');
 const config = require('../config');
+const { readCliOptions } = require('../cli');
 
-module.exports = function lint() {
-  const inputs = [
-    path.join(config.root, '*.js'),
-    path.join(config.src, '**', '*.js'),
-    path.join(config.test, '**', '*.js'),
-    path.join(config.scripts, '**', '*.js'),
-  ];
+const ALL_INPUTS = [
+  path.join(config.root, '*.js'),
+  path.join(config.src, '**', '*.js'),
+  path.join(config.test, '**', '*.js'),
+  path.join(config.scripts, '**', '*.js'),
+];
 
+/**
+ * Run ESLint on given inputs, fail if any warning or error is reported.
+ *
+ * @param {Array<string>} inputs Files, directories or globs to lint.
+ * @param {boolean} errorOnUnmatchedPattern Fail if an input does not match any file.
+ * @return {Promise<void>} A promise resolved when lint is done.
+ */
+function runEslint(inputs, errorOnUnmatchedPattern) {
   log.debug('Linting files: ');
 
   inputs.forEach((input) => (
@@ -47,7 +55,7 @@ module.exports = function lint() {
   const fancyLog = require('fancy-log');
 
   const eslint = new ESLint({
-    errorOnUnmatchedPattern: false,
+    errorOnUnmatchedPattern,
   });
 
   const lintFiles = eslint.lintFiles(inputs);
@@ -62,4 +70,29 @@ module.exports = function lint() {
       }
     }
   });
+}
+
+/**
+ * Lint the whole project.
+ *
+ * @return {Promise<void>} A promise resolved when lint is done.
+ */
+function lint() {
+  return runEslint(ALL_INPUTS, false);
+}
+
+/**
+ * Lint files given with `--file` (may be repeated), or the whole project if none is given:
+ *   pnpm run lint --file src/bower.js --file test/bower-spec.js
+ *
+ * @return {Promise<void>} A promise resolved when lint is done.
+ */
+function lintCli() {
+  const { files } = readCliOptions();
+  return files.length > 0 ? runEslint(files, true) : lint();
+}
+
+module.exports = {
+  lint,
+  lintCli,
 };

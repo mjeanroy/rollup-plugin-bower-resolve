@@ -23,37 +23,10 @@
  */
 
 const path = require('node:path');
-const { parseArgs } = require('node:util');
 const gulp = require('gulp');
 const Jasmine = require('jasmine');
 const config = require('../config');
-
-/**
- * Read CLI options used to restrict the test run:
- * - `--file <path>`: spec file to run (may be repeated).
- * - `--filter <regexp>`: only run specs whose full name matches.
- *
- * @return {Object} The options: `files` (array of spec paths) and `filter` (optional string).
- */
-function readCliOptions() {
-  const { values } = parseArgs({
-    args: process.argv.slice(2),
-    strict: false,
-    options: {
-      file: { type: 'string', multiple: true },
-      filter: { type: 'string' },
-    },
-  });
-
-  const files = (values.file || []).map((file) => (
-    path.relative(config.root, path.resolve(config.root, file)).split(path.sep).join('/')
-  ));
-
-  return {
-    files,
-    filter: values.filter,
-  };
-}
+const { readCliOptions } = require('../cli');
 
 /**
  * Create a function running the Jasmine suite.
