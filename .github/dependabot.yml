@@ -26,18 +26,23 @@
 
 version: 2
 updates:
-- package-ecosystem: npm
-  directory: "/"
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
-  cooldown:
-    default-days: 2
-  groups:
-    babel:
-      patterns:
-        - "@babel/*"
-    jasmine:
-      patterns:
-        - "jasmine"
-        - "jasmine-core"
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 2
+    groups:
+      babel:
+        patterns:
+          - "@babel/*"
+      jasmine:
+        patterns:
+          - "jasmine"
+          - "jasmine-core"
+    ignore:
+      # babel@8 is esm-only and requires node >= 22.18, and @rollup/plugin-babel only supports @babel/core@^7.
+      # Ignore major until node < 22 support is dropped (likely with rollup@5) and @rollup/plugin-babel supports babel 8.
+      - dependency-name: "@babel/*"
+        update-types: ["version-update:semver-major"]

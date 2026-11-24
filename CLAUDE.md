@@ -32,7 +32,7 @@ Package manager is **pnpm 11** (CI pins 11.28.12 through `pnpm/setup`; pnpm 11 i
   1. `canonicalDir + subpath` when the import has a subpath (`underscore/foo.js`),
   2. `override[importee]` if configured,
   3. otherwise `pkgMeta.module` → `jsnext:main` → `main` (when `main` is an array, exactly one `.js` entry must exist, else it throws).
-  Returns `null` for entry modules, `skip`ped ids, and unknown packages so other resolvers can run.
+     Returns `null` for entry modules, `skip`ped ids, and unknown packages so other resolvers can run.
 - `src/bower.js` — wraps `bower.commands.list` (offline by default) in a promise and flattens the dependency tree, including transitive deps, into a `{ name: metadata }` map (first occurrence wins).
 
 Unit tests spy on `bower.list` / `_bower.commands.list` using JSON fixtures in `test/fixtures/`. `test/it-spec.js` is an integration test that runs real Rollup builds (with `@rollup/plugin-commonjs`) against the committed `bower_components`-style projects in `test/it/test1` and `test/it/test2` (vendored under `vendors/` via `.bowerrc`).
@@ -43,6 +43,10 @@ Unit tests spy on `bower.list` / `_bower.commands.list` using JSON fixtures in `
 - The Rollup build (`scripts/build/rollup.config.js`) strips source banners, prepends `LICENSE` as banner, and formats output with Prettier. `node:path`, dependencies and peerDependencies are external.
 - `dist/` is not committed on master: `release:*` tasks force-add `dist`, run `npm version`, then `git rm` it again in a "prepare next release" commit.
 - Every source file carries the MIT license header; keep it on new files.
+
+## Dependencies
+
+- Do not bump `@babel/*` to 8.x yet. Babel 8 is ESM-only and needs Node >= 22.18, which breaks the Node 18 CI jobs, and `@rollup/plugin-babel` still declares `@babel/core ^7`. Dependabot ignores `@babel/*` majors for the same reason. Upgrading later also requires `require('@babel/register').default(...)` in `gulpfile.js`.
 
 ## Conventions
 
