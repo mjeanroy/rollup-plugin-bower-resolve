@@ -39,9 +39,11 @@ function loadJasmine({ files, filter } = {}) {
     projectBaseDir: config.root,
   });
 
-  runner.loadConfig({
-    failSpecWithNoExpectations: true,
-    jsLoader: 'require',
+  const ready = runner.loadConfig({
+    env: {
+      failSpecWithNoExpectations: true,
+    },
+    loader: path.join(__dirname, 'loader.js'),
     spec_dir: path.basename(config.test),
     spec_files: [
       '**/*-spec.js',
@@ -50,7 +52,7 @@ function loadJasmine({ files, filter } = {}) {
   });
 
   runner.exitOnCompletion = false;
-  return () => runner.execute(files && files.length > 0 ? files : undefined, filter);
+  return () => ready.then(() => runner.execute(files && files.length > 0 ? files : undefined, filter));
 }
 
 function deleteRequireCache() {

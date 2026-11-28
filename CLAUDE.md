@@ -23,7 +23,7 @@ Package manager is **pnpm 12** (CI pins 12.23.0 through `pnpm/setup`; pnpm 12 it
   pnpm run test:unit --file test/bower-spec.js
   pnpm run test:unit --file test/bower-spec.js --filter "transitive dependencies"
   ```
-  `--file`/`--filter` are parsed by the shared `scripts/cli/index.js`. Don't run spec files with the plain `jasmine` CLI: specs are ES modules that need `@babel/register` and Jasmine's `require` loader, which `scripts/test/index.js` sets up.
+  `--file`/`--filter` are parsed by the shared `scripts/cli/index.js`. Don't run spec files with the plain `jasmine` CLI: specs are ES modules that need `@babel/register` and a custom Jasmine loader that loads them with `require` (`scripts/test/loader.js`, wired in `scripts/test/index.js`; Jasmine 7 dropped the `jsLoader` option).
 
 ## Architecture
 
